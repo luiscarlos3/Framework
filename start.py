@@ -18,7 +18,6 @@ def main():
     """
     esta funcion se ejecuta 
     """
-    Menu.presetation()
-    
+    Menu.presetation()    
 main()
 #print(sys.path)

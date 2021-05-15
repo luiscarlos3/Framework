@@ -7,7 +7,6 @@ from View.shipping_view import Shipping
 from View.router_to_deliver_view import RouterToDeliver
 from View.truckdriver_view import truckDriver
 from View import design
-from switchlang import switch
 
 
 draw = design.Graphics()
@@ -23,12 +22,12 @@ def presetation():
     else:
         switch = {
             1:lambda E='camion':bodyTruck(E),
-            2:lambda E='camionero':options(E),
-            3:lambda E='destinatario':options(E),
-            4:lambda E='envio': options(E),
-            5:lambda E='paquete': options(E),
-            6:lambda E='remitente': options(E),
-            7:lambda E='ruta entrega paquete': options(E)
+            2:lambda E='camionero':bodyTruckDriver(E),
+            3:lambda E='destinatario':bodyRecipient(E),
+            4:lambda E='envio': bodyShipping(E),
+            5:lambda E='paquete': bodyPackage(E),
+            6:lambda E='remitente': bodySender(E),
+            7:lambda E='ruta entrega paquete': bodyRouterToDeliver(E)
         }                    
         op = switch.get(num, None)
         if op is None:
@@ -36,8 +35,8 @@ def presetation():
             os.system("pause")
             presetation()
         else:
-            op()       
-          
+            op()
+                      
        
 def options(table):
     Quit = False
@@ -50,12 +49,27 @@ def options(table):
             Quit == True
             presetation()
         else:
-           return num
-            
-        
-def bodyShipping(num):
-    obj = Shipping("envio")
-    pass
+           return num           
+
+       
+def bodyShipping(table):
+    Quit = False    
+    while Quit == False:
+        obj = Shipping(table)
+        op = options(table)
+        switch = {
+            1: obj.registerShipping,
+            2: obj.searchShipping,
+            3: obj.Deleteshipping,
+            4: obj.updateShipping,
+            5: obj.listShipping           
+        }
+        var = switch.get(op, lambda: "opcion invalida")
+        if op == 0:
+            Quit = True
+        else:
+            var()
+    
     
 def bodyTruck(table):
     Quit = False 
@@ -63,44 +77,112 @@ def bodyTruck(table):
         obj = Truck(table)    
         op = options(table)    
         switch = {
-            5:obj.listTruck            
-       
+            1:obj.registerTruck,
+            2:obj.searchTruck,
+            3:obj.deleteTruck,
+            4:obj.updateTruck,
+            5:obj.listTruck        
         }
-        var = switch.get(op, lambda default: print("No se ha reconocido la opcion %s" % op))
+        var = switch.get(op, lambda: "opcion invalida")
         if op == 0:
-            break
+            Quit = True                        
         else:
             var()
    
                 
-def bodyTruckDriver(num):
-    person = truckDriver("camionero")   
-    pass
-
-def bodyRecipient(num):
-    person = RecipientView('destinatario')    
-    switch = {
-        1:person.registerRecipient,
-        2:person.searchRecipient,
-        3:person.deleteRecipient,
-        4:person.updateRecipient,
-        5:person.listRecipient,
-    }
-    recipient = switch.get(num, lambda default: print("No se ha reconocido la opcion %s" % num))
-    recipient()
-        
-def bodyPackage(num):
-    obj = Package('paquete')
-    pass
+def bodyTruckDriver(table):
+    Quit = False    
+    while Quit == False:
+        person = truckDriver(table) 
+        op = options(table)
+        switch = {
+         1: person.registerTruckDriver,
+         2: person.searchTruckDriver,
+         3: person.deleteTruckDriver,
+         4: person.updateTruckDriver,
+         5: person.listTruckDriver        
+        } 
+        var = switch.get(op, lambda: "opcion invalida")
+        if op == 0:
+            Quit = True
+        else:
+            var()        
     
-def bodySender(num):
-    person = Sender("remitente")
-    pass
-   
+
+def bodyRecipient(table):
+    Quit = False
+    while Quit == False:
+        person = RecipientView(table)
+        op = options(table)    
+        switch = {
+            1:person.registerRecipient,
+            2:person.searchRecipient,
+            3:person.deleteRecipient,
+            4:person.updateRecipient,
+            5:person.listRecipient
+        }
+        recipient = switch.get(op, lambda: "opcion invalida")
+        if op == 0:
+            Quit = True
+        else:
+            recipient()    
         
-def bodyRouterToDeliver(num):    
-    route = RouterToDeliver('ruta_entrega_paquete')
-    pass
+def bodyPackage(table):
+    Quit = False
+    while Quit == False:
+        obj = Package(table)
+        op = options(table)
+        switch = {
+            1: obj.registerPackage,
+            2: obj.searchPackage,
+            3: obj.deletePackage,
+            4: obj.updatePackage,
+            5: obj.listPackage
+        }
+        var = switch.get(op, lambda: "opcion invalida")
+        if op == 0:
+            Quit = True
+        else:
+            var()    
+    
+def bodySender(table):
+    Quit = False
+    while Quit == False:
+        person = Sender(table)
+        op = options(table)
+        switch = {
+            1: person.registerSender,
+            2: person.searchSender,
+            3: person.deleteSender,
+            4: person.updateSender,
+            5: person.listSender
+        }
+        var = switch.get(op, lambda: "opcion invalida")
+        if op == 0:
+            Quit = True
+        else:
+            var()
+                   
+def bodyRouterToDeliver(table):
+    Quit = False
+    while Quit == False:
+        route = RouterToDeliver(table)
+        op = options(table)
+        switch = {
+            1: route.registerRouterToDeliver,
+            2: route.searchRouterToDeliver,
+            3: route.deleteRouterToDeliver,
+            4: route.updateRouterToDeliver,
+            5: route.listRouterToDeliver
+            }
+        var = switch.get(op, lambda: "opcion invalida")
+        if op == 0:
+            Quit = True
+        else:
+            var()
+        
+        
+    
     
     
         

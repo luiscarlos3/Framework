@@ -32,7 +32,7 @@ def extend_addressee():
     select documento,
     nombre,
     apellido, 
-    telefono, 
+    teléfono, 
     direccion_destinatario,
     municipios.municipio as ciudad 
     from destinatario 

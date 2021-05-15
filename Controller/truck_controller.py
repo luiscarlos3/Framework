@@ -49,8 +49,7 @@ def sql_Truck_Insert(table, id):
                             status = False
                             break 
     else:
-        print("el conductor no se encuentra registrado debe registro primero conductor")
-        os.system("pause")       
+        print("el conductor no se encuentra registrado debe registro primero conductor")        
     return status
 
 def sql_Truck_Delete(id):
