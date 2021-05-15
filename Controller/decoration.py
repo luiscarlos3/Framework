@@ -44,27 +44,27 @@ class Decorador:
             for i in range(0, len(arary)):                
                 print(i, ". "+ "Columna : " + str(arary[i])  + " = " + data[i])
                 print("\n")
-            option = Console.inputNumber("selecione"," la columna : ")
+            option = Console.inputNumber("selecione la columna : ")
             for i in range(0, len(arary)):
                 if option == 0:
                     position = arary[0]
-                    edit = Console.inputNumber(msg +" "+array[0]+ " : ")
+                    edit = Console.inputNumber(msg +" "+arary[0]+ " : ")
                     update = (self.__tablename, position, edit, self.__columna, id )
                     break                            
                 elif option == 3:
                     position = arary[3]
-                    edit = Console.inputNumber(msg +" "+array[3] + " : ")
+                    edit = Console.inputNumber(msg +" "+arary[3] + " : ")
                     update = (self.__tablename, position, edit, self.__columna, id )
                     break 
                 elif option == 5:                    
                     position = arary[5]
-                    edit = Console.inputString(msg +" "+array[5]+ " : ")
+                    edit = Console.inputString(msg +" "+arary[5]+ " : ")
                     edit = self.__inputCity(edit)                                  
                     update = (self.__tablename, position, edit, self.__columna, id)                                        
                     break                    
                 elif option == i:
                     position = arary[option]
-                    edit = Console.inputString(msg +" "+array[option] + " : ")
+                    edit = Console.inputString(msg +" "+arary[option] + " : ")
                     update = (self.__tablename, position, edit, self.__columna, id)
                                         
         else:
