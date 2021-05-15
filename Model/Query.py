@@ -9,7 +9,7 @@ class Sql:
         Conn =  Database.conexion()        
         sql = Conn.cursor()
         sql.execute('SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA  LIKE ' + "'"+self._db+"'" + 'AND TABLE_NAME = ' + "'" + tables + "'" )
-        data = consulta.fetchall()    
+        data = sql.fetchall()    
         return data   
    
     def name_Table(self):        
