@@ -7,6 +7,8 @@ from View.shipping_view import Shipping
 from View.router_to_deliver_view import RouterToDeliver
 from View.truckdriver_view import truckDriver
 from View import design
+from switchlang import switch
+
 
 draw = design.Graphics()
 def presetation():   
@@ -18,15 +20,15 @@ def presetation():
     if num == 0:           
         print("salir del programa")
         exit()
-    else:        
+    else:
         switch = {
-            1:lambda E='camion':options(num, E),
-            2:lambda E='camionero':options(num, E),
-            3:lambda E='destinatario':options(num, E),
-            4:lambda E='envio': options(num, E),
-            5:lambda E='paquete': options(num, E),
-            6:lambda E='remitente': options(num, E),
-            7:lambda E='ruta entrega paquete': options(num, E)
+            1:lambda E='camion':bodyTruck(E),
+            2:lambda E='camionero':options(E),
+            3:lambda E='destinatario':options(E),
+            4:lambda E='envio': options(E),
+            5:lambda E='paquete': options(E),
+            6:lambda E='remitente': options(E),
+            7:lambda E='ruta entrega paquete': options(E)
         }                    
         op = switch.get(num, None)
         if op is None:
@@ -34,10 +36,10 @@ def presetation():
             os.system("pause")
             presetation()
         else:
-            op()
-        
+            op()       
+          
        
-def options(num, table):
+def options(table):
     Quit = False
     while Quit == False:
         os.system("cls")  
@@ -48,35 +50,32 @@ def options(num, table):
             Quit == True
             presetation()
         else:
-            print(num)
-            switch = {  
-                1: lambda E=num : Truck(E),                   
-                3: lambda E=num : bodyRecipient(E)      
-                
-            }
-            op = switch.get(num, None)
-            if op is None:
-                print("No se ha reconocido la opcion %s" % num)            
-                os.system("pause")
-                presetation()
-            else:
-                op()
-            
+           return num
             
         
 def bodyShipping(num):
     obj = Shipping("envio")
     pass
     
-def bodyTruck(num):
-    obj = Truck("camion")
-    pass
-    
+def bodyTruck(table):
+    Quit = False 
+    while Quit == False:           
+        obj = Truck(table)    
+        op = options(table)    
+        switch = {
+            5:obj.listTruck            
+       
+        }
+        var = switch.get(op, lambda default: print("No se ha reconocido la opcion %s" % op))
+        if op == 0:
+            break
+        else:
+            var()
+   
                 
 def bodyTruckDriver(num):
     person = truckDriver("camionero")   
     pass
-    
 
 def bodyRecipient(num):
     person = RecipientView('destinatario')    
