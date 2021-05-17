@@ -16,7 +16,7 @@ class Decorador:
         lista = []
         for i in range(0,len(array)):
             if i is 0:
-                id = Console.inputNumber(msg +" "+array[0] + " : ")                
+                id = Console.inputStringNumber(msg +" "+array[0] + " : ")                
                 if val.Register_validation(id, self.__columna) == True:
                     print("ya se encuentra registrado")
                     os.system("pause")
@@ -24,7 +24,7 @@ class Decorador:
                 else:
                     lista.append(id)                                       
             if i is 3:                        
-                tel = Console.inputNumber(msg+" "+array[3]+ " : ")
+                tel = Console.inputStringNumber(msg+" "+array[3]+ " : ")
                 lista.append(tel)                
             elif i is 5:
                 city = Console.inputString(msg+" "+array[5]+ " : ")
