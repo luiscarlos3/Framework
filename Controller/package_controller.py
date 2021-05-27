@@ -7,7 +7,7 @@ from Controller import validation
 from Controller import help
 from Controller.list_controller import Tables
 
-obj = Query.Sql('transporte')
+obj = Query.Sql()
 
 def sql_Package_Insert(table):
     status = False      

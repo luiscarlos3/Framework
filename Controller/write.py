@@ -1,3 +1,4 @@
+import re
 class Console:     
     # valid entries only for numbers
     @staticmethod    
@@ -14,7 +15,7 @@ class Console:
     def inputString(args):     
         while True:
             var = input(args)            
-            if Console.__charactersNotNumber(var) == False:                
+            if Console.__charactersNotNumber(var) == False and Console.__space(var) == True:                
                 return var
             else:
                 print("invalid")                
@@ -46,14 +47,7 @@ class Console:
                 return var
             else:
                 print("invalid")
-    @staticmethod             
-    def inputSpace(args):         
-        while True:
-            var = input(args)
-            if var.isspace():
-                return var
-            else:
-                print("invalid")               
+             
                  
     @staticmethod          
     def __charactersNotNumber(cadena):
@@ -62,7 +56,27 @@ class Console:
             return True
         except (TypeError, ValueError):
             return False
+        
+    @staticmethod
+    def __space(args):
+        value = False
+        charterlist = list(args)
+        if not charterlist or charterlist[0] == " ":
+            value = False
+        else:
+            value = True
+        
+        return value
     
+    
+            
+        
+        
+        
+        
+            
+        
+        
             
         
     

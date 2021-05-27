@@ -7,7 +7,7 @@ from Controller.validation import  Validar
 from Controller import help
 from Controller.list_controller import Tables
 
-obj = Query.Sql('transporte')
+obj = Query.Sql()
 
 def sql_Truck_Insert(table, id):
     status = False

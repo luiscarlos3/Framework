@@ -3,7 +3,8 @@ from Model.connection import Database
 from Model.Query import Sql
 from terminaltables import AsciiTable
 from Controller import help
-graph = Sql('transporte')
+graph = Sql()
+
 class Tables:     
     @staticmethod
     def design_table(table,Query):

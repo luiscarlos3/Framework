@@ -1,6 +1,6 @@
 from Model import Query
 
-obj = Query.Sql("transporte")
+obj = Query.Sql()
 
 class Graphics:    
     
@@ -9,7 +9,11 @@ class Graphics:
         print('\t------Administración de transporte--------\t')
         print('----------------------------------------------------------------')
         print('\n')
-        
+    
+    def AppearanceTwoo(self, *args):
+        for i in range(1, len(args)):
+            print(i, " Consultar " + args[i])
+                   
         
     def Appearance(self):          
         options = obj.name_Table()

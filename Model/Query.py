@@ -1,21 +1,19 @@
 import os, sys
 import pymysql
 from Model.connection import Database
-class Sql:     
-    def __init__(self, db):        
-        self._db = db        
+class Sql:  
     
     def columns(self,tables):
         Conn =  Database.conexion()        
         sql = Conn.cursor()
-        sql.execute('SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA  LIKE ' + "'"+self._db+"'" + 'AND TABLE_NAME = ' + "'" + tables + "'" )
+        sql.execute('SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA  LIKE ' + "'"+ Database.namedatabase() +"'" + 'AND TABLE_NAME = ' + "'" + tables + "'" )
         data = sql.fetchall()    
         return data   
    
     def name_Table(self):        
         Conn =  Database.conexion()
         consulta = Conn.cursor()
-        consulta.execute("SELECT table_name as nombre FROM information_schema.tables WHERE table_schema = " + "'"+ "transporte" + "'"+" and (table_name  = 'paquete' or table_name = 'camion' or table_name = 'camionero' or table_name = 'destinatario' or table_name = 'ruta_entrega_paquete' or table_name = 'remitente' or table_name = 'envio')")
+        consulta.execute("SELECT table_name as nombre FROM information_schema.tables WHERE table_schema = " + "'"+ Database.namedatabase() + "'"+" and (table_name  = 'paquete' or table_name = 'camion' or table_name = 'camionero' or table_name = 'destinatario' or table_name = 'ruta_entrega_paquete' or table_name = 'remitente' or table_name = 'envio')")
         data = consulta.fetchall()    
         return data
     

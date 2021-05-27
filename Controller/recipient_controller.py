@@ -6,7 +6,8 @@ from Model import Query,query_extend
 from Controller.validation import Validar
 from Controller.list_controller import Tables
 from Controller.decoration import Decorador
-obj = Query.Sql('transporte')
+
+obj = Query.Sql()
 
 def recipientInsert(table):
     status = False      
