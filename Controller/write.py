@@ -1,4 +1,5 @@
 import re
+import os, sys
 class Console:     
     # valid entries only for numbers
     @staticmethod    
@@ -9,7 +10,7 @@ class Console:
                 var = int(var)
                 return var
             except ValueError:    
-                print("invalid")                             
+                print("invalid")                                           
     #valid entries only for letters     
     @staticmethod
     def inputString(args):     

@@ -1,27 +1,28 @@
 import os, sys
-from Controller import recipient_controller
+from Controller.recipient_controller import ControllerRecipes
 from View.design import Graphics
+from Controller.write import Console
 
+recipient = ControllerRecipes('destinatario', 'documento')
 
-class RecipientView:
+class RecipientView:    
     
     def __init__(self, table):
-        self.__TableName = table
+        self.__table = table  
 
-    def registerRecipient(self):        
-        Graphics.header("Registrar", self.__TableName)            
-        if recipient_controller.recipientInsert(self.__TableName) == True:
-            print("Datos han sido ingresados")
-           
+    def registerRecipient(self):                
+        Graphics.header("Registrar", self.__table)            
+        if recipient.recipientInsert(self.__table) == True:                              
+            print("Datos han sido ingresados")           
             os.system("pause")            
         else:
             print("datos no han sido ingresados")
             os.system("pause")         
         
     def deleteRecipient(self):       
-        Graphics.header("Eliminar", self.__TableName)
-        Id = input('ingrese numero del documento : ')
-        if recipient_controller.recipientDelete(Id) == True:
+        Graphics.header("Eliminar", self.__table)
+        Id = Console.inputNumber('ingrese numero del documento : ')
+        if recipient.recipientDelete(Id) == True:
             print("Destinatario ha sido eliminado")
             os.system("pause")         
         else:
@@ -30,9 +31,9 @@ class RecipientView:
        
         
     def updateRecipient(self):      
-        Graphics.header("Actualizar", self.__TableName)
-        Id = RecipientView.__inputNumber("el documento")
-        if recipient_controller.recipientUpdate(self.__TableName, str(Id) ,'documento') == True:
+        Graphics.header("Actualizar", self.__table)
+        Id = input("ingrese el documento : ")
+        if recipient.recipientUpdate(str(Id)) == True:
             print("Registro actualizado") 
             os.system("pause")      
         else:
@@ -41,26 +42,18 @@ class RecipientView:
         
         
     def searchRecipient(self):      
-        Graphics.header("Buscar", self.__TableName)
+        Graphics.header("Buscar", self.__table)
         Id = input("ingrese el numero del documento : ")
-        recipient_controller.recipientSearch(self.__TableName,'documento', Id)
+        recipient.recipientSearch(Id)
         os.system("pause")   
     
     def listRecipient(self):      
-        Graphics.header("Lista", self.__TableName)
-        recipient_controller.recipientList()
+        Graphics.header("Lista", self.__table)
+        recipient.recipientList()
         print("\n")
         os.system("pause")
         
-    @staticmethod
-    def __inputNumber(value):
-        while True:
-            var = input("Ingrese " + value + " : ")
-            try:
-                var = int(var)
-                return var
-            except ValueError:    
-                print("Entrada invalida")
+    
     
     
    

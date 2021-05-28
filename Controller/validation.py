@@ -21,7 +21,7 @@ class Validar:
                 print("Ocurrió un error al validar: ", e)         
         return status
     
-    def searchData(self,colum, sql):        
+    def searchData(self,sql):        
         Conn =  Database.conexion()
         consulta = Conn.cursor()  
         consulta.execute(sql)

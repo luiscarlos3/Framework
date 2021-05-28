@@ -12,8 +12,8 @@ draw = design.Graphics()
 def presetation():   
     os.system("cls")   
     draw.headerMenu()
-    draw.AppearanceTwoo('camion', 'camionero', 'destinatario', 'envio', 'paquete', 'remitente', 'ruta_entrega_paquete')
-    #draw.Appearance()
+    #draw.AppearanceTwoo('camion', 'camionero', 'destinatario', 'envio', 'paquete', 'remitente', 'ruta_entrega_paquete')
+    draw.Appearance()
     print("0 salir \n")
     num = int(input("seleccione una opcion : "))   
     if num == 0:           

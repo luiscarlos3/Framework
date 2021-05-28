@@ -5,55 +5,147 @@ from Model.Query import Sql
 from Model import Query,query_extend
 from Controller.validation import Validar
 from Controller.list_controller import Tables
-from Controller.decoration import Decorador
+from Controller.write import Console
+from Controller import help
 
 obj = Query.Sql()
 
-def recipientInsert(table):
-    status = False      
-    column = obj.columns(table)
-    var = Decorador(table, "documento")  
-    tupl = tuple(var.recipientInput(column))
-    if Sql.insert(table, tupl) == True:
-        status = True
-    else:
-        status = False        
-    return status    
-
-def recipientDelete(id):
-    status = False      
-    if Sql.delete('destinatario', 'documento', id) == True:
-        status = True
-    else:
-        status = False
-    return status
-
-def recipientUpdate(table, id, colum):
-    status = False
-    column = obj.columns(table)
-    var = Decorador(table, colum)    
-    tupl = var.recipientInputUpdate(column, id)
-    if Sql.update(tupl) == True:
-        status = True
-    else:
-        status = False
-    return status
- 
-def recipientSearch(table, colum, id):         
-    conn = Database().conexion()
-    consulta = conn.cursor()
-    sql = query_extend.extend_addressee() + " where " + colum + " = " + "'" + id + "'"
-    consulta.execute(sql)
-    herdears = obj.columns(table)
-    data = consulta.fetchone()
-    if data:
-        Tables.table_vertical('destinatario',data,herdears)     
-    else:
-        print("no se encontro el destinatario")
+class ControllerRecipes:
+    
+    def __init__(self, table, idcolumns):
         
-def recipientList():
-    cs =  query_extend.extend_addressee()
-    Tables.design_table('destinatario', cs)
+        self.__table = table
+        self._idcolumns = idcolumns        
+    
+    def recipientInsert(self,table):
+        status = False      
+        column = obj.columns(table)        
+        tupl = tuple(self.__recipientInput(column))
+        if not tupl:
+            status = False
+        else:
+            if Sql.insert(self.__table, tupl) == True:
+                status = True
+            else:
+                status = False      
+        return status    
+
+    def recipientDelete(self,id):
+        status = False      
+        if Sql.delete('destinatario', 'documento', id) == True:
+            status = True
+        else:
+            status = False
+        return status
+
+    def recipientUpdate(self, id):
+        status = False
+        column = obj.columns(self.__table)         
+        tupl = self.__recipientInputUpdate(column, id)       
+        if not tupl:
+            status = False            
+        else:
+            if Sql.update(tupl) == True:        
+                status = True
+            else:
+                status = False
+        return status
+ 
+    def recipientSearch(self,id):         
+        conn = Database().conexion()
+        consulta = conn.cursor()
+        sql = query_extend.extend_addressee() + " where " + self._idcolumns + " = " + "'" + id + "'"
+        consulta.execute(sql)
+        herdears = obj.columns(self.__table)
+        data = consulta.fetchone()
+        if data:
+            Tables.table_vertical('destinatario',data,herdears)     
+        else:
+            print("no se encontro el destinatario")
+        
+    def recipientList(self):
+        cs =  query_extend.extend_addressee()
+        Tables.design_table('destinatario', cs)
+        
+    def __recipientInput(self,column):
+        msg = "Ingrese"
+        val = Validar(self.__table)
+        array = self.__convertArray(column)
+        lista = []
+        for i in range(0,len(array)):
+            if i is 0:
+                id = Console.inputStringNumber(msg +" "+array[0] + " : ")                
+                if val.Register_validation(id, self._idcolumns) == True:
+                    print("ya se encuentra registrado")                    
+                    break
+                else:
+                    lista.append(id)                                       
+            if i is 3:                        
+                tel = Console.inputStringNumber(msg+" "+array[3]+ " : ")
+                lista.append(tel)                
+            elif i is 5:
+                city = Console.inputString(msg+" "+array[5]+ " : ")
+                lista.append(self.__inputCity(city))                              
+            elif i >= 1:
+                name = Console.inputString(msg +" " +array[i]+ " : ")
+                lista.append(name)                
+        return lista
+    
+    def __recipientInputUpdate(self,colum,id):
+        status = False
+        msg = "Ingrese"
+        update = tuple()       
+        arary = self.__convertArray(colum)
+        sql = query_extend.extend_addressee() + " where " + self._idcolumns + " = " + "'" + id + "'"
+        crt = Validar(self.__table)      
+        data = crt.searchData(sql)        
+        if data:                        
+            for i in range(0, len(arary)):                
+                print(i, ". "+ "Columna : " + str(arary[i])  + " = " + data[i])
+                print("\n")
+            option = Console.inputNumber("selecione la columna : ")
+            for i in range(0, len(arary)):
+                if option == 0:
+                    position = arary[0]
+                    edit = Console.inputNumber(msg +" "+arary[0]+ " : ")
+                    update = (self.__table, position, edit, self._idcolumns, id )
+                                                           
+                elif option == 3:
+                    position = arary[3]
+                    edit = Console.inputNumber(msg +" "+arary[3] + " : ")
+                    update = (self.__table, position, edit, self._idcolumns, id )
+                    
+                elif option == 5:                    
+                    position = arary[5]
+                    edit = Console.inputString(msg +" "+arary[5]+ " : ")
+                    edit = self.__inputCity(edit)                                  
+                    update = (self.__table, position, edit, self._idcolumns, id)        
+                                   
+                elif option == i:
+                    position = arary[option]
+                    edit = Console.inputString(msg +" "+arary[option] + " : ")
+                    update = (self.__table, position, edit, self._idcolumns, id)                    
+                                                        
+        else:
+            print("No se encuentra la informacion")                
+        return update
+          
+                    
+    def __convertArray(self,array):
+        lista= []
+        for i in range(len(array)):
+            for j in range(len(array[i])):
+                lista.append(array[i][j])
+        return lista
+    
+    def __inputCity(self, name):
+        village = 0       
+        if Validar.controller_city(name) == False:                        
+            print("este municipio no se encuentra")
+            os.system("pause")
+        else:
+            village = help.convert_city(name)
+        return village
   
  
     
