@@ -1,12 +1,13 @@
 import pymysql
 import random
+import os, sys
 from datetime import date
 from datetime import datetime
 from datetime import timedelta
 from Model.connection import Database
 from Controller.validation import Validar
 from Model.Query import Sql
-import numpy as np
+
     
 def codigo():
     num = random.randrange(10000000000)
@@ -69,6 +70,22 @@ def time_arrival_shipping():
     now = datetime.now()
     new_Date = now + timedelta(days=2)  
     return new_Date
+
+def convertArray(array):
+        lista= []
+        for i in range(len(array)):
+            for j in range(len(array[i])):
+                lista.append(array[i][j])
+        return lista
+    
+def inputCity(name):
+    village = 0       
+    if Validar.controller_city(name) == False:                        
+        print("este municipio no se encuentra")
+        os.system("pause")
+    else:
+        village = convert_city(name)
+    return village    
 
 
     

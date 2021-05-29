@@ -26,8 +26,7 @@ class ControllerTruck:
                 status = True
             else:
                 status = False
-        return status        
-   
+        return status 
 
     def truckDelete(self,id):        
         return Sql.delete(self.__table, self.__idcolumns, id) 
@@ -35,7 +34,7 @@ class ControllerTruck:
     def truckUpdate(self, id):
         status = False
         herdears = obj.columns(self.__table)
-        columns = self.__convertArray(herdears)
+        columns = help.convertArray(herdears)
         tupl = self.__truckInputUpdate(columns, id)
         if not tupl:
             status = False
@@ -46,15 +45,15 @@ class ControllerTruck:
                 status = False
         return status 
     
-    def sql_Truck_Search(table,colum,id):         
+    def truckSearch(self,id):         
         conn = Database().conexion()
         consulta = conn.cursor()        
-        sql =   query_extend.extend_truck() + " where " + colum +" = '" + id + "'"     
+        sql =   query_extend.extend_truck() + " where " + self.__idcolumns +" = '" + id + "'"     
         consulta.execute(sql)
-        herdears = obj.columns(table)
+        herdears = obj.columns(self.__table)
         data = consulta.fetchone()    
         if data:        
-            Tables.table_vertical(table, data, herdears)  
+            Tables.table_vertical(self.__table, data, herdears)  
         else:
             print("no se encontro el camion")
         
@@ -64,17 +63,18 @@ class ControllerTruck:
         
     def __driverValidation(self, id):       
         return Validar.validation_truck_driver("camionero",id, "documento") == True         
-    #--------------------------------------------------------------------------------------------------------------------
-    #--------------------------------------------------------------------------------------------------------------------       
+         
     def __truckInput(self,id,column):
         msg = "Ingrese"        
-        array = self.__convertArray(column)
+        array = help.convertArray(column)
         lista = []       
         if self.__driverValidation(id):
-             lista = self.__call(array, msg, lista, id)               
+             lista = self.__call(array, msg, lista, id)# toco pasar mas 3 argumentos               
         else:
             print("No se encuentra registrado")
         return lista
+    #--------------------------------------------------------------------------------------------------------------------
+    #-------------------------------------------------------------------------------------------------------------------- 
     
     def __call(self,column, msg, lista, id):
         lista = []
@@ -92,7 +92,7 @@ class ControllerTruck:
             lista.append(potencia)
             lista.append(id)
             city = Console.inputString(msg +" "+column[5] + " : ")                   
-            lista.append(self.__inputCity(city))         
+            lista.append(help.inputCity(city))         
         return lista
     
     def __callUpdate(self, columns, data, id):
@@ -138,8 +138,10 @@ class ControllerTruck:
         elif option is 5:
             position = columns[option]
             edit = Console.inputString(msg + " "+columns[5] + " : ")
-            edit = self.__inputCity(edit)  
-            update = (self.__table, position, edit, self.__idcolumns, id)     
+            edit = help.inputCity(edit)  
+            update = (self.__table, position, edit, self.__idcolumns, id)
+        else:
+            print(" Opcion invalida ")   
         return update      
     
     def __truckInputUpdate(self,column, id):         
@@ -155,21 +157,7 @@ class ControllerTruck:
             print("No se encuentra el vehiculo ")           
         return update          
         
-    def __convertArray(self,array):
-        lista= []
-        for i in range(len(array)):
-            for j in range(len(array[i])):
-                lista.append(array[i][j])
-        return lista
     
-    def __inputCity(self, name):
-        village = 0       
-        if Validar.controller_city(name) == False:                        
-            print("este municipio no se encuentra")
-            os.system("pause")
-        else:
-            village = help.convert_city(name)
-        return village    
         
         
         
