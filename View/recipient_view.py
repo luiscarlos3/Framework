@@ -11,8 +11,8 @@ class RecipientView:
         self.__table = table  
 
     def registerRecipient(self):                
-        Graphics.header("Registrar", self.__table)            
-        if recipient.recipientInsert(self.__table) == True:                              
+        Graphics.header("Registrar", self.__table)        
+        if recipient.recipientInsert() == True:                              
             print("Datos han sido ingresados")           
             os.system("pause")            
         else:
@@ -28,7 +28,6 @@ class RecipientView:
         else:
             print("destinatario no sido eliminado")
             os.system("pause")   
-       
         
     def updateRecipient(self):      
         Graphics.header("Actualizar", self.__table)
@@ -38,8 +37,7 @@ class RecipientView:
             os.system("pause")      
         else:
             print("Registro no actualizado")
-            os.system("pause")  
-        
+            os.system("pause")      
         
     def searchRecipient(self):      
         Graphics.header("Buscar", self.__table)

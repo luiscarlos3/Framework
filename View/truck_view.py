@@ -1,7 +1,8 @@
 import os, sys
-from Controller import truck_controller
+from Controller.truck_controller import ControllerTruck
 from View.design import Graphics
 
+obj = ControllerTruck("camion", "matricula")
 class Truck:
     def __init__(self, table):
         self.__TableName = table    
@@ -9,7 +10,7 @@ class Truck:
     def registerTruck(self):
         Graphics.header("registrar", self.__TableName)
         id = input('ingrese el documento del coductor : ')
-        if truck_controller.sql_Truck_Insert(self.__TableName, id) == True:
+        if obj.truckInsert(id) == True:
             print("Datos han sido ingresados")
             os.system ('pause')        
         else:
@@ -18,8 +19,8 @@ class Truck:
         
     def deleteTruck(self):        
         Graphics.header("eliminar", self.__TableName)
-        Id = input('ingrese numero del documento : ')
-        if truck_controller.sql_Truck_Delete(Id) == True:
+        Id = input('Ingrese la placa : ')
+        if obj.truckDelete(Id) == True:
             print(self.__TableName + " ha sido eliminado")
             os.system ('pause')
         else:
@@ -29,7 +30,7 @@ class Truck:
     def updateTruck(self):        
         Graphics.header("actualizar", self.__TableName)
         Id = input("ingrese el numero del documento : ")
-        if truck_controller.sql_Truck_Update(self.__TableName, Id, 'matricula') == True:
+        if obj.truckUpdate(Id) == True:
             print( self.__TableName + " se ha actualizado")
             os.system ('pause')
         else:
@@ -43,6 +44,6 @@ class Truck:
         os.system ('pause')
     
     def listTruck(self):       
-        Graphics.header("lista",self.__TableName)
-        truck_controller.sql_Truck_List()
+        Graphics.header("lista",self.__TableName)        
+        obj.truckList()
         os.system ('pause')

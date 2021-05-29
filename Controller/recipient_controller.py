@@ -15,11 +15,11 @@ class ControllerRecipes:
     def __init__(self, table, idcolumns):
         
         self.__table = table
-        self._idcolumns = idcolumns        
+        self.__idcolumns = idcolumns        
     
-    def recipientInsert(self,table):
+    def recipientInsert(self):
         status = False      
-        column = obj.columns(table)        
+        column = obj.columns(self.__table)        
         tupl = tuple(self.__recipientInput(column))
         if not tupl:
             status = False
@@ -54,7 +54,7 @@ class ControllerRecipes:
     def recipientSearch(self,id):         
         conn = Database().conexion()
         consulta = conn.cursor()
-        sql = query_extend.extend_addressee() + " where " + self._idcolumns + " = " + "'" + id + "'"
+        sql = query_extend.extend_addressee() + " where " + self.__idcolumns + " = " + "'" + id + "'"
         consulta.execute(sql)
         herdears = obj.columns(self.__table)
         data = consulta.fetchone()
@@ -75,13 +75,13 @@ class ControllerRecipes:
         for i in range(0,len(array)):
             if i is 0:
                 id = Console.inputStringNumber(msg +" "+array[0] + " : ")                
-                if val.Register_validation(id, self._idcolumns) == True:
+                if val.Register_validation(id, self.__idcolumns) == True:
                     print("ya se encuentra registrado")                    
                     break
                 else:
                     lista.append(id)                                       
             if i is 3:                        
-                tel = Console.inputStringNumber(msg+" "+array[3]+ " : ")
+                tel = Console.inputStringNumber(msg+" "+array[3]+ " : ")                
                 lista.append(tel)                
             elif i is 5:
                 city = Console.inputString(msg+" "+array[5]+ " : ")
@@ -96,7 +96,7 @@ class ControllerRecipes:
         msg = "Ingrese"
         update = tuple()       
         arary = self.__convertArray(colum)
-        sql = query_extend.extend_addressee() + " where " + self._idcolumns + " = " + "'" + id + "'"
+        sql = query_extend.extend_addressee() + " where " + self.__idcolumns + " = " + "'" + id + "'"
         crt = Validar(self.__table)      
         data = crt.searchData(sql)        
         if data:                        
@@ -108,23 +108,23 @@ class ControllerRecipes:
                 if option == 0:
                     position = arary[0]
                     edit = Console.inputNumber(msg +" "+arary[0]+ " : ")
-                    update = (self.__table, position, edit, self._idcolumns, id )
+                    update = (self.__table, position, edit, self.__idcolumns, id )
                                                            
                 elif option == 3:
                     position = arary[3]
                     edit = Console.inputNumber(msg +" "+arary[3] + " : ")
-                    update = (self.__table, position, edit, self._idcolumns, id )
+                    update = (self.__table, position, edit, self.__idcolumns, id )
                     
                 elif option == 5:                    
                     position = arary[5]
                     edit = Console.inputString(msg +" "+arary[5]+ " : ")
                     edit = self.__inputCity(edit)                                  
-                    update = (self.__table, position, edit, self._idcolumns, id)        
+                    update = (self.__table, position, edit, self.__idcolumns, id)        
                                    
                 elif option == i:
                     position = arary[option]
                     edit = Console.inputString(msg +" "+arary[option] + " : ")
-                    update = (self.__table, position, edit, self._idcolumns, id)                    
+                    update = (self.__table, position, edit, self.__idcolumns, id)                    
                                                         
         else:
             print("No se encuentra la informacion")                
