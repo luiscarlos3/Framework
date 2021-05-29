@@ -32,9 +32,7 @@ def update_city(data):
                 status=True
             else:
                 print("dato no actualizado")
-                status=False
-           
-        
+                status=False 
     else:        
         print("No se encontro el municipio")        
     return status

@@ -33,47 +33,19 @@ class ControllerTruck:
         return Sql.delete(self.__table, self.__idcolumns, id) 
     
     def truckUpdate(self, id):
-        self.__truckInputUpdate(id)        
-
-    def sql_Truck_Update(table, id, colum):
-        status = False   
-        Conn =  Database.conexion()
-        consulta = Conn.cursor()
-        sql = query_extend.extend_truck() + " where " + colum + " = " + "'" + id + "'"
-        consulta.execute(sql)
-        data = consulta.fetchone()    
-        herdears = obj.columns(table)    
-        if data:
-            for i in range(0, len(herdears)):
-                print(i,". "+ "Columna : " +str(herdears[i]).strip("('").strip("',)") + " = " , data[i])      
-                print("\n")
-            num = int(input("ingrese la columna : "))              
-            for i in range(0, len(herdears)):            
-                if num == 5:
-                    positio = str(herdears[5]).strip("('").strip("',)")
-                    edit = str(input("ingrese dato para actualizar : "))
-                    Datos = (table, positio, edit , colum, id)              
-                    if help.update_city(Datos) == True:
-                        status = True
-                        break
-                    else:
-                        status = False
-                        break         
-                
-                elif num == i:
-                    positio = str(herdears[i]).strip("('").strip("',)")
-                    edit = str(input("ingrese dato para actualizar : "))
-                    Datos = (table, positio, edit , colum, id)
-                    if Sql.update(Datos) == True:            
-                        status = True
-                        break                 
-                    else:                    
-                        status = False
-                        break         
+        status = False
+        herdears = obj.columns(self.__table)
+        columns = self.__convertArray(herdears)
+        tupl = self.__truckInputUpdate(columns, id)
+        if not tupl:
+            status = False
         else:
-            print("el vehiculo no se encuentra ")     
-        return status
-
+            if Sql.update(tupl) == True:
+                status = True
+            else:
+                status = False
+        return status 
+    
     def sql_Truck_Search(table,colum,id):         
         conn = Database().conexion()
         consulta = conn.cursor()        
@@ -92,7 +64,8 @@ class ControllerTruck:
         
     def __driverValidation(self, id):       
         return Validar.validation_truck_driver("camionero",id, "documento") == True         
-           
+    #--------------------------------------------------------------------------------------------------------------------
+    #--------------------------------------------------------------------------------------------------------------------       
     def __truckInput(self,id,column):
         msg = "Ingrese"        
         array = self.__convertArray(column)
@@ -122,32 +95,65 @@ class ControllerTruck:
             lista.append(self.__inputCity(city))         
         return lista
     
-    def __callUpdate(self, data):
-        i = 0
-        while i >= len(data):
-            i+=1
-            
+    def __callUpdate(self, columns, data, id):
+        msg = "ingrese"
+        update = tuple()
+        print("\n")
+        j = 0
+        for i in range(0, len(columns)):                    
+            print(i, " columna :" ,columns[i], " = ", data[i])
+            print("\n")
+        option = Console.inputNumber("selecione la columna : ")                   
+        if option is 0:
+            position = columns[0]
+            edit = input(msg +" "+columns[0] + " : ")
+            update = (self.__table, position, edit,self.__idcolumns, id)
+                           
+        elif option is 1:
+            position = columns[1]
+            edit = Console.inputNumber(msg +' '+ columns[1] + " : ")
+            update = (self.__table, position, edit, self.__idcolumns, id)
+                
+        elif option is 2:
+            position = columns[2]
+            edit = Console.inputNumber(msg+ ' ' + columns[2] + " : ")
+            update = (self.__table, position, edit, self.__idcolumns, id)
+        else:
+            update = self.__val(option, columns, id)    
+                
+        return update
     
-    def __truckInputUpdate(self,id):
-        status = False   
+    def __val (self,option, columns, id):
+        msg = "ingrese"
+        update = tuple()
+        print(columns)    
+        if option is 3:
+            position = columns[option]
+            edit = Console.inputNumber(msg + " " +columns[3] + " : ")
+            update = (self.__table, position, edit, self.__idcolumns, id)            
+        elif option is 4:
+            position = columns[option]
+            edit = Console.inputNumber(msg + " " +columns[4] + " : ")
+            update = (self.__table, position, edit, self.__idcolumns, id)
+        elif option is 5:
+            position = columns[option]
+            edit = Console.inputString(msg + " "+columns[5] + " : ")
+            edit = self.__inputCity(edit)  
+            update = (self.__table, position, edit, self.__idcolumns, id)     
+        return update      
+    
+    def __truckInputUpdate(self,column, id):         
         Conn =  Database.conexion()
+        update = tuple()
         consulta = Conn.cursor()
         sql = query_extend.extend_truck() + " where " + self.__idcolumns + " = " + "'" + id + "'"
         consulta.execute(sql)
-        data = consulta.fetchone()    
-        herdears = obj.columns(self.__table)
+        data = consulta.fetchone()
         if data:
-            self.__callUpdate(herdears)
+            update = self.__callUpdate(column, data, id)
         else:
-            print("")
-            
-    
-        
-            
-        
-            
-            
-                
+            print("No se encuentra el vehiculo ")           
+        return update          
         
     def __convertArray(self,array):
         lista= []
