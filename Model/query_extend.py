@@ -26,6 +26,22 @@ def extend_truck():
     inner join municipios on camion.registro_matricula = municipios.id_municipio   
     """
     return Querys
+def extendTruckSearch():
+    Querys = """
+    select
+	matricula, 
+    modelo,
+    tipo,
+    potencia, 
+    doc_camionero,
+    camionero.nombre_camionero,
+    camionero.apellido_camionero,
+    camionero.telefono,
+    municipios.municipio
+    from camion   
+    inner join municipios on camion.registro_matricula = municipios.id_municipio inner join camionero on camion.doc_camionero = camionero.documento
+    """
+    return Querys
 
 def extend_addressee():
     Querys = """

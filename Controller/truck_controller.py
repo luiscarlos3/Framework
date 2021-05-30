@@ -1,4 +1,3 @@
-import os, sys
 import pymysql
 from Model.connection import Database
 from Model import Query, query_extend
@@ -7,6 +6,7 @@ from Controller.validation import  Validar
 from Controller import help
 from Controller.list_controller import Tables
 from Controller.write import Console
+from Controller.utilis import utilidades
 
 obj = Query.Sql()
 class ControllerTruck:
@@ -48,19 +48,17 @@ class ControllerTruck:
     def truckSearch(self,id):         
         conn = Database().conexion()
         consulta = conn.cursor()        
-        sql =   query_extend.extend_truck() + " where " + self.__idcolumns +" = '" + id + "'"     
-        consulta.execute(sql)
-        herdears = obj.columns(self.__table)
+        sql =   query_extend.extendTruckSearch() + " where " + self.__idcolumns +" = '" + id + "'"     
+        consulta.execute(sql)       
         data = consulta.fetchone()    
         if data:        
-            Tables.table_vertical(self.__table, data, herdears)  
+            Tables.table_vertical(self.__table, data, utilidades.columnsTruck())  
         else:
             print("no se encontro el camion")
         
     def truckList(self):
-        cs = query_extend.extend_truck()
-        Tables.design_table('camion', cs)
-        
+        cs = query_extend.extendTruckSearch()
+        Tables.design_table_columns(cs,utilidades.columnsTruck())
     def __driverValidation(self, id):       
         return Validar.validation_truck_driver("camionero",id, "documento") == True         
          
@@ -111,8 +109,7 @@ class ControllerTruck:
     def __conditionOne(self, columns, data, id):
         msg = "ingrese"
         update = tuple()
-        print("\n")
-        j = 0
+        print("\n")        
         for i in range(0, len(columns)):                    
             print(i, " columna :" ,columns[i], " = ", data[i])
             print("\n")

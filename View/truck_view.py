@@ -2,6 +2,7 @@ from Model.Query import Sql
 import os, sys
 from Controller.truck_controller import ControllerTruck
 from View.design import Graphics
+from Controller.write import Console
 
 obj = ControllerTruck("camion", "matricula")
 class Truck:
@@ -10,7 +11,7 @@ class Truck:
 
     def registerTruck(self):
         Graphics.header("registrar", self.__TableName)
-        id = input('ingrese el documento del coductor : ')
+        id = Console.inputNumber('ingrese el documento del coductor : ')
         if obj.truckInsert(id) == True:
             print("Datos han sido ingresados")
             os.system ('pause')        
