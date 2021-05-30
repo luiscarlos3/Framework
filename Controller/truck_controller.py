@@ -69,14 +69,27 @@ class ControllerTruck:
         array = help.convertArray(column)
         lista = []       
         if self.__driverValidation(id):
-             lista = self.__call(array, msg, lista, id)# toco pasar mas 3 argumentos               
+             lista = self.__ConditionInput(array, msg, lista, id)# toco pasar mas 3 argumentos               
         else:
             print("No se encuentra registrado")
         return lista
-    #--------------------------------------------------------------------------------------------------------------------
-    #-------------------------------------------------------------------------------------------------------------------- 
+    def __truckInputUpdate(self,column, id):         
+        Conn =  Database.conexion()
+        update = tuple()
+        consulta = Conn.cursor()
+        sql = query_extend.extend_truck() + " where " + self.__idcolumns + " = " + "'" + id + "'"
+        consulta.execute(sql)
+        data = consulta.fetchone()
+        if data:
+            update = self.__conditionOne(column, data, id)
+        else:
+            print("No se encuentra el vehiculo ")           
+        return update
+    #----------------------------------------------------------------------*
+    # help methods avoid overload
+    #----------------------------------------------------------------------* 
     
-    def __call(self,column, msg, lista, id):
+    def __ConditionInput(self,column, msg, lista, id):
         lista = []
         val = Validar(self.__table)                       
         register = input(msg +" "+column[0] + " : ")
@@ -95,7 +108,7 @@ class ControllerTruck:
             lista.append(help.inputCity(city))         
         return lista
     
-    def __callUpdate(self, columns, data, id):
+    def __conditionOne(self, columns, data, id):
         msg = "ingrese"
         update = tuple()
         print("\n")
@@ -119,14 +132,12 @@ class ControllerTruck:
             edit = Console.inputNumber(msg+ ' ' + columns[2] + " : ")
             update = (self.__table, position, edit, self.__idcolumns, id)
         else:
-            update = self.__val(option, columns, id)    
-                
+            update = self.__conditionTwoo(option, columns, id)             
         return update
     
-    def __val (self,option, columns, id):
+    def __conditionTwoo(self,option, columns, id):
         msg = "ingrese"
-        update = tuple()
-        print(columns)    
+        update = tuple()           
         if option is 3:
             position = columns[option]
             edit = Console.inputNumber(msg + " " +columns[3] + " : ")
@@ -137,25 +148,21 @@ class ControllerTruck:
             update = (self.__table, position, edit, self.__idcolumns, id)
         elif option is 5:
             position = columns[option]
-            edit = Console.inputString(msg + " "+columns[5] + " : ")
-            edit = help.inputCity(edit)  
-            update = (self.__table, position, edit, self.__idcolumns, id)
+            edit = Console.inputString(msg + " "+columns[5] + " : ")           
+            if help.v(edit) == True:
+                print("No esta el municipio")
+            else:
+                edit = help.v(edit)
+                update = (self.__table, position, edit, self.__idcolumns, id)
         else:
             print(" Opcion invalida ")   
-        return update      
+        return update
     
-    def __truckInputUpdate(self,column, id):         
-        Conn =  Database.conexion()
-        update = tuple()
-        consulta = Conn.cursor()
-        sql = query_extend.extend_truck() + " where " + self.__idcolumns + " = " + "'" + id + "'"
-        consulta.execute(sql)
-        data = consulta.fetchone()
-        if data:
-            update = self.__callUpdate(column, data, id)
-        else:
-            print("No se encuentra el vehiculo ")           
-        return update          
+        
+        
+        
+    
+              
         
     
         

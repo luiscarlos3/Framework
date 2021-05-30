@@ -95,7 +95,7 @@ class ControllerRecipes:
         status = False
         msg = "Ingrese"
         update = tuple()       
-        arary = self.__convertArray(colum)
+        arary = self.__convertArray(colum)        
         sql = query_extend.extend_addressee() + " where " + self.__idcolumns + " = " + "'" + id + "'"
         crt = Validar(self.__table)      
         data = crt.searchData(sql)        

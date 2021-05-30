@@ -20,23 +20,8 @@ def convert_city(village):
     consulta.execute(sql)
     data = consulta.fetchone()    
     village = data[0]
-    return village 
-    
-def update_city(data):
-    status = False 
-    if Validar.validation_city(data[2]) == True:        
-        var = convert_city(data[2])        
-        if Sql.search('municipios', 'id_municipio', var) == True :        
-            Datos = (data[0], data[1], var, data[3], data[4])           
-            if Sql.update(Datos) == True :
-                print("dato actualizado")            
-                status=True
-            else:
-                print("dato no actualizado")
-                status=False 
-    else:        
-        print("No se encontro el municipio")        
-    return status
+    return village    
+
             
 def selection():
     op = ''
@@ -79,15 +64,32 @@ def convertArray(array):
         return lista
     
 def inputCity(name):
-    village = 0       
+    village = 0     
     if Validar.controller_city(name) == False:                        
         print("este municipio no se encuentra")
         os.system("pause")
     else:
         village = convert_city(name)
-    return village    
+    return village
+   
+def v(name):
+    status = False                         
+    if Validar.controller_city(name) == False:
+        status = True                         
+    else:
+        status = False                              
+        return convert_city(name)
+    return status
 
 
+            
+            
+            
+            
+                
+                
+                               
+        
     
     
            
