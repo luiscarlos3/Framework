@@ -1,15 +1,16 @@
 import os, sys
-from Controller import sender_controller
+from Controller.sender_controller import controlSender
 from View.design import Graphics
 
-class Sender:
-    
+sender = controlSender('remitente', 'documento')
+
+class Sender:    
     def __init__(self, table):
         self.__TableName = table   
  
     def registerSender(self):
         Graphics.header("registrar", self.__TableName)        
-        if sender_controller.sql_Sender_Insert(self.__TableName) == True:
+        if sender.senderInsert() == True:
             print("Datos han sido ingresados")
             os.system ('pause')        
         else:
@@ -19,7 +20,7 @@ class Sender:
     def deleteSender(self):       
         Graphics.header("eliminar", self.__TableName)
         Id = input('ingrese numero del documento :')
-        if sender_controller.sql_Sender_Delete(Id) == True:
+        if sender.senderDelete(Id) == True:
             print("Destinatario ha sido eliminado")
             os.system ('pause')
         else:
@@ -29,7 +30,7 @@ class Sender:
     def updateSender(self):        
         Graphics.header("actualizar", self.__TableName)
         Id = input("ingrese el numero del documento : ")
-        if sender_controller.sql_Sender_Update(self.__TableName, Id ,'documento') == True:
+        if sender.senderUpdate(Id) == True:
             print("Registro actualizado")
             os.system ('pause')
         else:
@@ -39,12 +40,12 @@ class Sender:
     def searchSender(self):      
         Graphics.header("buscar", self.__TableName)
         Id = input("ingrese el numero del documento : ")
-        sender_controller.sql_Sender_Search(self.__TableName, 'documento', Id)
+        sender.senderSearch(Id)
         os.system ('pause')
     
     def listSender(self):        
         Graphics.header("lista", self.__TableName)
-        sender_controller.sql_Sender_List()
+        sender.senderList()
         os.system ('pause')
     
     

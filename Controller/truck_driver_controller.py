@@ -1,4 +1,3 @@
-import os, sys
 import pymysql
 from Model.connection import Database
 from Model import Query,query_extend

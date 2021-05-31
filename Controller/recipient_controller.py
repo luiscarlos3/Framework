@@ -30,13 +30,9 @@ class ControllerRecipes:
                 status = False      
         return status    
 
-    def recipientDelete(self,id):
-        status = False      
-        if Sql.delete('destinatario', 'documento', id) == True:
-            status = True
-        else:
-            status = False
-        return status
+    def recipientDelete(self,id):             
+        return Sql.delete(self.__table, self.__idcolumns, id)
+            
 
     def recipientUpdate(self, id):
         status = False
@@ -66,7 +62,9 @@ class ControllerRecipes:
     def recipientList(self):
         cs =  query_extend.extend_addressee()
         Tables.design_table('destinatario', cs)
-        
+    #----------------------------------------------------------------------*
+    # help methods avoid overload
+    #----------------------------------------------------------------------*     
     def __recipientInput(self,column):
         msg = "Ingrese"
         val = Validar(self.__table)
@@ -91,8 +89,7 @@ class ControllerRecipes:
                 lista.append(name)                
         return lista
     
-    def __recipientInputUpdate(self,colum,id):
-        status = False
+    def __recipientInputUpdate(self,colum,id):       
         msg = "Ingrese"
         update = tuple()       
         arary = self.__convertArray(colum)        
