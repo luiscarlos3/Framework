@@ -48,15 +48,7 @@ class Console:
                 return var
             else:
                 print("invalid")
-    @staticmethod
-    def datetime(args):
-        while True:
-            try:
-                fecha = input(args)
-                time = datetime.strftime(fecha, '%Y-%m-%d')
-                return time
-            except ValueError:
-                 print("Fecha inválida")              
+                  
                  
     @staticmethod          
     def __charactersNotNumber(cadena):

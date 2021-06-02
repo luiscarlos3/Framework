@@ -1,14 +1,17 @@
 import os, sys
-from Controller import truck_driver_controller
+from Controller.truck_driver_controller import ControllerDriver
 from View.design import Graphics
 
+driver = ControllerDriver("camionero", "documento")
+
 class truckDriver:
+    
     def __init__(self, table):
         self.__TableName = table    
 
     def registerTruckDriver(self):
-        Graphics.header("registrar", self.__TableName)
-        if truck_driver_controller.sql_Truck_Driver_Insert(self.__TableName)== True:
+        Graphics.header("Registrar", self.__TableName)
+        if driver.truckDriverInsert() == True:
             print("Datos han sido ingresados")
             os.system ('pause')        
         else:
@@ -18,7 +21,7 @@ class truckDriver:
     def deleteTruckDriver(self):        
         Graphics.header("eliminar", self.__TableName)
         Id = input('ingrese numero del documento : ')
-        if truck_driver_controller.sql_Truck_Driver_Delete(Id) == True:
+        if driver.TruckDriverDelete(Id) == True:
             print( self.__TableName + " ha sido eliminado")
             os.system ('pause')
         else:
@@ -28,7 +31,7 @@ class truckDriver:
     def updateTruckDriver(self):        
         Graphics.header("actualizar", self.__TableName)
         Id = input("ingrese el numero del documento : ")
-        if truck_driver_controller.sql_Truck_Driver_Update('camionero', Id ,'documento') == True:
+        if driver.truckDriverUpdate(Id) == True:
             print(  self.__TableName + " se ha actualizado")
             os.system ('pause')
         else:
@@ -38,10 +41,10 @@ class truckDriver:
     def searchTruckDriver(self):        
         Graphics.header("buscar", self.__TableName)
         Id = input("ingrese el numero del documento : ")
-        truck_driver_controller.sql_Truck_Driver_Search("camionero",'documento', Id)
+        driver.truckDriverSearch(Id)
         os.system ('pause')
     
     def listTruckDriver(self):       
         Graphics.header("lista", self.__TableName)
-        truck_driver_controller.sql_Truck_Driver_List()
+        driver.listTruckDriver()
         os.system ('pause')

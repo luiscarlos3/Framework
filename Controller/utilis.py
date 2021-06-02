@@ -14,4 +14,4 @@ class utilidades:
         ]
         return columns
 
-print(utilidades.columnsTruck())
+

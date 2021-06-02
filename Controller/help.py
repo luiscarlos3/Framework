@@ -1,12 +1,11 @@
+from Controller.write import Console
 import pymysql
 import random
 import os, sys
-from datetime import date
-from datetime import datetime
-from datetime import timedelta
+from datetime import date, datetime, timedelta
 from Model.connection import Database
 from Controller.validation import Validar
-from Model.Query import Sql
+
 
     
 def codigo():
@@ -38,11 +37,15 @@ def selection():
         op = 'salida'        
     return op
 
-def time():
-    now = datetime.now()     
-    return now
+def birthDate(msg):
+    print("ejemplo : año-mes-dia = 2020-06-12")
+    year = Console.inputNumber(msg + " año : ")
+    month =  Console.inputNumber(msg + " mes : ")
+    day = Console.inputNumber(msg + " dia : ")
+    return str(year)+"-" + str(month)+ "-" + str(day) 
 
-def time_shipping_output():
+
+def inputDatetime():
     today = date.today()
     now = datetime.now()
     fecha = str()   

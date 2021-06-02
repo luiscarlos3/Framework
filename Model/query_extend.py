@@ -70,9 +70,9 @@ def extend_sender():
 def extend_truck_driver():
     Querys = """ select documento,
     nombre_camionero, 
-    apellido_camionero, 
-    telefono, 
+    apellido_camionero,
     direccion_camionero,
+    telefono,    
     salario, 
     fecha_nacimiento,
     municipios.municipio
