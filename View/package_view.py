@@ -24,7 +24,7 @@ class Package:
     def deletePackage(self):        
         Graphics.header("eliminar", self.__TableName)
         Id = input('ingrese el codigo del paquete : ')
-        if package_controller.sql_Package_Delete(Id) == True:
+        if pack.packageDelete(Id) == True:
             print("paquete ha sido eliminado")
             os.system ('pause')
         else:
@@ -34,7 +34,7 @@ class Package:
     def updatePackage(self):        
         Graphics.header("actualizar", self.__TableName)
         Id = input("ingrese el codigo del paquete : ")
-        if package_controller.sql_Package_Update(self.__TableName, Id ,'codigo') == True:
+        if pack.packageUpdate(Id) == True:
             print("Registro actualizado")
             os.system ('pause')
         else:

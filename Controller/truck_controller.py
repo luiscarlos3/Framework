@@ -71,6 +71,7 @@ class ControllerTruck:
         else:
             print("No se encuentra registrado")
         return lista
+    
     def __truckInputUpdate(self,column, id):         
         Conn =  Database.conexion()
         update = tuple()

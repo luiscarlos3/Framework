@@ -83,14 +83,23 @@ def extend_truck_driver():
 
 def extend_package():
     Querys= """
-    select codigo, remitente.nombre as nombre_remitente,
-    remitente.teléfono as telefono_remitente,
-    destinatario.nombre as nombre_destinatario,
-    destinatario.teléfono as telefono_destinatario
+    select codigo,
+    descripcion, 
+    cod_remitente, 
+    cod_destinatario,
+    peso_kg from paquete
+    """
+    return Querys
+def extend_packagelist():
+    Querys = """ select codigo, 
+    descripcion, 
+    remitente.nombre,
+    remitente.teléfono,
+    destinatario.nombre, 
+    destinatario.teléfono
     from paquete 
     inner join remitente on paquete.cod_remitente = remitente.documento 
-    inner join destinatario on paquete.cod_destinatario = destinatario.documento
-    """
+    inner join destinatario on paquete.cod_destinatario=destinatario.documento """
     return Querys
 
 def extend_package_search():

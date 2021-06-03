@@ -75,9 +75,7 @@ class Sql:
         sql.execute(cs)
         data = sql.fetchall()  
         return data
-   
-    
-     
+         
     def search(table,colum, id):
         status = False
         con = Database.conexion()

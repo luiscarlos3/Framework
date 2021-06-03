@@ -43,16 +43,26 @@ class ControllerPackage():
         return Sql.delete(self.__table, self.__idcolumns, id)
           
 
-    def sql_Package_Update(table, id, colum):
-        status = False   
+    def packageUpdate(self,id):
+        status = False         
+        herdears = obj.columns(self.__table)
+        columns = help.convertArray(herdears)
+        tupl = self.__inputUpdatePackage(columns, id)
+        if not tupl:
+            status = False
+        else:
+            if Sql.update(tupl) == True:
+                status = True
+            else:
+                status = False
+        return status 
      
-        return status
+       
 
     def packageList(self):        
-        cs = query_extend.extend_package()
-        header = ("codigo","nombre_remitente","telefono_remitente","nombre_destinatario","telefono_destinatario")
+        cs = query_extend.extend_packagelist()      
         #print(header)
-        Tables.design_table_columns(cs, header)
+        Tables.design_table_columns(cs, utilidades.columnsPacketlist())
 #----------------------------------------------------------------------*
 # help methods avoid overload
 #----------------------------------------------------------------------*
@@ -75,8 +85,43 @@ class ControllerPackage():
                 describe = Console.inputString(msg + ' ' + array[1] + " : ")
                 lista.append(describe)
         return lista
-    def __inputUpdatePackage(self):
-        pass
+    
+    def __inputUpdatePackage(self, column, id):
+        Conn =  Database.conexion()
+        update = tuple()
+        consulta = Conn.cursor()
+        sql = query_extend.extend_package() + " where " + self.__idcolumns + " = " + "'" + id + "'"
+        consulta.execute(sql)
+        data = consulta.fetchone()
+        if data:
+            update = self.__conditionOne(column, data, id)
+        else:
+            print("No se encontro el paquete ")
+        return update
+       
+    def __conditionOne(self, columns, data, id):
+            msg = "Ingrese" 
+            update = tuple()
+            print("\n")
+            for i in range(0, len(columns)):                    
+                print(i, " columna :" ,columns[i], " = " , data[i])
+                print("\n")
+            option = Console.inputNumber("selecione la columna : ")
+            if option >= 0 and option <= 2:
+                position = columns[option]
+                edit = Console.inputString(msg + ' ' + columns[option] + " : ")          
+                update = (self.__table, position, edit, self.__idcolumns, id)
+                
+            elif option is 4:
+                position = columns[option]
+                edit = Console.inputNumber(msg + ' ' + columns[option] + " : ")
+                update = (self.__table, position, edit, self.__idcolumns, id)
+            else:
+                print("Opcion invalida")  
+           
+            return update
+            
+       
         
                                
             

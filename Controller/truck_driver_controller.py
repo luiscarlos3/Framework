@@ -35,9 +35,7 @@ class ControllerDriver:
         status = False
         herdears = obj.columns(self.__table)
         columns = help.convertArray(herdears)
-        tupl = self.__inputdriverUpdate(columns, id)
-        print("estamos aca despues de recoger")
-        print(tupl)
+        tupl = self.__inputdriverUpdate(columns, id)       
         if not tupl:
             status = False
         else:

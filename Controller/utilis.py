@@ -1,4 +1,5 @@
 class utilidades:
+    
     @staticmethod
     def columnsTruck():
         columns =[
@@ -13,6 +14,8 @@ class utilidades:
         "ciudad del vehiculo"        
         ]
         return columns
+    
+    @staticmethod    
     def columnsPacket():
         columns = [
         'codigo',
@@ -29,6 +32,18 @@ class utilidades:
         'descripcion',
         'peso kg'      
     ]
+        return columns
+    
+    @staticmethod 
+    def columnsPacketlist():
+        columns = [
+        "codigo",
+        "descripcion",
+        "nombre_remitente",
+        "telefono_remitente",
+        "nombre_destinatario",
+        "telefono_destinatario"            
+        ]
         return columns
 
 
