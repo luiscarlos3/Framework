@@ -8,9 +8,9 @@ from Controller.validation import Validar
 
 
     
-def codigo():
-    num = random.randrange(10000000000)
-    return num   
+def codigo():    
+    num = random.randint(0, 1000000000000000)
+    return num
 
 def convert_city(village):
     Conn =  Database.conexion()

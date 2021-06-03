@@ -1,14 +1,14 @@
 import os, sys
-from Controller import package_controller
+from Controller.package_controller import ControllerPackage
 from View.design import Graphics
-
+pack = ControllerPackage('paquete', 'codigo')
 class Package:
     def __init__(self, table):
         self.__TableName = table
     
     def registerPackage(self):
         Graphics.header("registrar", self.__TableName)
-        if package_controller.sql_Package_Insert(self.__TableName) == True:
+        if pack.packageInsert() == True:
             print("Datos han sido ingresados")
             os.system ('pause')        
         else:
@@ -18,7 +18,7 @@ class Package:
     def searchPackage(self):       
         Graphics.header("buscar", self.__TableName)
         Id = input("ingrese el codigo del paquete : ")
-        package_controller.sql_Package_Search(self.__TableName,'codigo',Id)
+        pack.packageSearch(Id)
         os.system ('pause')
     
     def deletePackage(self):        
@@ -43,5 +43,5 @@ class Package:
             
     def listPackage(self):
         Graphics.header("lista", self.__TableName)
-        package_controller.sql_Package_List()
+        pack.packageList()
         os.system ('pause')

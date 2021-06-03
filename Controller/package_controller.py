@@ -1,103 +1,90 @@
-import os, sys
 import pymysql
 from Model.connection import Database
 from Model import Query, query_extend
 from Model.Query import Sql
-from Controller import validation
+from Controller.validation import Validar
 from Controller import help
+from Controller.write import Console
 from Controller.list_controller import Tables
+from Controller.utilis import utilidades
 
 obj = Query.Sql()
+class ControllerPackage():
+    
+    def __init__(self, table, idcolumns):        
+        self.__table = table
+        self.__idcolumns = idcolumns 
 
-def sql_Package_Insert(table):
-    status = False      
-    column = obj.columns(table)
-    lista = []
-    for x in range(0, len(column)):
-        if x == 0:
-            codigo = help.codigo()
-            print(str(column[0]).strip("('").strip("',)") + " : " , codigo)
-            lista.append(codigo)            
+    def packageInsert(self):
+        status = False    
+        column = obj.columns(self.__table)
+        tupl = tuple(self.__inputInsertPackage(column))        
+        if not tupl:
+            status = False
         else:
-            register = input("Ingrese " + str(column[x]).strip("('").strip("',)") + " : ")                    
-            lista.append(register)
-                       
-    tupl = tuple(lista)
-    if Sql.insert(tupl, table) == True:
-        status = True
-       
-    else:  
-        status = False
-                 
-    return status                  
-
-def sql_Package_Search(table,colum, id):
-    conn = Database().conexion()
-    consulta = conn.cursor()
-    sql =  query_extend.extend_package_search()+ " where " + colum + " = '" + id + "'"   
-    consulta.execute(sql)
-    data = consulta.fetchone()
-    columns = [
-        'codigo',
-        'cedula remitente',
-        'nombre remitente',
-        'apellido remitente',
-        'telefono remitente',
-        'direccion remitente', 
-        'cedula destinatario',
-        'nombre destinatario',
-        'apellido destinatario',
-        'telefono destinatario',
-        'direccion destinario',
-        'descripcion',
-        'peso kg'      
-    ]
-    if data:
-        Tables.table_vertical(table,data, columns)
-             
-           
-    else:
-        print("no se encontro el paquete")
+            if Sql.insert(self.__table,tupl) == True:
+                status = True
+            else:
+                status = False
+        return status
+        
+    def packageSearch(self,id):
+        conn = Database().conexion()
+        consulta = conn.cursor()
+        sql =  query_extend.extend_package_search()+ " where " + self.__idcolumns + " = '" + id + "'"   
+        consulta.execute(sql)
+        data = consulta.fetchone()    
+        if data:
+            Tables.table_vertical(self.__table, data, utilidades.columnsPacket())          
+        else:
+            print("no se encontro el paquete")
               
-def sql_Package_Delete(id):
-    status = False
-    if Sql.delete('paquete', 'codigo', id) == True:
-        status = True
-    else:
-        status = False
-    return status
+    def packageDelete(self,id):        
+        return Sql.delete(self.__table, self.__idcolumns, id)
+          
 
-def sql_Package_Update(table, id, colum):
-    status = False   
-    Conn =  Database.conexion()
-    consulta = Conn.cursor()
-    sql = "select * from "+ table + " where " + colum + " = '" + id + "'"   
-    consulta.execute(sql)
-    data = consulta.fetchone()   
-    herdears = obj.columns(table)
-    if data:
-        for i in range(0, len(herdears)):
-            print(i,". "+ "Columna : " +str(herdears[i]).strip("('").strip("',)") + " = " , data[i])      
-            print("\n")
-        num = int(input("ingrese la columna : "))      
-        for i in range(0, len(herdears)):
-            if num == i:
-                positio = str(herdears[i]).strip("('").strip("',)")
-                edit = str(input("ingrese dato para actualizar : "))
-                Datos = (table, positio, edit , colum, id)
-                if Sql.update(Datos) == True:            
-                    status = True
-                    break                 
-                else:                    
-                    status = False
-                    break         
-    else:
-        print("el paquete no se encuentra")     
-    return status
+    def sql_Package_Update(table, id, colum):
+        status = False   
+     
+        return status
 
-def sql_Package_List():        
-    cs = query_extend.extend_package()
-    header = ("codigo","nombre_remitente","telefono_remitente","nombre_destinatario","telefono_destinatario")
-    #print(header)
-    Tables.design_table_columns(cs, header)
+    def packageList(self):        
+        cs = query_extend.extend_package()
+        header = ("codigo","nombre_remitente","telefono_remitente","nombre_destinatario","telefono_destinatario")
+        #print(header)
+        Tables.design_table_columns(cs, header)
+#----------------------------------------------------------------------*
+# help methods avoid overload
+#----------------------------------------------------------------------*
+    def __inputInsertPackage(self, column):
+        msg = "Ingrese"        
+        array = help.convertArray(column)
+        lista = []
+        for i in range(0,len(array)):
+            if i is 0:  
+                cod = help.codigo()
+                print(array[i] +" : ", cod)
+                lista.append(cod)                          
+            elif i is 2 or i is 3 :                
+                var = Console.inputNumber(msg + ' ' + array[i] + " : ")
+                lista.append(var)
+            elif i is 4:
+                var = Console.inputNumber(msg + ' ' + array[i]  + " : ")
+                lista.append(var)
+            else:
+                describe = Console.inputString(msg + ' ' + array[1] + " : ")
+                lista.append(describe)
+        return lista
+    def __inputUpdatePackage(self):
+        pass
+        
+                               
+            
+            
+            
+        
+        
+        
+    
+
     
