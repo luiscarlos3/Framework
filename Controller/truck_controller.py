@@ -60,7 +60,11 @@ class ControllerTruck:
         cs = query_extend.extendTruckSearch()
         Tables.design_table_columns(cs,utilidades.columnsTruck())
     def __driverValidation(self, id):       
-        return Validar.validation_truck_driver("camionero",id, "documento") == True         
+        return Validar.validation_truck_driver("camionero",id, "documento") == True
+    
+    #----------------------------------------------------------------------*
+    # help methods avoid overload
+    #----------------------------------------------------------------------*       
          
     def __truckInput(self,id,column):
         msg = "Ingrese"        
@@ -84,9 +88,7 @@ class ControllerTruck:
         else:
             print("No se encuentra el vehiculo ")           
         return update
-    #----------------------------------------------------------------------*
-    # help methods avoid overload
-    #----------------------------------------------------------------------* 
+  
     
     def __ConditionInput(self,column, msg, lista, id):
         lista = []

@@ -45,5 +45,26 @@ class utilidades:
         "telefono_destinatario"            
         ]
         return columns
+    
+    @staticmethod
+    def columnsShippings():
+        colums = ["codigo_envio", 
+            "estado", 
+            "direccion",
+            "cedula destinatario",
+            "nombre destinatario",
+            "apellido destinatario",
+            "cedula remitente",
+            "nombre remitente",
+            "apellido remitente",
+            "codigo paquete",
+            "descripcion",
+            "peso kg",
+            "fecha de envio",
+            "fecha de llegada"                
+            ]
+        return colums
+        
+    
 
 

@@ -145,7 +145,7 @@ class ControllerDriver:
                 lista.append(var)                      
             elif i is 6:
                 print(msg + ' ' + array[i])
-                date = help.birthDate(msg)
+                date = help.Date(msg)
                 lista.append(date)
             elif i is 7:
                 var = Console.inputString(msg + " "+ array[7] + " : ")           

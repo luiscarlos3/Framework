@@ -1,6 +1,8 @@
 import os, sys
-from Controller import shipping_controller
+from Controller.shipping_controller import controllerShipping
 from View.design import Graphics
+
+shipping = controllerShipping('envio', 'id_envio')
 
 class Shipping:
     def __init__(self, table):
@@ -8,7 +10,7 @@ class Shipping:
 
     def registerShipping(self):        
         Graphics.header("registrar", self.__TableName)
-        if shipping_controller.sql_Shipping_Insert('envio') == True:
+        if shipping.shippingInsert() == True:
             print("Datos han sido ingresados")
             os.system ('pause')        
         else:
@@ -18,7 +20,7 @@ class Shipping:
     def Deleteshipping(self):      
         Graphics.header("eliminar", self.__TableName)
         Id = input('ingrese codigo del envio :')
-        if shipping_controller.sql_Shipping_Delete(Id) == True:
+        if shipping.sql_Shipping_Delete(Id) == True:
             print("envio ha sido eliminado")
             os.system ('pause')
         else:

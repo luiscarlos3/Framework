@@ -12,6 +12,12 @@ def codigo():
     num = random.randint(0, 1000000000000000)
     return num
 
+# esto toca cambiar 
+def codigoShipper():
+    num = random.randint(0, 1000)
+    return  num
+    
+
 def convert_city(village):
     Conn =  Database.conexion()
     consulta = Conn.cursor()
@@ -23,41 +29,38 @@ def convert_city(village):
 
             
 def selection():
-    op = ''
+    optio = str()    
     print("1 -- enviando")
     print("2 -- entregado")
     print("3 -- salida")
     print("\n")
     num =int(input("seleccione el estado ")) 
     if  num == 1 :
-        op = 'enviado'
+        optio = "Enviado"
     elif num == 2:
-        op = 'entregado'
+        optio = "Entregado"
     elif num == 3:
-        op = 'salida'        
-    return op
+        optio = "Salida"
+    return optio      
+    
 
-def birthDate(msg):
+def Date(msg):
     print("ejemplo : año-mes-dia = 2020-06-12")
     year = Console.inputNumber(msg + " año : ")
     month =  Console.inputNumber(msg + " mes : ")
     day = Console.inputNumber(msg + " dia : ")
     return str(year)+"-" + str(month)+ "-" + str(day) 
 
-
-def inputDatetime():
+def currentdate():
     today = date.today()
-    now = datetime.now()
-    fecha = str()   
-    month = input("ingrese el mes : ")
-    day = input("ingrese el dia : ")
-    fecha = str(today.year) + "-" + month + "-" + day + " " + str(now.hour) + ":" + str(now.minute) + ":" + str(now.second)
-    return fecha
+    now = datetime.now()      
+    return str(today.year) + "-" + str(today.month) + "-" +str(today.day)  + " " + str(now.hour) + ":" + str(now.minute) + ":" + str(now.second)   
+    
 
-def time_arrival_shipping():
-    now = datetime.now()
-    new_Date = now + timedelta(days=2)  
-    return new_Date
+def fecha():
+    ahora = datetime.now()    
+    Date = ahora + timedelta(days=3)
+    return str(Date.year) + "-" +str(Date.month) + "-" +str(Date.day) 
 
 def convertArray(array):
         lista= []
@@ -83,6 +86,9 @@ def v(name):
         status = False                              
         return convert_city(name)
     return status
+
+
+
 
 
             
