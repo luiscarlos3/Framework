@@ -138,18 +138,18 @@ class controllerShipping():
             print(array[i] + " " +date)
             return date
                    
-    def __selection(self):      
-        print("1 -- enviando")
-        print("2 -- entregado")
-        print("3 -- salida")
-        print("\n")
-        num =int(input("seleccione el estado ")) 
-        if  num == 1 :
-            return "Enviado"
-        elif num == 2:
-            return "Entregado"
-        elif num == 3:
-            return "Salida"
+    def __selection(self):
+        elements = {1: "enviado", 2: "entregado", 3: "salida" }
+        quit = False
+        while quit == False:
+            help.util()
+            num = int(input("seleccione un opcion : "))  
+            if num > len(elements) or num <= 0:          
+                print("opcion invalida")       
+            else:
+                quit = True
+                return elements[num] 
+            
               
             
                 

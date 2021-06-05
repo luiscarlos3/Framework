@@ -28,20 +28,12 @@ def convert_city(village):
     return village    
 
             
-def selection():
-    optio = str()    
-    print("1 -- enviando")
-    print("2 -- entregado")
-    print("3 -- salida")
-    print("\n")
-    num =int(input("seleccione el estado ")) 
-    if  num == 1 :
-        optio = "Enviado"
-    elif num == 2:
-        optio = "Entregado"
-    elif num == 3:
-        optio = "Salida"
-    return optio      
+def util(elements):
+    i=0  
+    for x in elements:
+        i+=1
+        print(i ," "+ elements[x])
+    
     
 
 def Date(msg):
