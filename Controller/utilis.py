@@ -64,6 +64,18 @@ class utilidades:
             "fecha de llegada"                
             ]
         return colums
+    
+    @staticmethod
+    def ColumnsShippingslist():
+        columns = ["codigo_envio", 
+                   "estado", 
+                   "direccion",
+                   "cedula destinatario",
+                   "cedula remitente",
+                   "codigo paquete"]
+        return columns
+         
+        
         
     
 

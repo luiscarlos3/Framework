@@ -57,9 +57,8 @@ class controllerShipping():
         return status
 
     def shippingList(self):
-        cs = query_extend.extend_shipping()
-        columns = ["codigo_envio", "estado", "direccion","cedula destinatario", "cedula remitente","codigo paquete"]
-        Tables.design_table_columns(cs, columns)
+        cs = query_extend.extend_shipping()        
+        Tables.design_table_columns(cs, utilidades.ColumnsShippingslist())
 
 #----------------------------------------------------------------------*
 # help methods avoid overload
