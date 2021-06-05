@@ -16,6 +16,11 @@ def codigo():
 def codigoShipper():
     num = random.randint(0, 1000)
     return  num
+
+# esto toca cambiar 
+def codigoRouter():
+    num = random.randint(0, 1000)
+    return  num
     
 
 def convert_city(village):
@@ -33,8 +38,18 @@ def util(elements):
     for x in elements:
         i+=1
         print(i ," "+ elements[x])
-    
-    
+        
+def selection():
+        elements = {1: "enviado", 2: "entregado", 3: "salida"}
+        quit = False
+        while quit == False:
+            util(elements)
+            num = int(input("seleccione un opcion : "))  
+            if num > len(elements) or num <= 0:          
+                print("opcion invalida")       
+            else:
+                quit = True
+                return elements[num]    
 
 def Date(msg):
     print("ejemplo : año-mes-dia = 2020-06-12")

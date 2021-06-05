@@ -99,7 +99,7 @@ class controllerShipping():
             update = (self.__table, position, edit, self.__idcolumns, id)
         elif option is 6:
             position = columns[option]
-            edit = self.__selection()
+            edit = help.selection()
             update = (self.__table, position, edit, self.__idcolumns, id)
         else:
             print("Las fecha de envio y el codigo del envio no se puede cambiar")         
@@ -127,7 +127,7 @@ class controllerShipping():
     
     def __condition(self, array, i):
         if i is 6:                 
-            var = self.__selection()
+            var = help.selection()
             return var                         
         elif i is 7:
             Time = help.currentdate()
@@ -138,17 +138,7 @@ class controllerShipping():
             print(array[i] + " " +date)
             return date
                    
-    def __selection(self):
-        elements = {1: "enviado", 2: "entregado", 3: "salida" }
-        quit = False
-        while quit == False:
-            help.util()
-            num = int(input("seleccione un opcion : "))  
-            if num > len(elements) or num <= 0:          
-                print("opcion invalida")       
-            else:
-                quit = True
-                return elements[num] 
+    
             
               
             
