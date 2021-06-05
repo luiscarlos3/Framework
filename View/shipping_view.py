@@ -20,7 +20,7 @@ class Shipping:
     def Deleteshipping(self):      
         Graphics.header("eliminar", self.__TableName)
         Id = input('ingrese codigo del envio :')
-        if shipping.sql_Shipping_Delete(Id) == True:
+        if shipping.shippingDelete(Id) == True:
             print("envio ha sido eliminado")
             os.system ('pause')
         else:
@@ -30,7 +30,7 @@ class Shipping:
     def updateShipping(self):       
         Graphics.header("actualizar", self.__TableName)
         Id = input("ingrese el numero del envio : ")
-        if shipping_controller.sql_Shipping_Update(self.__TableName, Id ,'id_envio') == True:
+        if shipping.shippingUpdate(Id ) == True:
             print("Registro actualizado")
             os.system ('pause')
         else:
@@ -40,10 +40,10 @@ class Shipping:
     def searchShipping(self):
         Graphics.header("buscar", self.__TableName)     
         Id = input("ingrese el numero del envio : ")        
-        shipping_controller.sql_Search_Shipping(self.__TableName,'id_envio', Id)
+        shipping.shippingSearch(Id)
         os.system ('pause')
     
     def listShipping(self):       
         Graphics.header("envio", self.__TableName)
-        shipping_controller.sql_Shipping_List()
+        shipping.shippingList()
         os.system ('pause')

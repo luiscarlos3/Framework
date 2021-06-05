@@ -28,7 +28,7 @@ class ControllerDriver:
         return status
 
     def TruckDriverDelete(self, id):        
-        return Sql.delete( self.__table, self.__idcolumns, id)          
+        return Sql.delete(self.__table, self.__idcolumns, id)          
 
 
     def truckDriverUpdate(self, id):
@@ -83,8 +83,7 @@ class ControllerDriver:
                 print(i, " columna :" ,columns[i], " = ", data[i])
                 print("\n")
             option = Console.inputNumber("selecione la columna : ")           
-            update = self.__condtionTwoo(columns, option, id)
-           
+            update = self.__condtionTwoo(columns, option, id)           
             return update
         
     def __condtionTwoo(self,array, option, id):
@@ -108,7 +107,7 @@ class ControllerDriver:
         msg = "Ingrese"
         if option is 6:
             position = array[option]
-            edit = help.birthDate()
+            edit = help.Date()
             update = (self.__table, position, edit, self.__idcolumns, id)
         elif option is 7:
             position = array[7]
@@ -119,9 +118,7 @@ class ControllerDriver:
                 edit = help.v(var)
                 update = (self.__table, position, edit, self.__idcolumns, id)
         else:
-            print("Columna invalida")
-        print("tercera condicion")
-        print(update)
+            print("Columna invalida")        
         return update       
     
     def __driverTruckInput(self, column):

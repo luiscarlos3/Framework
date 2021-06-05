@@ -1,10 +1,7 @@
-from datetime import time
-import os, sys
 import pymysql
 from Model.connection import Database
 from Model import Query, query_extend
 from Model.Query import Sql
-from Controller.validation import Validar
 from Controller import help
 from Controller.list_controller import Tables
 from Controller.utilis import utilidades
@@ -16,8 +13,7 @@ class controllerShipping():
     
     def __init__(self, table, idcolumns):        
         self.__table = table
-        self.__idcolumns = idcolumns
-    
+        self.__idcolumns = idcolumns    
 
     def shippingInsert(self):
         status = False    
@@ -29,15 +25,13 @@ class controllerShipping():
             if Sql.insert(self.__table, tupl):
                 status = True
             else: 
-                status = False
-            
+                status = False            
         return status
 
-    def sql_Shipping_Delete(self):        
-        return Sql.delete( self.__table, self.__idcolumns, id)
-           
+    def shippingDelete(self, id):        
+        return Sql.delete(self.__table, self.__idcolumns, id)          
 
-    def sql_Search_Shipping(self,id):
+    def shippingSearch(self,id):
         conn = Database().conexion()
         consulta = conn.cursor()    
         sql =  query_extend.extend_shipping_search() + " where "+ self.__idcolumns+ " = "+"'" + id + "'"     
@@ -48,49 +42,70 @@ class controllerShipping():
         else:
             print("no se encontro el envio ")    
 
-    def sql_Shipping_Update(table, id, colum):
-        status = False   
-        Conn =  Database.conexion()
-        consulta = Conn.cursor()
-        sql = "select * from " + table + " where " + colum + " = " + "'" + id + "'"
-        consulta.execute(sql)
-        data = consulta.fetchone()   
-        herdears = obj.columns(table)
-        if data:
-            for i in range(0, len(herdears)):
-                print(i,". "+ "Columna : " +str(herdears[i]).strip("('").strip("',)") + " = " , data[i])      
-                print("\n")
-            num = int(input("ingrese la columna : "))      
-            for i in range(0, len(herdears)):
-                if num == 5:
-                    positio = str(herdears[5]).strip("('").strip("',)")
-                    edit = help.selection()               
-                    Datos = (table, positio, edit , colum, id)
-                    break
-                         
-                elif num == i:
-                    positio = str(herdears[i]).strip("('").strip("',)")
-                    edit = str(input("ingrese dato para actualizar : "))
-                    Datos = (table, positio, edit , colum, id)
-                    break
-                
-            if  Sql.update(Datos) == True:            
-                status = True
-                          
-            else:                    
-                status = False                   
+    def shippingUpdate(self, id):
+        status = False
+        herdears = obj.columns(self.__table)
+        column = help.convertArray(herdears)
+        tupl = self.__inputUpdate(column, id)
+        if not tupl:
+            status = False
         else:
-            print("el vehiculo persona no se encuentra")     
+            if Sql.update(tupl) == True:
+                status = True
+            else:
+                status = False
         return status
 
-    def sql_Shipping_List():
+    def shippingList(self):
         cs = query_extend.extend_shipping()
         columns = ["codigo_envio", "estado", "direccion","cedula destinatario", "cedula remitente","codigo paquete"]
         Tables.design_table_columns(cs, columns)
 
 #----------------------------------------------------------------------*
 # help methods avoid overload
-#----------------------------------------------------------------------* 
+#----------------------------------------------------------------------*
+    def __inputUpdate(self, column, id):
+        status = False   
+        Conn =  Database.conexion()
+        consulta = Conn.cursor()
+        # arreglar esta consulta cuando regrese 
+        sql = "select * from " + self.__table+ " where " + self.__idcolumns + " = " + "'" + id + "'"
+        consulta.execute(sql)
+        data = consulta.fetchone()
+        if data:
+            self.__inputCondition(column, data, id)
+        else:
+            print("No se encuentra")
+              
+    def __inputCondition(self, columns, data, id):
+        update = tuple()
+        print("\n")
+        for i in range(0, len(columns)):                               
+            print(i, " columna :" ,columns[i], " = ", data[i])
+            print("\n")
+        option = Console.inputNumber("selecione la columna : ")           
+        update = self.__inputTwoo(columns, option, id)           
+        return update
+    
+    def __inputTwoo(self, columns, option, id):
+        update = tuple()
+        msg = "Ingrese"
+        if option >= 1 and option <= 4:
+            position = columns[option]
+            edit = Console.inputNumber(msg +" "+ columns[option] + " : ")
+            update = (self.__table, position, edit, self.__idcolumns, id)
+        elif option is 5:
+            position = columns[option]
+            edit = Console.inputString(msg +" "+ columns[option] + " : ")
+            update = (self.__table, position, edit, self.__idcolumns, id)
+        elif option is 6:
+            position = columns[option]
+            edit = self.__selection()
+            update = (self.__table, position, edit, self.__idcolumns, id)
+        else:
+            print("Las fecha de envio y el codigo del envio no se puede cambiar")         
+        return update    
+        
     def __shippingInput(self, column):
         msg = "Ingrese"
         array = help.convertArray(column)
@@ -105,23 +120,26 @@ class controllerShipping():
                 lista.append(var)
             elif i is 5:
                 string = Console.inputString(msg + ' ' + array[i] + " : ")
-                lista.append(string)                            
-            elif i is 6:                 
-                var = self.__valor()
-                lista.append(var)                          
-            elif i is 7:
-                Time = help.currentdate()
-                print(array[i] + " : " + Time)
-                lista.append(Time)                
-            elif i is 8:                
-                date = help.fecha()
-                print(date)
-                print(array[i] + " " +date)
-                lista.append(date)
-        print(lista)               
+                lista.append(string)
+            else:
+                val = self.__condition(array, i)
+                lista.append(val)                     
         return lista
     
-    def __valor(self):      
+    def __condition(self, array, i):
+        if i is 6:                 
+            var = self.__selection()
+            return var                         
+        elif i is 7:
+            Time = help.currentdate()
+            print(array[i] + " : " + Time)
+            return Time                                 
+        elif i is 8:                
+            date = help.fecha()            
+            print(array[i] + " " +date)
+            return date
+                   
+    def __selection(self):      
         print("1 -- enviando")
         print("2 -- entregado")
         print("3 -- salida")
