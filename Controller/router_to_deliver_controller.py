@@ -1,108 +1,65 @@
 import os, sys
 import pymysql
+from Controller import utilis
 from Model.connection import Database
 from Model import Query, query_extend
 from Model.Query import Sql
 from Controller.write import Console
 from Controller import help
 from Controller.list_controller import Tables
+from Controller.utilis import utilidades
 
 obj = Query.Sql()
-class router:
+class RouteSetting:
+    def __init__(self, table, idcolumns):        
+        self.__table = table
+        self.__idcolumns = idcolumns
 
-    def sql_Router_To_Deliver_Insert(table):
-        status = False   
-        tupl = tuple(None)
-        if Sql.insert(tupl, table) == True:
+    def routeInsert(self):
+        status = False        
+        column = obj.columns(self.__table)  
+        tupl = tuple(self.__inputTheRoute(column))
+        if Sql.insert(tupl,self.__table) == True:
             status = True       
         else:
             status = False    
         return status
 
-    def sql_Router_To_Deliver_Delete(id):
-            status = False
-            if Sql.delete('ruta_entrega_paquete', 'id_ruta', id) == True:
-                status = True
-            else:
-                status = False
-            return status
+    def routeDelete(self,id):            
+        return Sql.delete(self.__table, self.__idcolumns, id)             
 
-    def sql_Router_To_Deliver_Search(table, colum, id):
+    def routeSearch(self,id):
         conn = Database().conexion()
         consulta = conn.cursor()
-        sql = query_extend.extend_router_to_deliver_search() + " where " + colum + " = " + "'" + id + "'"
+        sql = query_extend.extend_router_to_deliver_search() + " where " + self.__idcolumns + " = " + "'" + id + "'"
         consulta.execute(sql)    
-        data = consulta.fetchone()
-        colums = ["codigo ruta",               
-             "cedula camionero", 
-             "nombre camionero",
-             "apellido camionero",
-             "telefono",
-             "matricula vehiculo",
-             "tipo de vehiculo",
-             "fecha inicio de entrega", 
-             "fecha final de entrega",
-             "estado",
-             "ciudad",
-             "codigo de envio"]    
+        data = consulta.fetchone()            
         if data:        
-            Tables.table_vertical(table, data, colums )  
+            Tables.table_vertical(self.__table, data, utilidades.columnsSearchRoute())  
         else:
             print("no se encontro la ruta ")
 
-    def sql_Router_To_Deliver_Update(table, id, colum):
-        status = False   
-        Conn =  Database.conexion()
-        consulta = Conn.cursor()   
-        sql = "select * from "+ table + " where " + colum + " = " + "'" + id + "'"
-        consulta.execute(sql)
-        data = consulta.fetchone()   
-        herdears = obj.columns(table)
-        if data:
-            for i in range(0, len(herdears)):
-                print(i,". "+ "Columna : " +str(herdears[i]).strip("('").strip("',)") + " = " , data[i])      
-                print("\n")
-            num = int(input("seleccione la columna : "))      
-            for i in range(0, len(herdears)):
-                if num == 5:
-                    positio = str(herdears[5]).strip("('").strip("',)")
-                    edit = help.selection()               
-                    Datos = (table, positio, edit , colum, id)
-                    break
-            
-                elif num == 6:
-                    positio = str(herdears[6]).strip("('").strip("',)")
-                    edit = str(input("ingrese dato para actualizar : "))
-                    Datos = (table, positio, edit , colum, id)              
-                
-                    if  help.update_city(Datos) == True:
-                        status = True
-                    else:
-                        status = False 
-                    break                            
-            
-                elif num == i:
-                    positio = str(herdears[i]).strip("('").strip("',)")
-                    edit = str(input("ingrese dato para actualizar : "))
-                    Datos = (table, positio, edit , colum, id)
-                    if Sql.update(Datos) == True:            
-                        status = True
-                          
-                    else:                    
-                        status = False       
-                        break                   
+    def routeUpdate(self, id):
+        status = False
+        herdears = obj.columns(self.__table)
+        columns = help.convertArray(herdears)
+        tupl = self.__inputUpdateTheRoute(columns, id)
+        if not tupl:
+            status = False
         else:
-            print("la persona no se encuentra")     
+            if Sql.update(tupl) == True:
+                status = True
+            else:
+                status = False              
         return status
 
-    def sql_Router_To_Deliver_List():
-        cs = query_extend.extend_router_to_deliver()
-        columns = ["departamento", "ciudad", "codigo ruta","cedula camionero", "matricula", "fecha inicio entrega", "fecha fin entrega"]
-        Tables.design_table_columns(cs, columns)
+    def routeList(self):
+        cs = query_extend.extend_router_to_deliver()        
+        Tables.design_table_columns(cs, utilidades.columnsListRoute())
 #----------------------------------------------------------------------*
 # help methods avoid overload
 #----------------------------------------------------------------------*
-    def inputRouter(self,column):
+    def __inputTheRoute(self,column):
         msg = "Ingrese"
         array = help.convertArray(column)
         lista = []
@@ -111,16 +68,16 @@ class router:
                 cod = help.codigoShipper()               
                 print(array[i] +" : ", cod)
                 lista.append(cod)
-            elif i>=2:
+            elif i <= 2:
                 var = Console.inputNumber(msg + ' ' + array[i] + " : ")
                 lista.append(var)
             elif i == 3:
                 option = help.selection()
                 lista.append(option)            
             else:
-                lista = lista.append(self.__condition(array, i))
+                lista = lista.append(self.__subConditionInputRoute(array, i))
                 
-    def __condition(self, column, i):        
+    def __subConditionInputRoute(self, column, i):        
         if i>=5:
             Time = help.currentdate()
             print(column[i] + " : " + Time)
@@ -131,7 +88,56 @@ class router:
         elif i == 7:
             id_envio = Console.inputNumber("ingrese " + " " + column[7] + " : ")
             return id_envio
+        
+    def __inputUpdateTheRoute(self, column, id):
+        Conn =  Database.conexion()
+        update = tuple()
+        consulta = Conn.cursor()   
+        sql = "select * from "+ self.__table + " where " + self.__idcolumns + " = " + "'" + id + "'"
+        consulta.execute(sql)
+        data = consulta.fetchone()        
+        if data:
+            update = self.__upgradeOptions(column, data, id)
+        else:
+            print("No se encuentra")
             
+    def __upgradeOptions(self, columns, data, id):
+        update = tuple()
+        print("\n")
+        for i in range(0, len(columns)):                               
+            print(i, " columna :" ,columns[i], " = ", data[i])
+            print("\n")
+        option = Console.inputNumber("selecione la columna : ")           
+        update = self.__changeDataRoute(columns, option, id)           
+        return update
+    
+    def __changeDataRoute(self,columns, option, id):
+        update = tuple()
+        msg = "Ingrese"
+        if option == 1 or option == 2:
+            position = columns[option]
+            edit = Console.inputNumber(msg +" "+ columns[option] + " : ")
+            update = (self.__table, position, edit, self.__idcolumns, id)
+        elif option == 3:
+            position = columns[option]
+            edit = Console.inputString(msg + " "+columns[5] + " : ")           
+            if help.v(edit) == True:
+                print("No esta el municipio")
+            else:
+                edit = help.v(edit)
+                update = (self.__table, position, edit, self.__idcolumns, id)        
+                        
+        return update
+       
+            
+
+        
+        
+        
+        
+        
+        
+        
             
             
             

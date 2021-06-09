@@ -74,6 +74,33 @@ class utilidades:
                    "cedula remitente",
                    "codigo paquete"]
         return columns
+    
+    @staticmethod
+    def columnsSearchRoute():
+        colums = ["codigo ruta",               
+             "cedula camionero", 
+             "nombre camionero",
+             "apellido camionero",
+             "telefono",
+             "matricula vehiculo",
+             "tipo de vehiculo",
+             "fecha inicio de entrega", 
+             "fecha final de entrega",
+             "estado",
+             "ciudad",
+             "codigo de envio"]        
+        return colums
+    @staticmethod
+    def columnsListRoute():
+        columns = ["departamento", 
+                   "ciudad", 
+                   "codigo ruta",
+                   "cedula camionero", 
+                   "matricula", 
+                   "fecha inicio entrega", 
+                   "fecha fin entrega"]
+        return columns
+        
          
         
         

@@ -117,17 +117,17 @@ class ControllerTruck:
             print(i, " columna :" ,columns[i], " = ", data[i])
             print("\n")
         option = Console.inputNumber("selecione la columna : ")                   
-        if option is 0:
+        if option == 0:
             position = columns[0]
             edit = input(msg +" "+columns[0] + " : ")
             update = (self.__table, position, edit,self.__idcolumns, id)
                            
-        elif option is 1:
+        elif option == 1:
             position = columns[1]
             edit = Console.inputNumber(msg +' '+ columns[1] + " : ")
             update = (self.__table, position, edit, self.__idcolumns, id)
                 
-        elif option is 2:
+        elif option == 2:
             position = columns[2]
             edit = Console.inputNumber(msg+ ' ' + columns[2] + " : ")
             update = (self.__table, position, edit, self.__idcolumns, id)
@@ -138,15 +138,15 @@ class ControllerTruck:
     def __conditionTwoo(self,option, columns, id):
         msg = "ingrese"
         update = tuple()           
-        if option is 3:
+        if option == 3:
             position = columns[option]
             edit = Console.inputNumber(msg + " " +columns[3] + " : ")
             update = (self.__table, position, edit, self.__idcolumns, id)            
-        elif option is 4:
+        elif option == 4:
             position = columns[option]
             edit = Console.inputNumber(msg + " " +columns[4] + " : ")
             update = (self.__table, position, edit, self.__idcolumns, id)
-        elif option is 5:
+        elif option == 5:
             position = columns[option]
             edit = Console.inputString(msg + " "+columns[5] + " : ")           
             if help.v(edit) == True:

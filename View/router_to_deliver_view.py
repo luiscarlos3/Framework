@@ -1,6 +1,8 @@
 import os, sys
-from Controller import router_to_deliver_controller
+from Controller.router_to_deliver_controller import RouteSetting
 from View.design import Graphics
+
+Route = RouteSetting("ruta_entrega_paquete", "id_ruta")
 
 class RouterToDeliver:
     def __init__(self, table):
@@ -8,7 +10,7 @@ class RouterToDeliver:
 
     def registerRouterToDeliver(self):
         Graphics.header("registrar", self.__TableName)
-        if router_to_deliver_controller.sql_Router_To_Deliver_Insert(self.__TableName) == True:
+        if Route.routeInsert() == True:
             print("Datos han sido ingresados")
             os.system ('pause')        
         else:
@@ -18,7 +20,7 @@ class RouterToDeliver:
     def deleteRouterToDeliver(self):        
         Graphics.header("eliminar", self.__TableName)
         Id = input('ingrese codigo ruta : ')
-        if router_to_deliver_controller.sql_Router_To_Deliver_Delete(Id) == True:
+        if Route.routeUpdate(Id) == True:
             print("ruta ha sido eliminado")
             os.system ('pause')
         else:
@@ -28,13 +30,13 @@ class RouterToDeliver:
     def searchRouterToDeliver(self):        
         Graphics.header("buscar", self.__TableName)
         Id = input("ingrese el codigo ruta : ")
-        router_to_deliver_controller.sql_Router_To_Deliver_Search(self.__TableName,'id_ruta', Id)
+        Route.routeSearch(id)
         os.system ('pause')    
 
     def updateRouterToDeliver(self):           
             Graphics.header("actualizar", self.__TableName)
             Id = input("ingrese el codigo de la ruta : ")
-            if router_to_deliver_controller.sql_Router_To_Deliver_Update(self.__TableName, Id ,'id_ruta') == True:
+            if Route.routeUpdate(Id) == True:
                 print("Registro actualizado")
                 os.system ('pause')
             else:
@@ -43,6 +45,6 @@ class RouterToDeliver:
 
     def listRouterToDeliver(self):           
             Graphics.header("lista", self.__TableName)
-            router_to_deliver_controller.sql_Router_To_Deliver_List()
+            Route.routeList()
             os.system ('pause')
     
