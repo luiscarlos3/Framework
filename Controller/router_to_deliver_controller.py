@@ -40,17 +40,15 @@ class RouteSetting:
         consulta = conn.cursor()
         sql = query_extend.extend_router_to_deliver_search() + " where " + " cedula_camionero " + " = " + "'" + id + "'"
         consulta.execute(sql)    
-        data = consulta.fetchone()
-        print(help.Empty(data, consulta.description) ) 
+        data = consulta.fetchone()        
         if data:                          
             Tables.table_vertical(self.__table, data, utilidades.columnsSearchRoute())  
         else:
             print("no se encontro la ruta ")
 
     def routeUpdate(self, id):
-        status = False
-        herdears = obj.columns(self.__table)
-        columns = help.convertArray(herdears)
+        status = False        
+        columns = ["cedula_camionero", "envio_ruta", "estado", "ciudad"]
         tupl = self.__inputUpdateTheRoute(columns, id)
         if not tupl:
             status = False
@@ -98,11 +96,11 @@ class RouteSetting:
             city  = Console.inputString("ingrese " +column[7] + " : ")            
             return help.inputCity(city)  
         
-    def __inputUpdateTheRoute(self, column, id):
+    def __inputUpdateTheRoute(self, column,id):
         Conn =  Database.conexion()
         update = tuple()
         consulta = Conn.cursor()   
-        sql = "select * from "+ self.__table + " where " + self.__idcolumns + " = " + "'" + id + "'"
+        sql = query_extend.extendRouteUpdate()+ " where " + "cedula_camionero" + " = " + "'" + id + "'"
         consulta.execute(sql)
         data = consulta.fetchone()        
         if data:
@@ -124,18 +122,23 @@ class RouteSetting:
     def __changeDataRoute(self,columns, option, id):
         update = tuple()
         msg = "Ingrese"
-        if option == 1 or option == 2:
+        idcolumns= "cedula_camionero"
+        if option == 0 or option == 1:
             position = columns[option]
             edit = Console.inputNumber(msg +" "+ columns[option] + " : ")
-            update = (self.__table, position, edit, self.__idcolumns, id)
-        elif option == 3:
+            update = (self.__table, position, edit, idcolumns, id)
+        elif option == 2:
+            edit = help.selection()
             position = columns[option]
-            edit = Console.inputString(msg + " "+columns[5] + " : ")           
+            update = (self.__table, position, edit,idcolumns , id)
+        elif option == 3:
+            position = columns[option] 
+            edit = Console.inputString(msg +" "+ columns[option] + " : ")             
             if help.v(edit) == True:
-                print("No esta el municipio")
+                print("No esta el municipio")                
             else:
-                edit = help.v(edit)
-                update = (self.__table, position, edit, self.__idcolumns, id)                        
+                cod = help.v(edit)
+                update = (self.__table, position, cod, idcolumns, id)                        
         return update
        
             

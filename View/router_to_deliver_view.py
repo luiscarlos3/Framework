@@ -35,7 +35,7 @@ class RouterToDeliver:
 
     def updateRouterToDeliver(self):           
             Graphics.header("actualizar", self.__TableName)
-            Id = input("ingrese el codigo de la ruta : ")
+            Id = input("ingrese el cedula del conductor de la ruta : ")
             if Route.routeUpdate(Id) == True:
                 print("Registro actualizado")
                 os.system ('pause')

@@ -23,13 +23,12 @@ def codigoRouter():
     num = random.randint(0, 1000)
     return  num
 
-def Empty(Data, columns):
+def checkQuery(Data, columns):
     elements = {}   
     if not Data:
         for i in range(1, len(columns)):
             elements[i] = ' '
-        elements.update({"Bool" : False})
-              
+        elements.update({"Bool" : False})              
     else:        
         field_name = [field[0] for field in columns]
         elements = dict(zip(field_name, Data))
