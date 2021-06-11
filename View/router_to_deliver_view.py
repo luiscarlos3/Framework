@@ -28,9 +28,9 @@ class RouterToDeliver:
             os.system ('pause')  
         
     def searchRouterToDeliver(self):        
-        Graphics.header("buscar", self.__TableName)
-        Id = input("ingrese el codigo ruta : ")
-        Route.routeSearch(id)
+        Graphics.header("Buscar", self.__TableName)
+        Id = input("ingrese el codigo camionero para la ruta : ")
+        Route.routeSearch(Id)
         os.system ('pause')    
 
     def updateRouterToDeliver(self):           

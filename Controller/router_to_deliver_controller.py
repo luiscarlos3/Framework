@@ -1,3 +1,4 @@
+from dis import distb
 import os, sys
 import pymysql
 from Controller import utilis
@@ -9,6 +10,8 @@ from Controller import help
 from Controller.list_controller import Tables
 from Controller.utilis import utilidades
 
+
+
 obj = Query.Sql()
 class RouteSetting:
     def __init__(self, table, idcolumns):        
@@ -18,11 +21,15 @@ class RouteSetting:
     def routeInsert(self):
         status = False        
         column = obj.columns(self.__table)  
-        tupl = tuple(self.__inputTheRoute(column))
-        if Sql.insert(tupl,self.__table) == True:
-            status = True       
+        tupl = tuple(self.__inputTheRoute(column))  
+        print(tupl)
+        if not tupl:
+            status = False      
         else:
-            status = False    
+            if Sql.insert(self.__table, tupl) == True:
+                status = True       
+            else:
+                status = False    
         return status
 
     def routeDelete(self,id):            
@@ -31,10 +38,11 @@ class RouteSetting:
     def routeSearch(self,id):
         conn = Database().conexion()
         consulta = conn.cursor()
-        sql = query_extend.extend_router_to_deliver_search() + " where " + self.__idcolumns + " = " + "'" + id + "'"
+        sql = query_extend.extend_router_to_deliver_search() + " where " + " cedula_camionero " + " = " + "'" + id + "'"
         consulta.execute(sql)    
-        data = consulta.fetchone()            
-        if data:        
+        data = consulta.fetchone()
+        print(help.Empty(data, consulta.description) ) 
+        if data:                          
             Tables.table_vertical(self.__table, data, utilidades.columnsSearchRoute())  
         else:
             print("no se encontro la ruta ")
@@ -62,32 +70,33 @@ class RouteSetting:
     def __inputTheRoute(self,column):
         msg = "Ingrese"
         array = help.convertArray(column)
-        lista = []
+        lista = []        
         for i in range(0, len(array)):             
-            if i is 0:
+            if i == 0:
                 cod = help.codigoShipper()               
                 print(array[i] +" : ", cod)
                 lista.append(cod)
             elif i <= 2:
                 var = Console.inputNumber(msg + ' ' + array[i] + " : ")
-                lista.append(var)
-            elif i == 3:
+                lista.append(var)            
+            elif i == 3 :
                 option = help.selection()
                 lista.append(option)            
             else:
-                lista = lista.append(self.__subConditionInputRoute(array, i))
+                lista.append(self.__subConditionInputRoute(array, i))
+        return lista    
                 
-    def __subConditionInputRoute(self, column, i):        
-        if i>=5:
+    def __subConditionInputRoute(self, column, i):                     
+        if i<=5:
             Time = help.currentdate()
             print(column[i] + " : " + Time)
             return Time
-        elif i==6:              
-            city = Console.inputString("ingrese" +" "+column[6] + " : ")   
-            return city
-        elif i == 7:
-            id_envio = Console.inputNumber("ingrese " + " " + column[7] + " : ")
-            return id_envio
+        if i == 6 :      
+            var = Console.inputString("ingrese " +column[6] + " : ")
+            return var             
+        else:
+            city  = Console.inputString("ingrese " +column[7] + " : ")            
+            return help.inputCity(city)  
         
     def __inputUpdateTheRoute(self, column, id):
         Conn =  Database.conexion()
@@ -100,6 +109,7 @@ class RouteSetting:
             update = self.__upgradeOptions(column, data, id)
         else:
             print("No se encuentra")
+        return update
             
     def __upgradeOptions(self, columns, data, id):
         update = tuple()
@@ -125,8 +135,7 @@ class RouteSetting:
                 print("No esta el municipio")
             else:
                 edit = help.v(edit)
-                update = (self.__table, position, edit, self.__idcolumns, id)        
-                        
+                update = (self.__table, position, edit, self.__idcolumns, id)                        
         return update
        
             

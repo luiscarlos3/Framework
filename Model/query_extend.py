@@ -151,7 +151,7 @@ def extend_router_to_deliver_search():
     Querys = """ 
     select 
     id_ruta, 
-    ruta_entrega_paquete.doc_camionero,
+    ruta_entrega_paquete.cedula_camionero,
     camionero.nombre_camionero,
     camionero.apellido_camionero,
     camionero.telefono,
@@ -164,7 +164,7 @@ def extend_router_to_deliver_search():
     envio_ruta
     from ruta_entrega_paquete
     inner join municipios on ruta_entrega_paquete.ciudad = municipios.id_municipio
-    inner join camionero on ruta_entrega_paquete.doc_camionero = camionero.documento
+    inner join camionero on ruta_entrega_paquete.cedula_camionero = camionero.documento
     inner join camion on ruta_entrega_paquete.matricula_camion = camion.matricula    
     """
     return Querys

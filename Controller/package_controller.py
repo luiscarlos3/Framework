@@ -56,8 +56,6 @@ class ControllerPackage():
             else:
                 status = False
         return status 
-     
-       
 
     def packageList(self):        
         cs = query_extend.extend_packagelist()      
