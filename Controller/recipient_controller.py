@@ -55,7 +55,7 @@ class ControllerRecipes:
         herdears = obj.columns(self.__table)
         data = consulta.fetchone()
         if data:
-            Tables.table_vertical('destinatario',data,herdears)     
+            Tables.table_vertical(self.__table, data,herdears)     
         else:
             print("no se encontro el destinatario")
         
@@ -71,17 +71,17 @@ class ControllerRecipes:
         array = self.__convertArray(column)
         lista = []
         for i in range(0,len(array)):
-            if i is 0:
+            if i == 0:
                 id = Console.inputStringNumber(msg +" "+array[0] + " : ")                
                 if val.Register_validation(id, self.__idcolumns) == True:
                     print("ya se encuentra registrado")                    
                     break
                 else:
                     lista.append(id)                                       
-            if i is 3:                        
+            if i == 3:                        
                 tel = Console.inputStringNumber(msg+" "+array[3]+ " : ")                
                 lista.append(tel)                
-            elif i is 5:
+            elif i == 5:
                 city = Console.inputString(msg+" "+array[5]+ " : ")
                 lista.append(self.__inputCity(city))                              
             elif i >= 1:

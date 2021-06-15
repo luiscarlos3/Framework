@@ -61,7 +61,8 @@ def extend_sender():
     apellido, 
     teléfono, 
     direccion_remitente,
-    municipios.municipio as ciudad 
+    municipios.municipio as ciudad,
+    correo
     from remitente 
     inner join municipios on remitente.ciudad = municipios.id_municipio    
     """

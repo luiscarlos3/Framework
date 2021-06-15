@@ -49,7 +49,7 @@ class controlSender:
         sql =  query_extend.extend_sender() + " where " + self.__idcolumns + " = " + "'" + id + "'"
         consulta.execute(sql)
         herdears = obj.columns(self.__table)
-        data = consulta.fetchone()
+        data = consulta.fetchall()
         if data:        
             Tables.table_vertical(self.__table, data, herdears)   
         else:
