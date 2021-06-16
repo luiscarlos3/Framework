@@ -7,6 +7,8 @@ from Controller import help
 from Controller.write import Console
 from Controller.list_controller import Tables
 from Controller.utilis import utilidades
+from Controller.PDF import CreatePdf
+from Controller.Email import SendEmail
 
 obj = Query.Sql()
 class ControllerPackage():
@@ -18,14 +20,15 @@ class ControllerPackage():
     def packageInsert(self):
         status = False    
         column = obj.columns(self.__table)
-        tupl = tuple(self.__inputInsertPackage(column))        
+        tupl = tuple(self.__inputInsertPackage(column))          
         if not tupl:
             status = False
         else:
-            if Sql.insert(self.__table,tupl) == True:
+            if Sql.insert(self.__table,tupl) == True:                
                 status = True
+                self.__executePdfPackage(tupl)
             else:
-                status = False
+                status = False       
         return status
         
     def packageSearch(self,id):
@@ -61,6 +64,36 @@ class ControllerPackage():
         cs = query_extend.extend_packagelist()      
         #print(header)
         Tables.design_table_columns(cs, utilidades.columnsPacketlist())
+        
+    def __executePdfPackage(self, lista):
+        status = False            
+        conn = Database().conexion()
+        consulta = conn.cursor()        
+        sql = query_extend.queryExePdfPackage() + " where "+ self.__idcolumns + " = " + str(lista[0])
+        consulta.execute(sql)        
+        data = consulta.fetchone()
+        if data:            
+            info = help.Check(data, consulta.description)            
+            CreatePdf.excutePdf("recibo.html", info, 'cod_remitente')
+            self.__executeEmail(data[1])                    
+        else:
+            status = False
+        return status
+    def __executeEmail(self,id):
+        print ("Desea enviar el recibo por correo ")
+        print ("Si >> y")
+        print ("No >> n")
+        options = Console.inputString("Seleccione una opcion : ")
+        if options == "y":
+            email =  Console.inputString("Ingrese el correo electronico : ")
+            if SendEmail.executeEmail(email, id):
+                print("Enviado")
+            else:
+                print("No enviado")          
+        return " "
+            
+            
+            
 #----------------------------------------------------------------------*
 # help methods avoid overload
 #----------------------------------------------------------------------*
@@ -69,18 +102,21 @@ class ControllerPackage():
         array = help.convertArray(column)
         lista = []
         for i in range(0,len(array)):
-            if i is 0:  
+            if i == 0:  
                 cod = help.codigo()
                 print(array[i] +" : ", cod)
                 lista.append(cod)                          
-            elif i is 2 or i is 3 :                
+            elif i == 2 or i == 3 :                
                 var = Console.inputNumber(msg + ' ' + array[i] + " : ")
                 lista.append(var)
-            elif i is 4:
+            elif i == 4:
                 var = Console.inputNumber(msg + ' ' + array[i]  + " : ")
                 lista.append(var)
-            else:
-                describe = Console.inputString(msg + ' ' + array[1] + " : ")
+            elif i == 5:
+                city = Console.inputString(msg+" "+array[i]+ " : ")
+                lista.append(help.convert_city(city))
+            elif i == 1:
+                describe = Console.inputString(msg + ' ' + array[i] + " : ")
                 lista.append(describe)
         return lista
     

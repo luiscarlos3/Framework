@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>recibo</title>
+</head>
+
+<body>
+    <h1 style="text-align: center;"> Recibo de envio</h1>
+    {% for x, y in dict_item.items() %}
+    <p style=" text-align: left; ">&nbsp; &nbsp; &nbsp;{{ x }} : {{ y }} </p>
+    {% endfor %}
+    </tbody>
+    </table>
+</body>
+
+</html>

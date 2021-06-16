@@ -1,3 +1,6 @@
+from Model import Query
+
+
 def extend_shipping():    
     Querys = """
     select id_envio as codigo_envio, 
@@ -46,9 +49,9 @@ def extendTruckSearch():
 def extend_addressee():
     Querys = """
     select documento,
-    nombre,
-    apellido, 
-    teléfono, 
+    nombre_destinatario,
+    apellido_destinatario, 
+    telefono_destirnatario, 
     direccion_destinatario,
     municipios.municipio as ciudad 
     from destinatario 
@@ -97,7 +100,7 @@ def extend_packagelist():
     remitente.nombre,
     remitente.teléfono,
     destinatario.nombre, 
-    destinatario.teléfono
+    destinatario.telefono
     from paquete 
     inner join remitente on paquete.cod_remitente = remitente.documento 
     inner join destinatario on paquete.cod_destinatario=destinatario.documento """
@@ -105,19 +108,20 @@ def extend_packagelist():
 
 def extend_package_search():
     Querys= """
-     select codigo,
+    select codigo,
     remitente.documento as cedula_remitente,
 	remitente.nombre as nombre_remitente,
     remitente.apellido as apellido_remitente,
-    remitente.teléfono as telefono_remitente,
+    remitente.telefono as telefono_remitente,
     remitente.direccion_remitente as direccion_remitente,    
     destinatario.documento as cedula_destianatario,
     destinatario.nombre as nombre_destinatario,
     destinatario.apellido as apellido_destinatario,
-    destinatario.teléfono as telefono_destinatario,
+    destinatario.telefono as telefono_destinatario,
     destinatario.direccion_destinatario as direccion_destinatario,
     descripcion,
-    peso_kg    
+    peso_kg,
+    ciudad_destino   
     from paquete 
     inner join remitente on paquete.cod_remitente = remitente.documento 
     inner join destinatario on paquete.cod_destinatario = destinatario.documento
@@ -201,6 +205,15 @@ def extend_shipping_search():
     inner join paquete on envio.id_paquete = paquete.codigo   
     """
     return Querys
+def queryExePdfPackage():
+    Query = """ 
+    select codigo,cod_remitente, remitente.nombre, remitente.apellido, teléfono, cod_destinatario, destinatario.nombre_destinatario, 
+    destinatario.apellido_destinatario, descripcion, municipios.municipio from paquete
+    inner join remitente on paquete.cod_remitente = remitente.documento
+    inner join destinatario on paquete.cod_destinatario = destinatario.documento
+    inner join municipios on paquete.ciudad_destino = municipios.id_municipio
+    """
+    return Query
 
 
     

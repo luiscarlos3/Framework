@@ -34,9 +34,11 @@ def checkQuery(Data, columns):
         elements = dict(zip(field_name, Data))
         elements.update({"Bool":True})       
     return elements
-    
-    
-    
+
+def Check(Data, columns):  
+    field_name = [field[0] for field in columns]
+    elements = dict(zip(field_name, Data))
+    return elements    
 
 def convert_city(village):
     Conn =  Database.conexion()
@@ -45,9 +47,8 @@ def convert_city(village):
     consulta.execute(sql)
     data = consulta.fetchone()    
     village = data[0]
-    return village    
-
-            
+    return village
+           
 def util(elements):
     i=0  
     for x in elements:
@@ -76,8 +77,7 @@ def Date(msg):
 def currentdate():
     today = date.today()
     now = datetime.now()      
-    return str(today.year) + "-" + str(today.month) + "-" +str(today.day)  + " " + str(now.hour) + ":" + str(now.minute) + ":" + str(now.second)   
-    
+    return str(today.year) + "-" + str(today.month) + "-" +str(today.day)  + " " + str(now.hour) + ":" + str(now.minute) + ":" + str(now.second)     
 
 def fecha():
     ahora = datetime.now()    

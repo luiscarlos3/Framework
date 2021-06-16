@@ -34,9 +34,9 @@ class controllerShipping():
     def shippingSearch(self,id):
         conn = Database().conexion()
         consulta = conn.cursor()    
-        sql =  query_extend.extend_shipping_search() + " where "+ self.__idcolumns+ " = "+"'" + id + "'"     
+        sql =  query_extend.extend_shipping_search() + " where "+ "envio_destinatario = "+ "'" + id + "'" +" or " + " envio_remitente = " +  "'" + id +"'"
         consulta.execute(sql)    
-        data = consulta.fetchone()
+        data = consulta.fetchall()
         if data:         
             Tables.table_vertical(self.__table, data, utilidades.columnsShippings())   
         else:
@@ -63,8 +63,7 @@ class controllerShipping():
 #----------------------------------------------------------------------*
 # help methods avoid overload
 #----------------------------------------------------------------------*
-    def __inputUpdate(self, column, id):
-        status = False   
+    def __inputUpdate(self, column, id):          
         Conn =  Database.conexion()
         consulta = Conn.cursor()
         # arreglar esta consulta cuando regrese 
@@ -110,14 +109,14 @@ class controllerShipping():
         array = help.convertArray(column)
         lista = []
         for i in range(0, len(array)):
-            if i is 0:
+            if i == 0:
                 cod = help.codigoShipper()               
                 print(array[i] +" : ", cod)
                 lista.append(cod)
             elif i>=1 and i<=4:
                 var = Console.inputNumber(msg + ' ' + array[i] + " : ")
                 lista.append(var)
-            elif i is 5:
+            elif i == 5:
                 string = Console.inputString(msg + ' ' + array[i] + " : ")
                 lista.append(string)
             else:
@@ -126,14 +125,14 @@ class controllerShipping():
         return lista
     
     def __condition(self, array, i):
-        if i is 6:                 
+        if i == 6:                 
             var = help.selection()
             return var                         
-        elif i is 7:
+        elif i == 7:
             Time = help.currentdate()
             print(array[i] + " : " + Time)
             return Time                                 
-        elif i is 8:                
+        elif i == 8:                
             date = help.fecha()            
             print(array[i] + " " +date)
             return date

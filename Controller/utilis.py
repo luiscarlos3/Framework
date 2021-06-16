@@ -72,6 +72,7 @@ class utilidades:
                    "direccion",
                    "cedula destinatario",
                    "cedula remitente",
+                   "correo",
                    "codigo paquete"]
         return columns
     
