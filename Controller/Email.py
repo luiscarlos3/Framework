@@ -6,7 +6,6 @@ from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email import encoders
 
-
 class SendEmail:
     @staticmethod
     def executeEmail(receiver, id ):           
@@ -20,7 +19,7 @@ class SendEmail:
             '''
             sender = 'lszondas@gmail.com'
             password = 'gacelanocturna3'
-            receiver = 'Stefany1995.duque22@gmail.com'
+            #receiver = 'Stefany1995.duque22@gmail.com'
 
             #Se compone el correo
             message = MIMEMultipart()
@@ -56,8 +55,7 @@ class SendEmail:
 
             text = message.as_string()
             session.sendmail(sender, receiver, text)
-            session.quit()
-            
+            session.quit()            
             return True
         except ValueError:            
             print("Error envar el correo ")

@@ -80,7 +80,7 @@ class controlSender:
             elif i is 5:
                 city = Console.inputString(msg+" "+array[5]+ " : ")
                 lista.append(help.convert_city(city))
-            elif i >= 1: ## no esta entrando aca
+            elif i >= 1:
                 name = Console.inputString(msg +" " +array[i]+ " : ")
                 lista.append(name)
         return lista

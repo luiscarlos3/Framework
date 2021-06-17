@@ -1,4 +1,5 @@
 import pymysql
+from pymysql.cursors import DictCursor
 from Model.connection import Database
 from Model import Query, query_extend
 from Model.Query import Sql
@@ -7,6 +8,7 @@ from Controller import help
 from Controller.list_controller import Tables
 from Controller.write import Console
 from Controller.utilis import utilidades
+from Controller.PDF import CreatePdf
 
 obj = Query.Sql()
 class ControllerTruck:
@@ -52,13 +54,55 @@ class ControllerTruck:
         consulta.execute(sql)       
         data = consulta.fetchone()    
         if data:        
-            Tables.table_vertical(self.__table, data, utilidades.columnsTruck())  
+            Tables.table_vertical(self.__table, data, utilidades.columnsTruck())
+            self.__optionPDF()
+             
         else:
             print("no se encontro el camion")
+            
+    def __optionPDF(self):
+        print("¿ Desea generar reporte general de vehiculos ?")
+        print("Si >> y")
+        print("No >> n")
+        op = Console.inputString("selecione una opcion ")
+        if op == "y":
+            self.__generaPdfTruck()
+        return " "
+    def __testResultList(self,valor, titulos):        
+        if not valor:
+            valor = ( ('atx234', 1997, 'volqueta', '255', '3445', 'luis', 'silva', '12345', 'Corozal'),
+            ('ijq24d', 2007, 'turbo', '255', '3445', 'luis', 'silva', '12345', 'bogota'))        
+       
+        registros = {} # opcional
+        lista = [] # recursividad fila 
+        valores_lista = list(valor)# 
+        #titulos = list(valor)[0]
+        #titulos = ['matricula', 'modelo', 'tipo', 'potencia', 'doc_camionero', 'nombre_camionero', 'apellido_camionero', 'telefono','municipio']
+        registros["titulos"] = titulos
+        for x in range(0, len(valores_lista)): 
+            lista = list(valores_lista[x])
+            registros[x+1] = lista
+        return registros 
+        
+        
+            
+    def __generaPdfTruck(self):                   
+        conn = Database().conexion()
+        consulta = conn.cursor()
+        sql = query_extend.extendTruckSearch()       
+        consulta.execute(sql)
+        data = consulta.fetchall()
+        titulos = help.getTitles(consulta.description)             
+        if data:
+            data = self.__testResultList(data, titulos)
+            CreatePdf.excutePdfReport("Reportes.html",data,"vehiculos")
+        return" "          
+        
         
     def truckList(self):
         cs = query_extend.extendTruckSearch()
         Tables.design_table_columns(cs,utilidades.columnsTruck())
+        
     def __driverValidation(self, id):       
         return Validar.validation_truck_driver("camionero",id, "documento") == True
     
@@ -71,7 +115,7 @@ class ControllerTruck:
         array = help.convertArray(column)
         lista = []       
         if self.__driverValidation(id):
-             lista = self.__ConditionInput(array, msg, lista, id)# toco pasar mas 3 argumentos               
+             lista = self.__ConditionInput(array,lista, id)# toco pasar mas 3 argumentos               
         else:
             print("No se encuentra registrado")
         return lista
@@ -90,8 +134,9 @@ class ControllerTruck:
         return update
   
     
-    def __ConditionInput(self,column, msg, lista, id):
+    def __ConditionInput(self,column,lista, id):
         lista = []
+        msg = "ingrese"
         val = Validar(self.__table)                       
         register = input(msg +" "+column[0] + " : ")
         if val.Register_validation(register, self.__idcolumns) == True:                    
