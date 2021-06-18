@@ -1,7 +1,4 @@
-from dis import distb
-import os, sys
 import pymysql
-from Controller import utilis
 from Model.connection import Database
 from Model import Query, query_extend
 from Model.Query import Sql
@@ -9,8 +6,7 @@ from Controller.write import Console
 from Controller import help
 from Controller.list_controller import Tables
 from Controller.utilis import utilidades
-
-
+from Controller.PDF import CreatePdf
 
 obj = Query.Sql()
 class RouteSetting:
@@ -40,9 +36,10 @@ class RouteSetting:
         consulta = conn.cursor()
         sql = query_extend.extend_router_to_deliver_search() + " where " + " cedula_camionero " + " = " + "'" + id + "'"
         consulta.execute(sql)    
-        data = consulta.fetchone()        
+        data = consulta.fetchall()        
         if data:                          
-            Tables.table_vertical(self.__table, data, utilidades.columnsSearchRoute())  
+            Tables.table_vertical(self.__table, data, utilidades.columnsSearchRoute())
+            self.__optionPDF()
         else:
             print("no se encontro la ruta ")
 
@@ -58,6 +55,42 @@ class RouteSetting:
             else:
                 status = False              
         return status
+    
+    def __optionPDF(self):
+        print("¿ Desea generar reporte general de vehiculos ?")
+        print("Si >> y")
+        print("No >> n")
+        op = Console.inputString("selecione una opcion ")
+        if op == "y":
+            self.__generaPdfRoute()
+        return " "
+    
+    def __testResultList(self,valor, titulos):        
+        if not valor:
+            valor = ( ('atx234', 1997, 'volqueta', '255', '3445', 'luis', 'silva', '12345', 'Corozal'),
+            ('ijq24d', 2007, 'turbo', '255', '3445', 'luis', 'silva', '12345', 'bogota'))    
+        registros = {} # opcional
+        lista = [] # recursividad fila 
+        valores_lista = list(valor)# 
+        #titulos = list(valor)[0]
+        #titulos = ['matricula', 'modelo', 'tipo', 'potencia', 'doc_camionero', 'nombre_camionero', 'apellido_camionero', 'telefono','municipio']
+        registros["titulos"] = titulos
+        for x in range(0, len(valores_lista)): 
+            lista = list(valores_lista[x])
+            registros[x+1] = lista
+        return registros
+    
+    def __generaPdfRoute(self):                   
+        conn = Database().conexion()
+        consulta = conn.cursor()
+        sql = query_extend.extend_router_to_deliver_search()    
+        consulta.execute(sql)
+        data = consulta.fetchall()
+        titulos = help.getTitles(consulta.description)             
+        if data:
+            data = self.__testResultList(data, titulos)
+            CreatePdf.excutePdfReport("Reportes.html",data,"Rutas de envio")
+        return" "  
 
     def routeList(self):
         cs = query_extend.extend_router_to_deliver()        
@@ -126,7 +159,7 @@ class RouteSetting:
         if option == 0 or option == 1:
             position = columns[option]
             edit = Console.inputNumber(msg +" "+ columns[option] + " : ")
-            update = (self.__table, position, edit, idcolumns, id)
+            update = (self.__table, position, edit, idcolumns, id)            
         elif option == 2:
             edit = help.selection()
             position = columns[option]

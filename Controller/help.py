@@ -38,9 +38,7 @@ def checkQuery(Data, columns):
 def getTitles(Query):    
     title = [field[0] for field in Query]
     print(title)
-    return title   
-    
-    
+    return title  
 
 def Check(Data, columns):  
     field_name = [field[0] for field in columns]

@@ -74,9 +74,25 @@ class Validar:
         if data:
             status = True
         else:
-            status = False
- 
+            status = False 
         return status
+    
+    @staticmethod
+    def checkDelete(*args):
+        status = False
+        Conn =  Database.conexion()
+        consulta = Conn.cursor()
+        sql = "select " + args[0]+" from "+ args[1]+ " where " + args[0] + "= (select " + args[2]+ " from " + args[3]+ " where " + args[2] +" = '" + args[4] + "'" + ")"
+        consulta.execute(sql)
+        data = consulta.fetchone()
+        if data:
+            status = True
+        else:
+            status = False        
+        return status
+        
+         
+         
     
     
     

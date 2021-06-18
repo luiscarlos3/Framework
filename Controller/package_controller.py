@@ -30,7 +30,7 @@ class ControllerPackage():
             else:
                 status = False       
         return status
-        
+            
     def packageSearch(self,id):
         conn = Database().conexion()
         consulta = conn.cursor()
@@ -44,8 +44,7 @@ class ControllerPackage():
               
     def packageDelete(self,id):        
         return Sql.delete(self.__table, self.__idcolumns, id)
-          
-
+    
     def packageUpdate(self,id):
         status = False         
         herdears = obj.columns(self.__table)
@@ -61,8 +60,7 @@ class ControllerPackage():
         return status 
 
     def packageList(self):        
-        cs = query_extend.extend_packagelist()      
-        #print(header)
+        cs = query_extend.extend_packagelist()     
         Tables.design_table_columns(cs, utilidades.columnsPacketlist())
         
     def __executePdfPackage(self, lista):
@@ -90,10 +88,7 @@ class ControllerPackage():
                 print("Enviado")
             else:
                 print("No enviado")          
-        return " "
-            
-            
-            
+        return " "         
 #----------------------------------------------------------------------*
 # help methods avoid overload
 #----------------------------------------------------------------------*

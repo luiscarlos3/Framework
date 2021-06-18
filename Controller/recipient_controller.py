@@ -9,7 +9,6 @@ from Controller.write import Console
 from Controller import help
 
 obj = Query.Sql()
-
 class ControllerRecipes:
     
     def __init__(self, table, idcolumns):
@@ -30,8 +29,12 @@ class ControllerRecipes:
                 status = False      
         return status    
 
-    def recipientDelete(self,id):             
-        return Sql.delete(self.__table, self.__idcolumns, id)
+    def recipientDelete(self,id):
+        if Validar.checkDelete('documento', 'destintario', 'cod_destinatario', 'paquete', id):
+            print("No se puede eliminar ya que paquete de envio no se ha entregado")
+            return False
+        else:         
+            return Sql.delete(self.__table, self.__idcolumns, id)
             
 
     def recipientUpdate(self, id):

@@ -51,7 +51,7 @@ def extend_addressee():
     select documento,
     nombre_destinatario,
     apellido_destinatario, 
-    telefono_destirnatario, 
+     telefono_destinatario, 
     direccion_destinatario,
     municipios.municipio as ciudad 
     from destinatario 
@@ -64,8 +64,7 @@ def extend_sender():
     apellido, 
     teléfono, 
     direccion_remitente,
-    municipios.municipio as ciudad,
-    correo
+    municipios.municipio as ciudad    
     from remitente 
     inner join municipios on remitente.ciudad = municipios.id_municipio    
     """

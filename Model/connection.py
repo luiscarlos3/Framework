@@ -1,7 +1,5 @@
 import pymysql
-import json
-
-class Database(object):         
+class Database(object):        
     
     @staticmethod  
     def conexion():                       

@@ -31,19 +31,17 @@ class Tables:
     @staticmethod
     def design_table_columns(Query, columns):
         os.system("cls")        
-        fil = Sql.lits_Select_Table_Extend(Query)
-              
+        fil = Sql.lits_Select_Table_Extend(Query)              
         head = []
         for item in columns:
-            head.extend(item)          
+            head.extend(item)         
        
         table_data = [ columns, ]
         
         for item in fil:
             row = []
             row.extend(item)
-            table_data.append(row)           
-                   
+            table_data.append(row)                 
         table = AsciiTable(table_data)
         print (table.table)      
         

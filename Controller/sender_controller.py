@@ -40,8 +40,13 @@ class controlSender:
                 status = False       
         return status 
     
-    def senderDelete(self,id):       
-        return Sql.delete(self.__table, self.__idcolumns, id)  
+    def senderDelete(self,id):
+        if Validar.checkDelete('documento', 'remitente', 'cod_remitente', 'paquete', id):
+            print("No se puede eliminar ya que paquete de envio no se ha entregado")
+            return False
+        else:
+            return Sql.delete(self.__table, self.__idcolumns, id)        
+         
     
     def senderSearch(self,id):         
         conn = Database().conexion()
@@ -136,8 +141,7 @@ class controlSender:
                 position = array[option]
                 edit = Console.inputString(msg +" "+array[option] + " : ")
                 update = (self.__table, position, edit, self.__idcolumns, id)
-                break          
-                
+                break              
         return update
                 
          

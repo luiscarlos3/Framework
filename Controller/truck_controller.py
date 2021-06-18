@@ -52,11 +52,10 @@ class ControllerTruck:
         consulta = conn.cursor()        
         sql =   query_extend.extendTruckSearch() + " where " + self.__idcolumns +" = '" + id + "'"     
         consulta.execute(sql)       
-        data = consulta.fetchone()    
+        data = consulta.fetchall()    
         if data:        
             Tables.table_vertical(self.__table, data, utilidades.columnsTruck())
-            self.__optionPDF()
-             
+            self.__optionPDF()             
         else:
             print("no se encontro el camion")
             
@@ -68,11 +67,11 @@ class ControllerTruck:
         if op == "y":
             self.__generaPdfTruck()
         return " "
+    
     def __testResultList(self,valor, titulos):        
         if not valor:
             valor = ( ('atx234', 1997, 'volqueta', '255', '3445', 'luis', 'silva', '12345', 'Corozal'),
-            ('ijq24d', 2007, 'turbo', '255', '3445', 'luis', 'silva', '12345', 'bogota'))        
-       
+            ('ijq24d', 2007, 'turbo', '255', '3445', 'luis', 'silva', '12345', 'bogota'))    
         registros = {} # opcional
         lista = [] # recursividad fila 
         valores_lista = list(valor)# 
@@ -82,9 +81,7 @@ class ControllerTruck:
         for x in range(0, len(valores_lista)): 
             lista = list(valores_lista[x])
             registros[x+1] = lista
-        return registros 
-        
-        
+        return registros         
             
     def __generaPdfTruck(self):                   
         conn = Database().conexion()
@@ -96,8 +93,7 @@ class ControllerTruck:
         if data:
             data = self.__testResultList(data, titulos)
             CreatePdf.excutePdfReport("Reportes.html",data,"vehiculos")
-        return" "          
-        
+        return" "        
         
     def truckList(self):
         cs = query_extend.extendTruckSearch()
@@ -131,8 +127,7 @@ class ControllerTruck:
             update = self.__conditionOne(column, data, id)
         else:
             print("No se encuentra el vehiculo ")           
-        return update
-  
+        return update  
     
     def __ConditionInput(self,column,lista, id):
         lista = []

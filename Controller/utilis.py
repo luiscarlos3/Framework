@@ -1,5 +1,4 @@
-class utilidades:
-    
+class utilidades:    
     @staticmethod
     def columnsTruck():
         columns =[
@@ -101,23 +100,7 @@ class utilidades:
                    "fecha inicio entrega", 
                    "fecha fin entrega"]
         return columns
-    @staticmethod
-    def reportTruck(dicionary):
-        dicionary = {
-            "MATRICULA_CAMION":"matricula",
-            "MODELO_CAMION":"modelo",
-            "TIPO_CAMION": "tipo",
-            "POTENCIA_CAMION": "potencia",
-            "CEDULA_CONDUCTOR": "doc_camionero",
-            "NOMBRE_CONDCUTOR":"nombre_camionero",
-            "APELLIDO_CONDUCTOR":"apellido_camionero",
-            "TELEFONO_CONDUCTOR":"telefono",
-            "CIUDAD_MATRICULADO_VEHICULO":"municipio"           
-            
-        }
-        return dicionary
-        
-        
+    
          
         
         

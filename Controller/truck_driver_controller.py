@@ -54,8 +54,9 @@ class ControllerDriver:
         data = consulta.fetchall()       
         if data:        
             Tables.table_vertical(self.__table, data, herdears)
+            self.__optionPDF()
         else:
-            print("no se encontro el destinatario")
+            print("no se encontro el destinatario")    
         
     def listTruckDriver(self):
         cs = query_extend.extend_truck_driver()
