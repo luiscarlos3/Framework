@@ -98,8 +98,7 @@ class RouteSetting:
         sql =  query_extend.extend_router_to_deliver()  
         consulta.execute(sql)
         rows = consulta.fetchall()             
-        return rows, help.getTitles(consulta.description)
-    
+        return rows, help.getTitles(consulta.description)    
 #----------------------------------------------------------------------*
 # help methods avoid overload
 #----------------------------------------------------------------------*
