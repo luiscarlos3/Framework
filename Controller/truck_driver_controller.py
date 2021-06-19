@@ -4,7 +4,6 @@ from Model import Query,query_extend
 from Model.Query import Sql
 from Controller.validation import Validar
 from Controller import help
-from Controller.list_controller import Tables
 from Controller.write import Console
 
 obj = Query.Sql()
@@ -51,9 +50,7 @@ class ControllerDriver:
         consulta.execute(sql)        
         data = consulta.fetchone()       
         if data:
-            herdears = help.getTitles(consulta.description)     
-            Tables.table_vertical(self.__table, data, herdears)
-            
+            return data, help.getTitles(consulta.description)            
         else:
             print("no se encontro el destinatario")    
         

@@ -42,7 +42,9 @@ class Truck:
     def searchTruck(self):        
         Graphics.header("buscar", self.__TableName)
         Id = input("ingrese la matricula : ")
-        obj.truckSearch(Id)
+        rows, columns =obj.truckSearch(Id)
+        Tables.table_vertical(self.__TableName, rows, columns)
+        obj.optionPDF()
         os.system ('pause')
     
     def listTruck(self):       

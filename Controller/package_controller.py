@@ -2,11 +2,10 @@ import pymysql
 from Model.connection import Database
 from Model import Query, query_extend
 from Model.Query import Sql
-from Controller import help
-from Controller.write import Console
-from Controller.list_controller import Tables
 from Controller.PDF import CreatePdf
 from Controller.Email import SendEmail
+from Controller.write import Console
+from Controller import help
 
 obj = Query.Sql()
 class ControllerPackage():
@@ -36,9 +35,10 @@ class ControllerPackage():
         consulta.execute(sql)
         data = consulta.fetchone()    
         if data:
-            Tables.table_vertical(self.__table, data, help.getTitles(consulta.description))          
+            return data, help.getTitles(consulta.description)  
         else:
             print("no se encontro el paquete")
+        
               
     def packageDelete(self,id):        
         return Sql.delete(self.__table, self.__idcolumns, id)
@@ -47,6 +47,7 @@ class ControllerPackage():
         status = False         
         herdears = obj.columns(self.__table)
         columns = help.convertArray(herdears)
+        
         tupl = self.__inputUpdatePackage(columns, id)
         if not tupl:
             status = False

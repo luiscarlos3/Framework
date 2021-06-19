@@ -31,7 +31,8 @@ class RouterToDeliver:
     def searchRouterToDeliver(self):        
         Graphics.header("Buscar", self.__TableName)
         Id = input("ingrese el codigo camionero para la ruta : ")
-        Route.routeSearch(Id)
+        rows, columns =Route.routeSearch(Id)
+        Tables.table_vertical(self.__TableName, rows, columns)
         os.system ('pause')    
 
     def updateRouterToDeliver(self):           

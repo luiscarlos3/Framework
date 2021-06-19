@@ -3,8 +3,8 @@ from Model.connection import Database
 from Model import Query, query_extend
 from Model.Query import Sql
 from Controller import help
-from Controller.list_controller import Tables
-from Controller.utilis import utilidades
+
+
 from Controller.write import Console
 
 obj = Query.Sql()
@@ -38,8 +38,8 @@ class controllerShipping():
         consulta.execute(sql)    
         data = consulta.fetchall()        
         if data:
-            heraders = help.getTitles(consulta.description)        
-            Tables.table_vertical(self.__table, data, heraders)   
+            return data, help.getTitles(consulta.description)
+            
         else:
             print("no se encontro el envio ")    
 

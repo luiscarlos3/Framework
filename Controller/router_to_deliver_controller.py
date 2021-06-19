@@ -4,8 +4,8 @@ from Model import Query, query_extend
 from Model.Query import Sql
 from Controller.write import Console
 from Controller import help
-from Controller.list_controller import Tables
-from Controller.utilis import utilidades
+
+
 from Controller.PDF import CreatePdf
 
 obj = Query.Sql()
@@ -36,13 +36,12 @@ class RouteSetting:
         sql = query_extend.extend_router_to_deliver_search() + " where " + " cedula_camionero " + " = " + "'" + id + "'"
         consulta.execute(sql)    
         data = consulta.fetchall()        
-        if data:
-            Title = help.getTitles(consulta.description)                     
-            Tables.table_vertical(self.__table, data, Title)
-            self.__optionPDF()
+        if data:            
+            return data, help.getTitles(consulta.description)       
         else:
-            print("no se encontro la ruta ")
-
+            print("no se encontro la ruta ")            
+        
+        
     def routeUpdate(self, id):
         status = False        
         columns = ["cedula_camionero", "envio_ruta", "estado", "ciudad"]
@@ -56,7 +55,7 @@ class RouteSetting:
                 status = False              
         return status
     
-    def __optionPDF(self):
+    def optionPDF(self):
         print("¿ Desea generar reporte general de vehiculos ?")
         print("Si >> y")
         print("No >> n")
@@ -67,8 +66,7 @@ class RouteSetting:
     
     def __testResultList(self,valor, titulos):        
         if not valor:
-            valor = ( ('atx234', 1997, 'volqueta', '255', '3445', 'luis', 'silva', '12345', 'Corozal'),
-            ('ijq24d', 2007, 'turbo', '255', '3445', 'luis', 'silva', '12345', 'bogota'))    
+            print("Error de carga datos") 
         registros = {} # opcional
         lista = [] # recursividad fila 
         valores_lista = list(valor)# 

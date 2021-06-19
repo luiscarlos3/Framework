@@ -4,7 +4,6 @@ from Model.connection import Database
 from Model.Query import Sql
 from Model import Query,query_extend
 from Controller.validation import Validar
-from Controller.list_controller import Tables
 from Controller.write import Console
 from Controller import help
 
@@ -57,8 +56,7 @@ class ControllerRecipes:
         consulta.execute(sql)        
         data = consulta.fetchone()
         if data:
-            herdears = help.getTitles(consulta.description)
-            Tables.table_vertical(self.__table, data,herdears)     
+            return data, help.getTitles(consulta.description)           
         else:
             print("no se encontro el destinatario")
         

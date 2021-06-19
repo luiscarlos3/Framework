@@ -34,8 +34,7 @@ def checkQuery(Data, columns):
     return elements
 
 def getTitles(Query):    
-    title = [field[0] for field in Query]
-    print(title)
+    title = [field[0] for field in Query]    
     return title  
 
 def Check(Data, columns):  

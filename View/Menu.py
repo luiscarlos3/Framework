@@ -8,7 +8,10 @@ from View.router_to_deliver_view import RouterToDeliver
 from View.truckdriver_view import truckDriver
 from View import design
 
+# presentation del menu options
 draw = design.Graphics()
+
+# shows the presentation by means of a sql query that organizes the execution tables of the database
 def presetation():   
     os.system("cls")   
     draw.headerMenu()
@@ -20,6 +23,7 @@ def presetation():
         print("salir del programa")
         exit()
     else:
+        #create a switch with diccionary used expression funtion lamdbda 
         switch = {
             1:lambda E='camion':bodyTruck(E),
             2:lambda E='camionero':bodyTruckDriver(E),
@@ -35,9 +39,8 @@ def presetation():
             os.system("pause")
             presetation()
         else:
-            op()
-                      
-       
+            op()                     
+# methods controller options      
 def options(table):
     Quit = False
     while Quit == False:
@@ -49,9 +52,9 @@ def options(table):
             Quit == True
             presetation()
         else:
-           return num           
-
+           return num
        
+# body  show presentation Shipping            
 def bodyShipping(table):
     Quit = False    
     while Quit == False:
@@ -69,8 +72,7 @@ def bodyShipping(table):
             Quit = True
         else:
             var()
-    
-    
+# body show presentation Truck            
 def bodyTruck(table):
     Quit = False 
     while Quit == False:           
@@ -87,9 +89,8 @@ def bodyTruck(table):
         if op == 0:
             Quit = True                        
         else:
-            var()
-   
-                
+            var()   
+#body show presentation TruckDriver               
 def bodyTruckDriver(table):
     Quit = False    
     while Quit == False:
@@ -106,9 +107,8 @@ def bodyTruckDriver(table):
         if op == 0:
             Quit = True
         else:
-            var()        
-    
-
+            var()    
+#body show presentation Recipient
 def bodyRecipient(table):
     Quit = False
     while Quit == False:
@@ -126,7 +126,7 @@ def bodyRecipient(table):
             Quit = True
         else:
             recipient()    
-        
+#body show presentation Package       
 def bodyPackage(table):
     Quit = False
     while Quit == False:
@@ -144,7 +144,7 @@ def bodyPackage(table):
             Quit = True
         else:
             var()    
-    
+#body show presentation Sender   
 def bodySender(table):
     Quit = False
     while Quit == False:
@@ -162,7 +162,7 @@ def bodySender(table):
             Quit = True
         else:
             var()
-                   
+#body presentation Route                  
 def bodyRouterToDeliver(table):
     Quit = False
     while Quit == False:

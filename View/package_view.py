@@ -2,7 +2,9 @@ import os, sys
 from Controller.package_controller import ControllerPackage
 from View.design import Graphics
 from View.list import Tables
+
 pack = ControllerPackage('paquete', 'codigo')
+
 class Package:
     def __init__(self, table):
         self.__TableName = table
@@ -19,7 +21,8 @@ class Package:
     def searchPackage(self):       
         Graphics.header("buscar", self.__TableName)
         Id = input("ingrese el codigo del paquete : ")
-        pack.packageSearch(Id)
+        rows, columns = pack.packageSearch(Id)
+        Tables.table_vertical(self.__TableName, rows, columns)
         os.system ('pause')
     
     def deletePackage(self):        

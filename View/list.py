@@ -28,9 +28,9 @@ class Tables:
         
         
     @staticmethod
-    def table_vertical(name,data,COLUMNS):
+    def table_vertical(Table,data,COLUMNS):
         os.system("cls")               
-        print("--------------"+ name +" --------------------")
+        print("--------------"+ Table +" --------------------")
         for x in range(0, len(COLUMNS)):                
             print(str(COLUMNS[x]).replace("'", "").replace(",","").strip("('").strip("',)") + " : " , data[x] )            
         print("-------------------------------------------")     

@@ -4,9 +4,8 @@ from Model import Query, query_extend
 from Model.Query import Sql
 from Controller.validation import  Validar
 from Controller import help
-from Controller.list_controller import Tables
+
 from Controller.write import Console
-from Controller.utilis import utilidades
 from Controller.PDF import CreatePdf
 
 obj = Query.Sql()
@@ -49,16 +48,16 @@ class ControllerTruck:
     def truckSearch(self,id):         
         conn = Database().conexion()
         consulta = conn.cursor()        
-        sql =   query_extend.extendTruckSearch() + " where " + self.__idcolumns +" = '" + id + "'"     
+        sql = query_extend.extendTruckSearch() + " where " + self.__idcolumns +" = '" + id + "'"     
         consulta.execute(sql)       
         data = consulta.fetchone()    
-        if data:        
-            Tables.table_vertical(self.__table, data, help.getTitles(consulta.description))
-            self.__optionPDF()             
+        if data:
+            return data, help.getTitles(consulta.description)                       
         else:
             print("no se encontro el camion")
+       
             
-    def __optionPDF(self):
+    def optionPDF(self):
         print("¿ Desea generar reporte general de vehiculos ?")
         print("Si >> y")
         print("No >> n")
@@ -69,8 +68,7 @@ class ControllerTruck:
     
     def __testResultList(self,valor, titulos):        
         if not valor:
-            valor = ( ('atx234', 1997, 'volqueta', '255', '3445', 'luis', 'silva', '12345', 'Corozal'),
-            ('ijq24d', 2007, 'turbo', '255', '3445', 'luis', 'silva', '12345', 'bogota'))    
+           print("Error al cargar los datos")
         registros = {} # opcional
         lista = [] # recursividad fila 
         valores_lista = list(valor)# 
@@ -87,10 +85,9 @@ class ControllerTruck:
         consulta = conn.cursor()
         sql = query_extend.extendTruckSearch()       
         consulta.execute(sql)
-        data = consulta.fetchall()
-        titulos = help.getTitles(consulta.description)             
+        data = consulta.fetchall()                    
         if data:
-            data = self.__testResultList(data, titulos)
+            data = self.__testResultList(data, help.getTitles(consulta.description) )
             CreatePdf.excutePdfReport("Reportes.html",data,"vehiculos")
         return" "        
         
