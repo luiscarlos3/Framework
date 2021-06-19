@@ -67,15 +67,8 @@ class Sql:
         else:
             status = False 
         return status
-    
-    @staticmethod
-    def lits_Select_Table_Extend(cs):
-        con = Database.conexion()
-        sql = con.cursor()
-        sql.execute(cs)
-        data = sql.fetchall()  
-        return data
-         
+      
+    @staticmethod     
     def search(table,colum, id):
         status = False
         con = Database.conexion()

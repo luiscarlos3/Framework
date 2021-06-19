@@ -1,18 +1,5 @@
 class utilidades:    
-    @staticmethod
-    def columnsTruck():
-        columns =[
-        "matricula",
-        "modelo",
-        "tipo",
-        "potencia",
-        "cedula",
-        "nombre",
-        "apellido",
-        "telefono",
-        "ciudad del vehiculo"        
-        ]
-        return columns
+    
     
     @staticmethod    
     def columnsPacket():
@@ -43,26 +30,8 @@ class utilidades:
         "nombre_destinatario",
         "telefono_destinatario"            
         ]
-        return columns
-    
-    @staticmethod
-    def columnsShippings():
-        colums = ["codigo_envio", 
-            "estado", 
-            "direccion",
-            "cedula destinatario",
-            "nombre destinatario",
-            "apellido destinatario",
-            "cedula remitente",
-            "nombre remitente",
-            "apellido remitente",
-            "codigo paquete",
-            "descripcion",
-            "peso kg",
-            "fecha de envio",
-            "fecha de llegada"                
-            ]
-        return colums
+        return columns    
+   
     
     @staticmethod
     def ColumnsShippingslist():
@@ -90,6 +59,7 @@ class utilidades:
              "ciudad",
              "codigo de envio"]        
         return colums
+    
     @staticmethod
     def columnsListRoute():
         columns = ["departamento", 

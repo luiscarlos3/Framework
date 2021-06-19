@@ -37,8 +37,9 @@ class RouteSetting:
         sql = query_extend.extend_router_to_deliver_search() + " where " + " cedula_camionero " + " = " + "'" + id + "'"
         consulta.execute(sql)    
         data = consulta.fetchall()        
-        if data:                          
-            Tables.table_vertical(self.__table, data, utilidades.columnsSearchRoute())
+        if data:
+            Title = help.getTitles(consulta.description)                     
+            Tables.table_vertical(self.__table, data, Title)
             self.__optionPDF()
         else:
             print("no se encontro la ruta ")
@@ -93,8 +94,13 @@ class RouteSetting:
         return" "  
 
     def routeList(self):
-        cs = query_extend.extend_router_to_deliver()        
-        Tables.design_table_columns(cs, utilidades.columnsListRoute())
+        conn = Database().conexion()
+        consulta = conn.cursor()        
+        sql =  query_extend.extend_router_to_deliver()  
+        consulta.execute(sql)
+        rows = consulta.fetchall()             
+        return rows, help.getTitles(consulta.description)
+    
 #----------------------------------------------------------------------*
 # help methods avoid overload
 #----------------------------------------------------------------------*

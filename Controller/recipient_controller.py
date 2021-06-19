@@ -30,12 +30,12 @@ class ControllerRecipes:
         return status    
 
     def recipientDelete(self,id):
+        # mejorar esta parte crear un super metodo que automatize
         if Validar.checkDelete('documento', 'destintario', 'cod_destinatario', 'paquete', id):
             print("No se puede eliminar ya que paquete de envio no se ha entregado")
             return False
         else:         
-            return Sql.delete(self.__table, self.__idcolumns, id)
-            
+            return Sql.delete(self.__table, self.__idcolumns, id)            
 
     def recipientUpdate(self, id):
         status = False
@@ -54,17 +54,21 @@ class ControllerRecipes:
         conn = Database().conexion()
         consulta = conn.cursor()
         sql = query_extend.extend_addressee() + " where " + self.__idcolumns + " = " + "'" + id + "'"
-        consulta.execute(sql)
-        herdears = obj.columns(self.__table)
+        consulta.execute(sql)        
         data = consulta.fetchone()
         if data:
+            herdears = help.getTitles(consulta.description)
             Tables.table_vertical(self.__table, data,herdears)     
         else:
             print("no se encontro el destinatario")
         
     def recipientList(self):
-        cs =  query_extend.extend_addressee()
-        Tables.design_table('destinatario', cs)
+        conn = Database().conexion()
+        consulta = conn.cursor()        
+        sql =  query_extend.extend_addressee()
+        consulta.execute(sql)
+        rows = consulta.fetchall()
+        return rows, help.getTitles(consulta.description)    
     #----------------------------------------------------------------------*
     # help methods avoid overload
     #----------------------------------------------------------------------*     
@@ -128,8 +132,7 @@ class ControllerRecipes:
                                                         
         else:
             print("No se encuentra la informacion")                
-        return update
-          
+        return update         
                     
     def __convertArray(self,array):
         lista= []

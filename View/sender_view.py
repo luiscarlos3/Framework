@@ -1,6 +1,7 @@
 import os, sys
 from Controller.sender_controller import controlSender
 from View.design import Graphics
+from View.list import Tables
 
 sender = controlSender('remitente', 'documento')
 
@@ -44,8 +45,10 @@ class Sender:
         os.system ('pause')
     
     def listSender(self):        
-        Graphics.header("lista", self.__TableName)
-        sender.senderList()
+        Graphics.header("Lista", self.__TableName)
+        rows, columns = sender.senderList()       
+        print("\n")
+        Tables.design_table_columns(rows, columns)
         os.system ('pause')
     
     

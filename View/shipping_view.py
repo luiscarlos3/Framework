@@ -1,6 +1,7 @@
 import os, sys
 from Controller.shipping_controller import controllerShipping
 from View.design import Graphics
+from View.list import Tables
 
 shipping = controllerShipping('envio', 'id_envio')
 
@@ -45,5 +46,6 @@ class Shipping:
     
     def listShipping(self):       
         Graphics.header("envio", self.__TableName)
-        shipping.shippingList()
+        rows, columns=shipping.shippingList()
+        Tables.design_table_columns(rows, columns)
         os.system ('pause')

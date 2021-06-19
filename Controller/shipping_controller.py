@@ -36,9 +36,10 @@ class controllerShipping():
         consulta = conn.cursor()    
         sql =  query_extend.extend_shipping_search() + " where "+ "envio_destinatario = "+ "'" + id + "'" +" or " + " envio_remitente = " +  "'" + id +"'"
         consulta.execute(sql)    
-        data = consulta.fetchall()
-        if data:         
-            Tables.table_vertical(self.__table, data, utilidades.columnsShippings())   
+        data = consulta.fetchall()        
+        if data:
+            heraders = help.getTitles(consulta.description)        
+            Tables.table_vertical(self.__table, data, heraders)   
         else:
             print("no se encontro el envio ")    
 
@@ -57,8 +58,14 @@ class controllerShipping():
         return status
 
     def shippingList(self):
-        cs = query_extend.extend_shipping()        
-        Tables.design_table_columns(cs, utilidades.ColumnsShippingslist())
+        conn = Database().conexion()
+        consulta = conn.cursor()
+        sql = query_extend.extend_shipping()  
+        consulta.execute(sql)
+        rows = consulta.fetchall()
+        return rows, help.getTitles(consulta.description)
+               
+       
 
 #----------------------------------------------------------------------*
 # help methods avoid overload

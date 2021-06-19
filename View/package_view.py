@@ -1,6 +1,7 @@
 import os, sys
 from Controller.package_controller import ControllerPackage
 from View.design import Graphics
+from View.list import Tables
 pack = ControllerPackage('paquete', 'codigo')
 class Package:
     def __init__(self, table):
@@ -43,5 +44,8 @@ class Package:
             
     def listPackage(self):
         Graphics.header("lista", self.__TableName)
-        pack.packageList()
+        rows, columns = pack.packageList()
+        print("\n")
+        Tables.design_table_columns(rows, columns)
         os.system ('pause')
+       

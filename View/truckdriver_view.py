@@ -1,6 +1,7 @@
 import os, sys
 from Controller.truck_driver_controller import ControllerDriver
 from View.design import Graphics
+from View.list import Tables
 
 driver = ControllerDriver("camionero", "documento")
 
@@ -46,5 +47,6 @@ class truckDriver:
     
     def listTruckDriver(self):       
         Graphics.header("lista", self.__TableName)
-        driver.listTruckDriver()
+        rows, columns = driver.listTruckDriver()
+        Tables.design_table_columns(rows, columns)
         os.system ('pause')

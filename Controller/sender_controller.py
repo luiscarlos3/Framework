@@ -52,17 +52,21 @@ class controlSender:
         conn = Database().conexion()
         consulta = conn.cursor()
         sql =  query_extend.extend_sender() + " where " + self.__idcolumns + " = " + "'" + id + "'"
-        consulta.execute(sql)
-        herdears = obj.columns(self.__table)
-        data = consulta.fetchall()
-        if data:        
+        consulta.execute(sql)        
+        data = consulta.fetchone()
+        if data:
+            herdears = help.getTitles(consulta.description)        
             Tables.table_vertical(self.__table, data, herdears)   
         else:
             print("no se encontro el remitente")
         
     def senderList(self):
-        cs = query_extend.extend_sender()
-        Tables.design_table('remitente', cs)
+        conn = Database().conexion()
+        consulta = conn.cursor()
+        sql = query_extend.extend_sender()
+        consulta.execute(sql)
+        rows = consulta.fetchall()
+        return rows, help.getTitles(consulta.description)
     #----------------------------------------------------------------------*
     # help methods avoid overload
     #----------------------------------------------------------------------*

@@ -2,6 +2,7 @@ import os, sys
 from Controller.recipient_controller import ControllerRecipes
 from View.design import Graphics
 from Controller.write import Console
+from View.list import Tables
 
 recipient = ControllerRecipes('destinatario', 'documento')
 
@@ -47,8 +48,9 @@ class RecipientView:
     
     def listRecipient(self):      
         Graphics.header("Lista", self.__table)
-        recipient.recipientList()
+        rows, columns = recipient.recipientList()        
         print("\n")
+        Tables.design_table_columns(rows, columns)
         os.system("pause")
         
     

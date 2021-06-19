@@ -1,5 +1,4 @@
 import pymysql
-from pymysql.cursors import DictCursor
 from Model.connection import Database
 from Model import Query, query_extend
 from Model.Query import Sql
@@ -52,9 +51,9 @@ class ControllerTruck:
         consulta = conn.cursor()        
         sql =   query_extend.extendTruckSearch() + " where " + self.__idcolumns +" = '" + id + "'"     
         consulta.execute(sql)       
-        data = consulta.fetchall()    
+        data = consulta.fetchone()    
         if data:        
-            Tables.table_vertical(self.__table, data, utilidades.columnsTruck())
+            Tables.table_vertical(self.__table, data, help.getTitles(consulta.description))
             self.__optionPDF()             
         else:
             print("no se encontro el camion")
@@ -96,8 +95,12 @@ class ControllerTruck:
         return" "        
         
     def truckList(self):
-        cs = query_extend.extendTruckSearch()
-        Tables.design_table_columns(cs,utilidades.columnsTruck())
+        conn = Database().conexion()
+        consulta = conn.cursor()        
+        sql =  query_extend.extend_truck()
+        consulta.execute(sql)
+        rows = consulta.fetchall()
+        return rows, help.getTitles(consulta.description)
         
     def __driverValidation(self, id):       
         return Validar.validation_truck_driver("camionero",id, "documento") == True

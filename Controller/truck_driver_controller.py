@@ -28,8 +28,7 @@ class ControllerDriver:
         return status
 
     def TruckDriverDelete(self, id):        
-        return Sql.delete(self.__table, self.__idcolumns, id)          
-
+        return Sql.delete(self.__table, self.__idcolumns, id)
 
     def truckDriverUpdate(self, id):
         status = False
@@ -49,18 +48,23 @@ class ControllerDriver:
         conn = Database().conexion()
         consulta = conn.cursor()
         sql = query_extend.extend_truck_driver() + " where " + self.__idcolumns + " = " + "'" + id + "'"
-        consulta.execute(sql)
-        herdears = obj.columns(self.__table)
-        data = consulta.fetchall()       
-        if data:        
+        consulta.execute(sql)        
+        data = consulta.fetchone()       
+        if data:
+            herdears = help.getTitles(consulta.description)     
             Tables.table_vertical(self.__table, data, herdears)
-            self.__optionPDF()
+            
         else:
             print("no se encontro el destinatario")    
         
     def listTruckDriver(self):
-        cs = query_extend.extend_truck_driver()
-        Tables.design_table(self.__table, cs)
+        conn = Database().conexion()
+        consulta = conn.cursor()
+        sql = query_extend.extend_truck_driver()
+        consulta.execute(sql)
+        rows = consulta.fetchall()
+        return rows, help.getTitles(consulta.description)       
+        
     #----------------------------------------------------------------------*
     # help methods avoid overload
     #----------------------------------------------------------------------*
@@ -99,8 +103,7 @@ class ControllerDriver:
             edit = Console.inputNumber(msg +" "+array[option] + " : ")
             update = (self.__table, position, edit, self.__idcolumns, id)            
         else:
-            update = self.__condtionTherre(option, array, id)
-                   
+            update = self.__condtionTherre(option, array, id)                   
         return update
     
     def __condtionTherre(self, option, array, id):

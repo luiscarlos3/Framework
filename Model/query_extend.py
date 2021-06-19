@@ -94,12 +94,12 @@ def extend_package():
     """
     return Querys
 def extend_packagelist():
-    Querys = """ select codigo, 
+    Querys = """  select codigo, 
     descripcion, 
-    remitente.nombre,
-    remitente.teléfono,
-    destinatario.nombre, 
-    destinatario.telefono
+    remitente.nombre as nombre_remitente,
+    remitente.teléfono as telefono_remitente,
+    destinatario.nombre_destinatario, 
+    destinatario.telefono_destinatario
     from paquete 
     inner join remitente on paquete.cod_remitente = remitente.documento 
     inner join destinatario on paquete.cod_destinatario=destinatario.documento """
@@ -107,23 +107,20 @@ def extend_packagelist():
 
 def extend_package_search():
     Querys= """
-    select codigo,
-    remitente.documento as cedula_remitente,
-	remitente.nombre as nombre_remitente,
-    remitente.apellido as apellido_remitente,
-    remitente.telefono as telefono_remitente,
-    remitente.direccion_remitente as direccion_remitente,    
-    destinatario.documento as cedula_destianatario,
-    destinatario.nombre as nombre_destinatario,
-    destinatario.apellido as apellido_destinatario,
-    destinatario.telefono as telefono_destinatario,
-    destinatario.direccion_destinatario as direccion_destinatario,
+    select codigo, 
     descripcion,
-    peso_kg,
-    ciudad_destino   
+    peso_kg, 
+    remitente.nombre,
+    remitente.apellido,
+    remitente.teléfono,
+    remitente.direccion_remitente,
+    destinatario.nombre_destinatario,
+    destinatario.apellido_destinatario,
+    destinatario.telefono_destinatario,
+    destinatario.direccion_destinatario
     from paquete 
     inner join remitente on paquete.cod_remitente = remitente.documento 
-    inner join destinatario on paquete.cod_destinatario = destinatario.documento
+    inner join destinatario on paquete.cod_destinatario=destinatario.documento 
     """
     return Querys
     
@@ -188,8 +185,8 @@ def extend_shipping_search():
     estado,     
     direccion,
 	envio_destinatario as cedula_destinatario,    
-    destinatario.nombre as nombre_destinatario,
-	destinatario.apellido as nombre_destinatario,
+    destinatario.nombre_destinatario,
+	destinatario.apellido_destinatario,
     envio.envio_remitente as cedula_remitente,
     remitente.nombre as nombre_remitente,
     remitente.apellido as apellido_remitente,    

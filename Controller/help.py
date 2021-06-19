@@ -6,8 +6,6 @@ import os, sys
 from datetime import date, datetime, timedelta
 from Model.connection import Database
 from Controller.validation import Validar
-
-
     
 def codigo():    
     num = random.randint(0, 1000000000000000)

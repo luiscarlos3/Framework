@@ -1,8 +1,8 @@
-from Model.Query import Sql
 import os, sys
 from Controller.truck_controller import ControllerTruck
 from View.design import Graphics
 from Controller.write import Console
+from View.list import Tables
 
 obj = ControllerTruck("camion", "matricula")
 class Truck:
@@ -46,6 +46,8 @@ class Truck:
         os.system ('pause')
     
     def listTruck(self):       
-        Graphics.header("lista",self.__TableName)        
-        obj.truckList()
-        os.system ('pause')
+        Graphics.header("lista",self.__TableName)
+        rows, columns = obj.truckList()
+        Tables.design_table_columns(rows, columns)
+        os.system ('pause')     
+       

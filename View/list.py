@@ -5,34 +5,13 @@ from terminaltables import AsciiTable
 from Controller import help
 graph = Sql()
 
-class Tables:     
-    @staticmethod
-    def design_table(table,Query):
-        os.system("cls")    
-        col = graph.columns(table)
-        fil = Sql.lits_Select_Table_Extend(Query)
-        #Convierte la tupla mal formateada en un array
-        head = []
-        for item in col:
-            head.extend(item)
-                
-        table_data = [ head, ]
-        
-        #Convierte la tupla mal formateada en un array por iteracion
-        for item in fil:
-            row = []
-            row.extend(item)
-            table_data.append(row)
-        
-        #Imprime la tabla en pantalla
-        table = AsciiTable(table_data)
-        print (table.table)
+class Tables: 
         
     @staticmethod
-    def design_table_columns(Query, columns):
+    def design_table_columns(rows, columns):
         os.system("cls")        
-        fil = Sql.lits_Select_Table_Extend(Query)
-              
+        fil = rows
+                      
         head = []
         for item in columns:
             head.extend(item)          

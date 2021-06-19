@@ -2,11 +2,9 @@ import pymysql
 from Model.connection import Database
 from Model import Query, query_extend
 from Model.Query import Sql
-from Controller.validation import Validar
 from Controller import help
 from Controller.write import Console
 from Controller.list_controller import Tables
-from Controller.utilis import utilidades
 from Controller.PDF import CreatePdf
 from Controller.Email import SendEmail
 
@@ -34,11 +32,11 @@ class ControllerPackage():
     def packageSearch(self,id):
         conn = Database().conexion()
         consulta = conn.cursor()
-        sql =  query_extend.extend_package_search()+ " where " + self.__idcolumns + " = '" + id + "'"   
+        sql =  query_extend.extend_package_search()+ " where " + self.__idcolumns + " = '" + id + "'" + " or cod_remitente = " + id 
         consulta.execute(sql)
         data = consulta.fetchone()    
         if data:
-            Tables.table_vertical(self.__table, data, utilidades.columnsPacket())          
+            Tables.table_vertical(self.__table, data, help.getTitles(consulta.description))          
         else:
             print("no se encontro el paquete")
               
@@ -59,9 +57,13 @@ class ControllerPackage():
                 status = False
         return status 
 
-    def packageList(self):        
-        cs = query_extend.extend_packagelist()     
-        Tables.design_table_columns(cs, utilidades.columnsPacketlist())
+    def packageList(self):
+        conn = Database().conexion()
+        consulta = conn.cursor()
+        sql = query_extend.extend_packagelist()  
+        consulta.execute(sql)
+        rows = consulta.fetchall()
+        return rows, help.getTitles(consulta.description)           
         
     def __executePdfPackage(self, lista):
         status = False            
@@ -70,7 +72,7 @@ class ControllerPackage():
         sql = query_extend.queryExePdfPackage() + " where "+ self.__idcolumns + " = " + str(lista[0])
         consulta.execute(sql)        
         data = consulta.fetchone()
-        if data:            
+        if data:           
             info = help.Check(data, consulta.description)            
             CreatePdf.excutePdf("recibo.html", info, 'cod_remitente')
             self.__executeEmail(data[1])                    

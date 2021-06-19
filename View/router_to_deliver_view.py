@@ -1,6 +1,7 @@
 import os, sys
 from Controller.router_to_deliver_controller import RouteSetting
 from View.design import Graphics
+from View.list import Tables
 
 Route = RouteSetting("ruta_entrega_paquete", "id_ruta")
 
@@ -45,6 +46,9 @@ class RouterToDeliver:
 
     def listRouterToDeliver(self):           
             Graphics.header("lista", self.__TableName)
-            Route.routeList()
+            rows, columns = Route.routeList()
+            Tables.design_table_columns(rows, columns)
             os.system ('pause')
+            
+            
     
