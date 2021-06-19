@@ -17,8 +17,7 @@ class RouteSetting:
     def routeInsert(self):
         status = False        
         column = obj.columns(self.__table)  
-        tupl = tuple(self.__inputTheRoute(column))  
-        print(tupl)
+        tupl = tuple(self.__inputTheRoute(column))      
         if not tupl:
             status = False      
         else:
