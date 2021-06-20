@@ -2,10 +2,11 @@ import os, sys
 from Controller.sender_controller import controlSender
 from View.design import Graphics
 from View.list import Tables
+
 # an object instance is created
 sender = controlSender('remitente', 'documento')
-# class of view sender controller CRUD results
 
+# class of view sender controller CRUD results
 class Sender:
     #constructr of the class     
     def __init__(self, table):
@@ -21,7 +22,7 @@ class Sender:
             print("datos no han sido ingresados")
             os.system ('pause')
             
-    # methods register or insert     
+    # methods delete result bool true or false   
     def deleteSender(self):       
         Graphics.header("eliminar", self.__TableName)
         Id = input('ingrese numero del documento :')

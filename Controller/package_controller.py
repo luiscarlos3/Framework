@@ -37,8 +37,7 @@ class ControllerPackage():
         if data:
             return data, help.getTitles(consulta.description)  
         else:
-            print("no se encontro el paquete")
-        
+            print("no se encontro el paquete")        
               
     def packageDelete(self,id):        
         return Sql.delete(self.__table, self.__idcolumns, id)
@@ -46,8 +45,7 @@ class ControllerPackage():
     def packageUpdate(self,id):
         status = False         
         herdears = obj.columns(self.__table)
-        columns = help.convertArray(herdears)
-        
+        columns = help.convertArray(herdears)        
         tupl = self.__inputUpdatePackage(columns, id)
         if not tupl:
             status = False
@@ -80,6 +78,7 @@ class ControllerPackage():
         else:
             status = False
         return status
+    
     def __executeEmail(self,id):
         print ("Desea enviar el recibo por correo ")
         print ("Si >> y")
@@ -142,15 +141,13 @@ class ControllerPackage():
             if option >= 0 and option <= 2:
                 position = columns[option]
                 edit = Console.inputString(msg + ' ' + columns[option] + " : ")          
-                update = (self.__table, position, edit, self.__idcolumns, id)
-                
+                update = (self.__table, position, edit, self.__idcolumns, id)                
             elif option is 4:
                 position = columns[option]
                 edit = Console.inputNumber(msg + ' ' + columns[option] + " : ")
                 update = (self.__table, position, edit, self.__idcolumns, id)
             else:
-                print("Opcion invalida")  
-           
+                print("Opcion invalida")            
             return update
             
        
