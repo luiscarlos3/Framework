@@ -27,8 +27,11 @@ class Package:
     def searchPackage(self):       
         Graphics.header("buscar", self.__TableName)
         Id = input("ingrese el codigo del paquete : ")
-        rows, columns = pack.packageSearch(Id)
-        Tables.table_vertical(self.__TableName, rows, columns)
+        status, rows, columns = pack.packageSearch(Id)
+        if status == True:
+            Tables.table_vertical(self.__TableName, rows, columns)
+        else:
+            print ("No se encontro el paquete")
         os.system ('pause')
         
     # methods delete result bool true or false 

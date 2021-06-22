@@ -37,9 +37,12 @@ class RouterToDeliver:
     def searchRouterToDeliver(self):        
         Graphics.header("Buscar", self.__TableName)
         Id = input("ingrese el codigo camionero para la ruta : ")
-        rows, columns =Route.routeSearch(Id)
-        Tables.table_vertical(self.__TableName, rows, columns)
-        Route.optionPDF()
+        status, rows, columns =Route.routeSearch(Id)
+        if status == True:        
+            Tables.table_vertical(self.__TableName, rows, columns)
+            Route.optionPDF(Id)
+        else:
+            print("No se encontro la ruta")
         os.system ('pause') 
            
     # methods search and show search results   

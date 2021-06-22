@@ -32,10 +32,8 @@ class ControllerTruck:
         return Sql.delete(self.__table, self.__idcolumns, id) 
     
     def truckUpdate(self, id):
-        status = False
-        herdears = obj.columns(self.__table)
-        columns = help.convertArray(herdears)
-        tupl = self.__truckInputUpdate(columns, id)
+        status = False       
+        tupl = tuple(self.__truckInputUpdate(id))
         if not tupl:
             status = False
         else:
@@ -45,16 +43,20 @@ class ControllerTruck:
                 status = False
         return status 
     
-    def truckSearch(self,id):         
+    def truckSearch(self,id):
+        status = False         
         conn = Database().conexion()
         consulta = conn.cursor()        
         sql = query_extend.extendTruckSearch() + " where " + self.__idcolumns +" = '" + id + "'"     
         consulta.execute(sql)       
         data = consulta.fetchone()    
         if data:
-            return data, help.getTitles(consulta.description)                       
+            status = True
+            conn.close()
+            return status, data, help.getTitles(consulta.description)                       
         else:
-            print("no se encontro el camion")
+            status = True
+            return status, None, None, 
        
             
     def optionPDF(self):
@@ -102,18 +104,18 @@ class ControllerTruck:
             print("No se encuentra registrado")
         return lista
     
-    def __truckInputUpdate(self,column, id):         
+    def __truckInputUpdate(self,id):         
         Conn =  Database.conexion()
-        update = tuple()
+        lista = []
         consulta = Conn.cursor()
         sql = query_extend.extend_truck() + " where " + self.__idcolumns + " = " + "'" + id + "'"
         consulta.execute(sql)
         data = consulta.fetchone()
         if data:
-            update = self.__conditionOne(column, data, id)
+            lista = self.__conditionOne(help.getTitles(consulta.description), data, id)
         else:
             print("No se encuentra el vehiculo ")           
-        return update  
+        return lista  
     
     def __ConditionInput(self,column,lista, id):
         lista = []
@@ -136,53 +138,49 @@ class ControllerTruck:
         return lista
     
     def __conditionOne(self, columns, data, id):
-        msg = "ingrese"
-        update = tuple()
+        msg = "ingrese "
+        lista = []
         print("\n")        
         for i in range(0, len(columns)):                    
             print(i, " columna :" ,columns[i], " = ", data[i])
             print("\n")
         option = Console.inputNumber("selecione la columna : ")                   
         if option == 0:
-            position = columns[0]
-            edit = input(msg +" "+columns[0] + " : ")
-            update = (self.__table, position, edit,self.__idcolumns, id)
-                           
+            position = columns[option]
+            edit = input(msg + columns[option] + " : ")                         
         elif option == 1:
-            position = columns[1]
-            edit = Console.inputNumber(msg +' '+ columns[1] + " : ")
-            update = (self.__table, position, edit, self.__idcolumns, id)
-                
+            position = columns[option]
+            edit = Console.inputNumber(msg + columns[option] + " : ")                            
         elif option == 2:
-            position = columns[2]
-            edit = Console.inputNumber(msg+ ' ' + columns[2] + " : ")
-            update = (self.__table, position, edit, self.__idcolumns, id)
+            position = columns[option]
+            edit = Console.inputNumber(msg+ columns[option] + " : ")            
+        elif option > len(columns):
+            return None            
         else:
-            update = self.__conditionTwoo(option, columns, id)             
-        return update
+            return self.__conditionTwoo(option, columns, id)
+        lista = [self.__table, position, edit, self.__idcolumns, id]                    
+        return lista
     
     def __conditionTwoo(self,option, columns, id):
-        msg = "ingrese"
-        update = tuple()           
+        msg = "ingrese "
+        lista = []        
         if option == 3:
             position = columns[option]
-            edit = Console.inputNumber(msg + " " +columns[3] + " : ")
-            update = (self.__table, position, edit, self.__idcolumns, id)            
+            edit = Console.inputNumber(msg + columns[option] + " : ")                       
         elif option == 4:
             position = columns[option]
-            edit = Console.inputNumber(msg + " " +columns[4] + " : ")
-            update = (self.__table, position, edit, self.__idcolumns, id)
+            edit = Console.inputNumber(msg + columns[option] + " : ")           
         elif option == 5:
             position = columns[option]
-            edit = Console.inputString(msg + " "+columns[5] + " : ")           
+            edit = Console.inputString(msg + columns[option] + " : ")           
             if help.v(edit) == True:
                 print("No esta el municipio")
             else:
-                edit = help.v(edit)
-                update = (self.__table, position, edit, self.__idcolumns, id)
-        else:
-            print(" Opcion invalida ")   
-        return update
+                edit = help.v(edit)                
+        elif option > len(columns):
+            return None
+        lista = [self.__table, position, edit, self.__idcolumns, id]
+        return lista
     
         
         

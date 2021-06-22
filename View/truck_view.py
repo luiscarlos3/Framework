@@ -51,9 +51,12 @@ class Truck:
     def searchTruck(self):        
         Graphics.header("buscar", self.__TableName)
         Id = input("ingrese la matricula : ")
-        rows, columns =obj.truckSearch(Id)
-        Tables.table_vertical(self.__TableName, rows, columns)
-        obj.optionPDF()
+        status, rows, columns =obj.truckSearch(Id)
+        if status == True:
+            Tables.table_vertical(self.__TableName, rows, columns)
+            obj.optionPDF()
+        else:
+            print("no se encontro camion")
         os.system ('pause')
         
     # methods lists recipient

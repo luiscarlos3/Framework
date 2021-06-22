@@ -38,16 +38,20 @@ class RouteSetting:
                    
     # methods controller of search 
     def routeSearch(self,id):
+        status = False
         conn = Database().conexion()
         consulta = conn.cursor()
         sql = query_extend.queryRouteSearch() + " where " + self.__idcolumns + " = " + "'" + id + "'"
         consulta.execute(sql)    
-        data = consulta.fetchall()                     
+        data = consulta.fetchone()                     
         if data:
-            conn.close()              
-            return data, help.getTitles(consulta.description)      
+            conn.close()
+            status = True             
+            return status, data, help.getTitles(consulta.description)      
         else:
-            print("no se encontro la ruta ")          
+            status = False
+            return status, None, None,
+                    
         
     # method controller update     
     def routeUpdate(self, id):
@@ -62,19 +66,19 @@ class RouteSetting:
                 status = False              
         return status
     
-    def optionPDF(self):
+    def optionPDF(self, id):
         print("¿ Desea generar reporte general de rutas ?")
         print("Si >> y")
         print("No >> n")
         op = Console.inputString("selecione una opcion ")
         if op == "y":
-            self.__generaPdfRoute()
+            self.__generaPdfRoute(id)
         return " "
     
-    def __generaPdfRoute(self):                   
+    def __generaPdfRoute(self, id):                   
         conn = Database().conexion()
         consulta = conn.cursor()
-        sql = query_extend.queryRouteSearch()   
+        sql = query_extend.queryRouteSearch() + " where " + self.__idcolumns + " = " + "'" + id + "'"
         consulta.execute(sql)
         data = consulta.fetchall()
         titulos = help.getTitles(consulta.description)             

@@ -48,8 +48,11 @@ class RecipientView:
     def searchRecipient(self):      
         Graphics.header("Buscar", self.__table)
         Id = input("ingrese el numero del documento : ")
-        rows , columns = recipient.recipientSearch(Id)
-        Tables.table_vertical(self.__table, rows, columns)        
+        status, rows , columns = recipient.recipientSearch(Id)
+        if status == True:
+            Tables.table_vertical(self.__table, rows, columns)
+        else:
+            print("No se encuentra el destinatario")      
         os.system("pause")
          
     # methods lists recipient 

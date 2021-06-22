@@ -29,15 +29,19 @@ class ControllerPackage():
         return status
             
     def packageSearch(self,id):
+        status = False
         conn = Database().conexion()
         consulta = conn.cursor()
         sql =  query_extend.extend_package_search()+ " where " + self.__idcolumns + " = '" + id + "'" + " or cod_remitente = " + id 
         consulta.execute(sql)
         data = consulta.fetchone()    
         if data:
-            return data, help.getTitles(consulta.description)  
+            status = True
+            conn.close()
+            return status, data, help.getTitles(consulta.description)  
         else:
-            print("no se encontro el paquete")        
+            status = False
+            return status, None, None      
               
     def packageDelete(self,id):        
         return Sql.delete(self.__table, self.__idcolumns, id)

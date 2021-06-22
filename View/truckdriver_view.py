@@ -50,7 +50,11 @@ class truckDriver:
     def searchTruckDriver(self):        
         Graphics.header("buscar", self.__TableName)
         Id = input("ingrese el numero del documento : ")
-        driver.truckDriverSearch(Id)
+        status, rows, columns= driver.truckDriverSearch(Id)
+        if status == True:
+            Tables.table_vertical(rows, columns)
+        else:
+            print("No se encontro camionero")
         os.system ('pause')
     # methods lists recipient  
     def listTruckDriver(self):       

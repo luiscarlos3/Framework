@@ -42,16 +42,20 @@ class ControllerDriver:
                 status = False
         return status
 
-    def truckDriverSearch(self,id):         
+    def truckDriverSearch(self,id):
+        status = False        
         conn = Database().conexion()
         consulta = conn.cursor()
         sql = query_extend.extend_truck_driver() + " where " + self.__idcolumns + " = " + "'" + id + "'"
         consulta.execute(sql)        
         data = consulta.fetchone()       
         if data:
-            return data, help.getTitles(consulta.description)            
+            status = True
+            conn.close()
+            return status, data, help.getTitles(consulta.description)            
         else:
-            print("no se encontro el destinatario")    
+            status = False
+            return status,None, None    
         
     def listTruckDriver(self):
         conn = Database().conexion()

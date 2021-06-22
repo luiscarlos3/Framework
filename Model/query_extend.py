@@ -40,7 +40,7 @@ def extend_truck():
     tipo,
     potencia, 
     doc_camionero,  
-    municipios.municipio
+    municipios.municipio as registro_matricula
     from camion   
     inner join municipios on camion.registro_matricula = municipios.id_municipio   
     """

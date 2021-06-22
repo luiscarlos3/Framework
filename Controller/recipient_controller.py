@@ -61,17 +61,20 @@ class SettingRecipes:
         return status
     
     # method recipient search a result 
-    def recipientSearch(self,id):         
+    def recipientSearch(self,id):
+        status = False        
         conn = Database().conexion()
         consulta = conn.cursor()
         sql = query_extend.QueryRecipient() + " where " + self.__idcolumns + " = " + "'" + id + "'"
         consulta.execute(sql)        
         data = consulta.fetchone()
         if data:
+            status = True
             conn.close()
-            return data, help.getTitles(consulta.description)                      
+            return status, data, help.getTitles(consulta.description)                      
         else:
-            print("No se encontro el destinatario")
+            status = False
+            return status, None, None
                    
     #method recipient list    
     def recipientList(self):

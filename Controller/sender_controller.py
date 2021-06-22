@@ -46,16 +46,20 @@ class SettingSender:
             return Sql.delete(self.__table, self.__idcolumns, id)        
          
     
-    def senderSearch(self,id):         
+    def senderSearch(self,id):
+        status = False         
         conn = Database().conexion()
         consulta = conn.cursor()
         sql =  query_extend.extend_sender() + " where " + self.__idcolumns + " = " + "'" + id + "'"
         consulta.execute(sql)        
         data = consulta.fetchone()
         if data:
+            status = True
+            conn.close()
             return data, help.getTitles(consulta.description)              
         else:
-            print("no se encontro el remitente")
+            status = False
+            return status,None, None
         
     def senderList(self):
         conn = Database().conexion()
