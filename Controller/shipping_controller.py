@@ -1,19 +1,20 @@
-import pymysql
 from Model.connection import Database
 from Model import Query, query_extend
 from Model.Query import Sql
 from Controller import help
+from Controller.PDF import CreatePdf
 
 
 from Controller.write import Console
 
 obj = Query.Sql()
 
-class controllerShipping():
+class controllerShipping(object):
     
-    def __init__(self, table, idcolumns):        
+    def __init__(self, table, idcolumns, columns):        
         self.__table = table
-        self.__idcolumns = idcolumns    
+        self.__idcolumns = idcolumns
+        self.__columns = columns  
 
     def shippingInsert(self):
         status = False    
@@ -32,22 +33,42 @@ class controllerShipping():
         return Sql.delete(self.__table, self.__idcolumns, id)          
 
     def shippingSearch(self,id):
+        status = False
         conn = Database().conexion()
         consulta = conn.cursor()    
-        sql =  query_extend.extend_shipping_search() + " where "+ "envio_destinatario = "+ "'" + id + "'" +" or " + " envio_remitente = " +  "'" + id +"'"
+        sql =  query_extend.extend_shipping_search() + " where "+  self.__idcolumns +" = "+ "'" + id + "'"+" or " + self.__columns + " = " +"'" +id + "'"
         consulta.execute(sql)    
-        data = consulta.fetchall()        
+        data = consulta.fetchone()               
         if data:
-            return data, help.getTitles(consulta.description)
-            
+            status = True                               
+            return status, data, help.getTitles(consulta.description)            
         else:
-            print("no se encontro el envio ")    
+            status = False
+            return status, None, None
+        
+    def __generationPdf(self,Id):       
+        conn = Database().conexion()
+        consulta = conn.cursor()
+        sql = query_extend.QueryShipments() + " where " + self.__idcolumns + " = "+ "'" +  Id + "'" +" or " + self.__columns + " = " +"'"+ Id + "'"
+        consulta.execute(sql)
+        data = consulta.fetchall()
+        if data:                        
+            info = help.testResultList(data, help.getTitles(consulta.description))            
+            CreatePdf.excutePdfshipping("Reportes.html",info,"Envios realizados")
+        return " "   
+    
+    def optionPDF(self,id):
+        print("¿ Desea generar reporte general de los envios ?")
+        print("Si >> y")
+        print("No >> n")
+        op = Console.inputString("selecione una opcion ")
+        if op == "y":
+           self.__generationPdf(id)                             
+        return" "            
 
     def shippingUpdate(self, id):
-        status = False
-        herdears = obj.columns(self.__table)
-        column = help.convertArray(herdears)
-        tupl = self.__inputUpdate(column, id)
+        status = False        
+        tupl = self.__inputUpdate(id)
         if not tupl:
             status = False
         else:
@@ -64,26 +85,24 @@ class controllerShipping():
         consulta.execute(sql)
         rows = consulta.fetchall()
         return rows, help.getTitles(consulta.description)
-               
-       
-
 #----------------------------------------------------------------------*
 # help methods avoid overload
 #----------------------------------------------------------------------*
-    def __inputUpdate(self, column, id):          
+    def __inputUpdate(self,id):          
         Conn =  Database.conexion()
         consulta = Conn.cursor()
-        # arreglar esta consulta cuando regrese 
-        sql = "select * from " + self.__table+ " where " + self.__idcolumns + " = " + "'" + id + "'"
+        lista = []     
+        sql = "select estado, fecha_entrega from " + self.__table + " where " + self.__idcolumns+ " = "+ "'"+  id +"'" +" or " + self.__columns + " = "+"'" + id + "'"
         consulta.execute(sql)
         data = consulta.fetchone()
         if data:
-            self.__inputCondition(column, data, id)
+           lista = self.__optionsUpdate(help.getTitles(consulta.description), data, id)
         else:
             print("No se encuentra")
+        return lista
               
-    def __inputCondition(self, columns, data, id):
-        update = tuple()
+    def __optionsUpdate(self, columns, data, id):
+        update = []
         print("\n")
         for i in range(0, len(columns)):                               
             print(i, " columna :" ,columns[i], " = ", data[i])
@@ -92,24 +111,19 @@ class controllerShipping():
         update = self.__inputTwoo(columns, option, id)           
         return update
     
-    def __inputTwoo(self, columns, option, id):
-        update = tuple()
-        msg = "Ingrese"
-        if option >= 1 and option <= 4:
+    def __inputTwoo(self, columns, option, id):       
+        lista = []         
+        if option == 0:
             position = columns[option]
-            edit = Console.inputNumber(msg +" "+ columns[option] + " : ")
-            update = (self.__table, position, edit, self.__idcolumns, id)
-        elif option is 5:
+            edit = help.selection()                     
+        elif option == 1:
             position = columns[option]
-            edit = Console.inputString(msg +" "+ columns[option] + " : ")
-            update = (self.__table, position, edit, self.__idcolumns, id)
-        elif option is 6:
-            position = columns[option]
-            edit = help.selection()
-            update = (self.__table, position, edit, self.__idcolumns, id)
+            edit = help.currentdate()
+            print(columns[option] + " : " + edit)                                                    
         else:
-            print("Las fecha de envio y el codigo del envio no se puede cambiar")         
-        return update    
+            return None            
+        lista = [self.__table, position, edit ,self.__idcolumns, id]  
+        return lista    
         
     def __shippingInput(self, column):
         msg = "Ingrese"
@@ -120,29 +134,28 @@ class controllerShipping():
                 cod = help.codigoShipper()               
                 print(array[i] +" : ", cod)
                 lista.append(cod)
-            elif i>=1 and i<=4:
+            elif i>=1 and i<=3:
                 var = Console.inputNumber(msg + ' ' + array[i] + " : ")
                 lista.append(var)
-            elif i == 5:
-                string = Console.inputString(msg + ' ' + array[i] + " : ")
-                lista.append(string)
+            elif i == 4:
+                var = help.selection()
+                lista.append(var)               
             else:
                 val = self.__condition(array, i)
                 lista.append(val)                     
         return lista
     
-    def __condition(self, array, i):
-        if i == 6:                 
-            var = help.selection()
-            return var                         
-        elif i == 7:
+    def __condition(self, array, i):                               
+        if i == 5:
             Time = help.currentdate()
             print(array[i] + " : " + Time)
             return Time                                 
-        elif i == 8:                
+        elif i == 6:                
             date = help.fecha()            
             print(array[i] + " " +date)
             return date
+    
+    
                    
     
             

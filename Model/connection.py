@@ -10,11 +10,10 @@ class Database(object):
             password = "",
             db = "transporte" 
         )
-            return mysql 
-                     
+            return mysql                      
         except(pymysql.err.OperationalError, pymysql.err.InternalError) as e:
-            print("Ocurrió un error al conectar: ", e)
-            
+            print("Ocurrió un error al conectar: ", e)   
+                     
     @staticmethod 
     def namedatabase():
         encoding = 'utf-8'

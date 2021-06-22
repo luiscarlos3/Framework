@@ -1,10 +1,10 @@
 import os, sys
-from Controller.recipient_controller import ControllerRecipes
+from Controller.recipient_controller import SettingRecipes
 from View.design import Graphics
 from Controller.write import Console
 from View.list import Tables
 # an object instance is created
-recipient = ControllerRecipes('destinatario', 'documento')
+recipient = SettingRecipes('destinatario', 'documento')
 # class of view recipiente controller CRUD results
 class RecipientView:    
    
@@ -49,7 +49,7 @@ class RecipientView:
         Graphics.header("Buscar", self.__table)
         Id = input("ingrese el numero del documento : ")
         rows , columns = recipient.recipientSearch(Id)
-        Tables.table_vertical(self.__table, rows, columns)
+        Tables.table_vertical(self.__table, rows, columns)        
         os.system("pause")
          
     # methods lists recipient 

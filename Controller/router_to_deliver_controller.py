@@ -1,14 +1,20 @@
-import pymysql
 from Model.connection import Database
 from Model import Query, query_extend
 from Model.Query import Sql
 from Controller.write import Console
 from Controller import help
-
-
 from Controller.PDF import CreatePdf
 
+#The class is called where the connection to the database
+# and the different methods to perform the
+# CRUD operations are Query.Sql()
+
 obj = Query.Sql()
+
+# the route configuration class controls the crud and
+# queries fetched from the database 
+# and organize the information
+
 class RouteSetting:
     def __init__(self, table, idcolumns):        
         self.__table = table
@@ -26,26 +32,27 @@ class RouteSetting:
             else:
                 status = False    
         return status
-
+    # methods controller of delet
     def routeDelete(self,id):            
-        return Sql.delete(self.__table, self.__idcolumns, id)             
-
+        return Sql.delete(self.__table, self.__idcolumns, id) 
+                   
+    # methods controller of search 
     def routeSearch(self,id):
         conn = Database().conexion()
         consulta = conn.cursor()
-        sql = query_extend.extend_router_to_deliver_search() + " where " + " cedula_camionero " + " = " + "'" + id + "'"
+        sql = query_extend.queryRouteSearch() + " where " + " cedula_camionero " + " = " + "'" + id + "'"
         consulta.execute(sql)    
-        data = consulta.fetchall()        
-        if data:            
-            return data, help.getTitles(consulta.description)       
+        data = consulta.fetchall()                     
+        if data:
+            conn.close()              
+            return data, help.getTitles(consulta.description)      
         else:
-            print("no se encontro la ruta ")            
+            print("no se encontro la ruta ")          
         
-        
+    # method controller update     
     def routeUpdate(self, id):
         status = False        
-        columns = ["cedula_camionero", "envio_ruta", "estado", "ciudad"]
-        tupl = self.__inputUpdateTheRoute(columns, id)
+        tupl = self.__inputUpdateTheRoute(id) # method handles updating threads in an organized way returns a tuple
         if not tupl:
             status = False
         else:
@@ -81,7 +88,7 @@ class RouteSetting:
     def __generaPdfRoute(self):                   
         conn = Database().conexion()
         consulta = conn.cursor()
-        sql = query_extend.extend_router_to_deliver_search()    
+        sql = query_extend.queryRouteSearch()   
         consulta.execute(sql)
         data = consulta.fetchall()
         titulos = help.getTitles(consulta.description)             
@@ -131,15 +138,14 @@ class RouteSetting:
             city  = Console.inputString("ingrese " +column[7] + " : ")            
             return help.inputCity(city)  
         
-    def __inputUpdateTheRoute(self, column,id):
-        Conn =  Database.conexion()
-        update = tuple()
+    def __inputUpdateTheRoute(self,id):
+        Conn =  Database.conexion()        
         consulta = Conn.cursor()   
         sql = query_extend.extendRouteUpdate()+ " where " + "cedula_camionero" + " = " + "'" + id + "'"
         consulta.execute(sql)
         data = consulta.fetchone()        
         if data:
-            update = self.__upgradeOptions(column, data, id)
+            update = self.__upgradeOptions(help.getTitles(consulta.description), data, id)
         else:
             print("No se encuentra")
         return update

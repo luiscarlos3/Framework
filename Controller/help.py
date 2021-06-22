@@ -1,6 +1,4 @@
-from typing import Dict
 from Controller.write import Console
-import pymysql
 import random
 import os, sys
 from datetime import date, datetime, timedelta
@@ -67,7 +65,7 @@ def selection():
                 print("opcion invalida")       
             else:
                 quit = True
-                return elements[num]    
+                return elements[num]   
 
 def Date(msg):
     print("ejemplo : año-mes-dia = 2020-06-12")
@@ -110,6 +108,31 @@ def v(name):
         status = False                              
         return convert_city(name)
     return status
+
+def testResultList(valor, titulos):        
+        if not valor:
+           print("Error al cargar los datos")
+        registros = {} # opcional
+        lista = [] # recursividad fila 
+        valores_lista = list(valor)# 
+        #titulos = list(valor)[0]
+        #titulos = ['matricula', 'modelo', 'tipo', 'potencia', 'doc_camionero', 'nombre_camionero', 'apellido_camionero', 'telefono','municipio']
+        registros["titulos"] = titulos
+        for x in range(0, len(valores_lista)): 
+            lista = list(valores_lista[x])
+            registros[x+1] = lista
+        return registros
+    
+def getID(elements, numekey ,position):
+    x = dict(elements)
+    lista = list(x.get(numekey))       
+    return lista[position]
+
+
+    
+    
+
+
 
 
 

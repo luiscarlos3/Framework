@@ -1,5 +1,21 @@
-from Model import Query
-
+def QueryShipments():
+    Querys = """
+    select  id_envio as codigo_envio, 
+    estado,     
+    envio_destinatario as cedula_destinatario,
+    destinatario.nombre_destinatario,
+    destinatario.apellido_destinatario,
+    envio.envio_remitente as cedula_remitente,
+    remitente.apellido,
+    id_paquete as codigo_paquete,
+    paquete.peso_kg,
+	destinatario.direccion_destinatario
+    from envio    
+    inner join destinatario on envio.envio_destinatario = destinatario.documento
+    inner join remitente on envio.envio_remitente = remitente.documento
+    inner join paquete on envio.id_paquete = paquete.codigo
+    """
+    return Querys
 
 def extend_shipping():    
     Querys = """
@@ -46,7 +62,7 @@ def extendTruckSearch():
     """
     return Querys
 
-def extend_addressee():
+def QueryRecipient():
     Querys = """
     select documento,
     nombre_destinatario,
@@ -78,7 +94,7 @@ def extend_truck_driver():
     telefono,    
     salario, 
     fecha_nacimiento,
-    municipios.municipio
+    municipios.municipio as ciudad
     from camionero 
     inner join municipios on camionero.ciudad = municipios.id_municipio
     """ 
@@ -90,7 +106,11 @@ def extend_package():
     descripcion, 
     cod_remitente, 
     cod_destinatario,
-    peso_kg from paquete
+	peso_kg,
+    municipios.municipio as ciudad_destino
+    from paquete
+    inner join municipios
+    on paquete.ciudad_destino = municipios.id_municipio
     """
     return Querys
 def extend_packagelist():
@@ -122,8 +142,7 @@ def extend_package_search():
     inner join remitente on paquete.cod_remitente = remitente.documento 
     inner join destinatario on paquete.cod_destinatario=destinatario.documento 
     """
-    return Querys
-    
+    return Querys    
 
 def extend_router_to_deliver():
     Querys= """ 
@@ -148,7 +167,7 @@ FROM
     """
     return Querys
 
-def extend_router_to_deliver_search():
+def queryRouteSearch():
     Querys = """ 
     select 
     id_ruta, 
@@ -180,27 +199,25 @@ def extendRouteUpdate():
     return Querys
 
 def extend_shipping_search():
-    Querys = """ 
-    select id_envio as codigo_envio, 
-    estado,     
-    direccion,
-	envio_destinatario as cedula_destinatario,    
+    Querys = """ select id_envio as codigo_envio,
+    estado,    
+    envio_destinatario as cedula_destinatario,
     destinatario.nombre_destinatario,
-	destinatario.apellido_destinatario,
+    destinatario.apellido_destinatario,
     envio.envio_remitente as cedula_remitente,
     remitente.nombre as nombre_remitente,
-    remitente.apellido as apellido_remitente,    
+    remitente.apellido as apellido_remitente,
     id_paquete as codigo_paquete,
     paquete.descripcion,
     paquete.peso_kg,
-    fecha_envio,
-    fecha_llegada
-    from envio    
+    fecha_llegada,fecha_entrega 
+    from envio 
     inner join destinatario on envio.envio_destinatario = destinatario.documento
     inner join remitente on envio.envio_remitente = remitente.documento
-    inner join paquete on envio.id_paquete = paquete.codigo   
+    inner join paquete on envio.id_paquete = paquete.codigo
     """
     return Querys
+
 def queryExePdfPackage():
     Query = """ 
     select codigo,cod_remitente, remitente.nombre, remitente.apellido, teléfono, cod_destinatario, destinatario.nombre_destinatario, 

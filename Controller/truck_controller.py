@@ -64,21 +64,7 @@ class ControllerTruck:
         op = Console.inputString("selecione una opcion ")
         if op == "y":
             self.__generaPdfTruck()
-        return " "
-    
-    def __testResultList(self,valor, titulos):        
-        if not valor:
-           print("Error al cargar los datos")
-        registros = {} # opcional
-        lista = [] # recursividad fila 
-        valores_lista = list(valor)# 
-        #titulos = list(valor)[0]
-        #titulos = ['matricula', 'modelo', 'tipo', 'potencia', 'doc_camionero', 'nombre_camionero', 'apellido_camionero', 'telefono','municipio']
-        registros["titulos"] = titulos
-        for x in range(0, len(valores_lista)): 
-            lista = list(valores_lista[x])
-            registros[x+1] = lista
-        return registros         
+        return " "   
             
     def __generaPdfTruck(self):                   
         conn = Database().conexion()
@@ -87,7 +73,7 @@ class ControllerTruck:
         consulta.execute(sql)
         data = consulta.fetchall()                    
         if data:
-            data = self.__testResultList(data, help.getTitles(consulta.description) )
+            data = help.testResultList(data, help.getTitles(consulta.description) )
             CreatePdf.excutePdfReport("Reportes.html",data,"vehiculos")
         return" "        
         

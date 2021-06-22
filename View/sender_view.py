@@ -1,10 +1,10 @@
 import os, sys
-from Controller.sender_controller import controlSender
+from Controller.sender_controller import  SettingSender
 from View.design import Graphics
 from View.list import Tables
 
 # an object instance is created
-sender = controlSender('remitente', 'documento')
+sender = SettingSender('remitente', 'documento')
 
 # class of view sender controller CRUD results
 class Sender:

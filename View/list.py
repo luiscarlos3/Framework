@@ -10,8 +10,7 @@ class Tables:
     @staticmethod
     def design_table_columns(rows, columns):
         os.system("cls")        
-        fil = rows
-                      
+        fil = rows                      
         head = []
         for item in columns:
             head.extend(item)          
@@ -32,10 +31,16 @@ class Tables:
         os.system("cls")               
         print("--------------"+ Table +" --------------------")
         for x in range(0, len(COLUMNS)):                
-            print(str(COLUMNS[x]).replace("'", "").replace(",","").strip("('").strip("',)") + " : " , data[x] )            
-        print("-------------------------------------------")     
+            print(str(COLUMNS[x]).replace("'", "").replace(","," ").strip("('").strip("',)") + " : " , data[x] )            
+        print("-------------------------------------------")
+         
+    @staticmethod
+    def Suboption(data):       
+        for x in range(0,len(data)):           
+            print(data[x])
         
-               
+            
+        
             
        
         

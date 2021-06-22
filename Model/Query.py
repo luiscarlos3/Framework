@@ -1,20 +1,22 @@
-import os, sys
 import pymysql
 from Model.connection import Database
+
 class Sql:  
     
     def columns(self,tables):
         Conn =  Database.conexion()        
         sql = Conn.cursor()
         sql.execute('SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA  LIKE ' + "'"+ Database.namedatabase() +"'" + 'AND TABLE_NAME = ' + "'" + tables + "'" )
-        data = sql.fetchall()    
+        data = sql.fetchall()
+        Conn.close()   
         return data   
    
     def name_Table(self):        
         Conn =  Database.conexion()
         consulta = Conn.cursor()
         consulta.execute("SELECT table_name as nombre FROM information_schema.tables WHERE table_schema = " + "'"+ Database.namedatabase() + "'"+" and (table_name  = 'paquete' or table_name = 'camion' or table_name = 'camionero' or table_name = 'destinatario' or table_name = 'ruta_entrega_paquete' or table_name = 'remitente' or table_name = 'envio')")
-        data = consulta.fetchall()    
+        data = consulta.fetchall()
+        Conn.close()   
         return data
     
     @staticmethod
@@ -25,6 +27,7 @@ class Sql:
         data = sql.fetchall()
         for i in range(0, len(data)):
             print(i, " : ", data[i], "\n")
+        con.close()
                 
     @staticmethod
     def insert(table,tupla):        
@@ -35,9 +38,10 @@ class Sql:
         consulta.execute(sql)
         Conn.commit()
         if consulta.rowcount == 1:            
-            status = True
+            status = True           
         else:
-            status = False           
+            status = False
+        Conn.close()          
         return status
     
     @staticmethod
@@ -52,6 +56,7 @@ class Sql:
             status = True  
         else:
             status = False
+        Conn.close() 
         return status
     
     @staticmethod
@@ -65,7 +70,8 @@ class Sql:
         if  consulta.rowcount == 1:
             status = True
         else:
-            status = False 
+            status = False
+        Conn.close() 
         return status
       
     @staticmethod     
@@ -79,7 +85,8 @@ class Sql:
         if data:
             status = True
         else:
-            status = False    
+            status = False
+        con.close()    
         return status
     
     

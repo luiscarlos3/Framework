@@ -8,7 +8,7 @@ from Controller import help
 from Controller.write import Console
 
 obj = Query.Sql()
-class controlSender:
+class SettingSender:
     def __init__(self, table, idcolumns):        
         self.__table = table
         self.__idcolumns = idcolumns
@@ -27,10 +27,8 @@ class controlSender:
         return status
     
     def senderUpdate(self, id):
-        status = False      
-        herdears = obj.columns(self.__table)
-        columns = help.convertArray(herdears)
-        tupl = self.__senderInputUpdate(columns, id)
+        status = False    
+        tupl = self.__senderInputUpdate(id)
         if not tupl:
             status = False
         else:
@@ -93,59 +91,59 @@ class controlSender:
                 lista.append(name)
         return lista
         
-    def __senderInputUpdate(self,column,id):
+    def __senderInputUpdate(self,id):
             Conn =  Database.conexion()
-            update = tuple()
+            lista = []
             consulta = Conn.cursor()            
             sql = query_extend.extend_sender() + " where " + self.__idcolumns + " = " + "'" + id + "'"
             consulta.execute(sql)
             data = consulta.fetchone()
             if data:
-                update = self.__conditionOne(column, data, id)
+                lista = self.__conditionOne(help.getTitles(consulta.description), data, id)
             else:
                 print ("no se encuentra el remitente")                
-            return update
+            return lista
         
     def __conditionOne(self, columns, data, id):            
-            update = tuple()
+            lista = []
             print("\n")
             for i in range(0, len(columns)):                    
                 print(i, " columna :" ,columns[i], " = ", data[i])
                 print("\n")
             option = Console.inputNumber("selecione la columna : ")           
-            update = self.__condtionTwoo(columns, option, id)
-            return update
+            lista = self.__condtionTwoo(columns, option, id)
+            return lista
         
     def __condtionTwoo(self,array, option, id):
-        update = tuple()
-        msg = "Ingrese"
+        lista = []
+        msg = "Ingrese "
         for i in range(0, len(array)):
-            if option is 0:
-                position = array[0]
-                edit = Console.inputNumber(msg + " " + array[0] + ": ")
-                update = (self.__table, position, edit, self.__idcolumns, id)
+            if option == 0:
+                position = array[option]
+                edit = Console.inputNumber(msg + array[option] + ": ")                
                 break
-            elif option is 3:
-                position = array[3]
-                edit = Console.inputNumber(msg + " " + array[3] + ": ")
-                update = (self.__table, position, edit, self.__idcolumns, id )
+            elif option == 3:
+                position = array[option]
+                edit = Console.inputNumber(msg + array[option] + ": ")                
                 break
-            elif option is 5 :
-                position = array[5]
-                edit = edit = Console.inputString(msg +" "+array[5]+ " : ")
+            elif option == 5 :
+                position = array[option]
+                edit = edit = Console.inputString(msg + array[option]+ " : ")
                 if help.convert_city(edit) == True :
                     print("No esta el municipio")
                     break
                 else:
-                    edit = help.v(edit)
-                    update = (self.__table, position, edit, self.__idcolumns, id)
+                    edit = help.v(edit)                    
                     break
+            elif option > len(array):
+                return None
+                
             elif option == i:
                 position = array[option]
-                edit = Console.inputString(msg +" "+array[option] + " : ")
-                update = (self.__table, position, edit, self.__idcolumns, id)
-                break              
-        return update
+                edit = Console.inputString(msg +array[option] + " : ")                
+                break
+        lista = [self.__table, position, edit, self.__idcolumns, id]            
+        return lista
                 
          
         

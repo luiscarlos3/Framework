@@ -16,7 +16,8 @@ class ControllerDriver:
     def truckDriverInsert(self):
         status = False    
         column = obj.columns(self.__table)
-        tupl = tuple(self.__driverTruckInput(column))        
+        tupl = tuple(self.__driverTruckInput(column))
+        print(tupl)        
         if not tupl:
             status = False
         else:
@@ -30,10 +31,8 @@ class ControllerDriver:
         return Sql.delete(self.__table, self.__idcolumns, id)
 
     def truckDriverUpdate(self, id):
-        status = False
-        herdears = obj.columns(self.__table)
-        columns = help.convertArray(herdears)
-        tupl = self.__inputdriverUpdate(columns, id)       
+        status = False      
+        tupl = self.__inputdriverUpdate(id)       
         if not tupl:
             status = False
         else:
@@ -65,62 +64,64 @@ class ControllerDriver:
     #----------------------------------------------------------------------*
     # help methods avoid overload
     #----------------------------------------------------------------------*
-    def __inputdriverUpdate(self,column,id):
+    def __inputdriverUpdate(self,id):
             Conn =  Database.conexion()
-            update = tuple()
+            lista = []
             consulta = Conn.cursor()            
             sql = query_extend.extend_truck_driver() + " where " + self.__idcolumns + " = " + "'" + id + "'"
             consulta.execute(sql)
             data = consulta.fetchone()
             if data:
-                update = self.__conditionOne(column, data, id)
+                lista = self.__conditionOne(help.getTitles(consulta.description), data, id)
             else:
                 print ("no se encuentra el camionero")
-            return update
+            return lista
         
     def __conditionOne(self, columns, data, id):
-            update = tuple()
+            lista = []
             print("\n")
             for i in range(0, len(columns)):                    
                 print(i, " columna :" ,columns[i], " = ", data[i])
                 print("\n")
             option = Console.inputNumber("selecione la columna : ")           
-            update = self.__condtionTwoo(columns, option, id)           
-            return update
+            lista = self.__condtionTwoo(columns, option, id)           
+            return lista
         
     def __condtionTwoo(self,array, option, id):
-        update = tuple()
-        msg = "Ingrese"                 
+        lista = []
+        msg = "Ingrese "                 
         if option >= 0 and option <= 3:                
                 position = array[option]
-                edit = Console.inputString(msg +" "+array[option] + " : ")
-                update = (self.__table, position, edit, self.__idcolumns, id)               
-        elif option is 4 or option is 5:
+                edit = Console.inputString(msg + array[option] + " : ")                             
+        elif option == 4 or option == 5:
             position = array[option]
-            edit = Console.inputNumber(msg +" "+array[option] + " : ")
-            update = (self.__table, position, edit, self.__idcolumns, id)            
+            edit = Console.inputNumber(msg + array[option] + " : ")
+        elif option > len(array):
+            return None                       
         else:
-            update = self.__condtionTherre(option, array, id)                   
-        return update
+            return self.__condtionTherre(option, array, id)
+        lista = [self.__table, position, edit, self.__idcolumns, id]
+        return lista               
+        
     
     def __condtionTherre(self, option, array, id):
-        update = tuple()
-        msg = "Ingrese"
-        if option is 6:
+        lista = []
+        msg = "Ingrese "
+        if option == 6:
             position = array[option]
-            edit = help.Date()
-            update = (self.__table, position, edit, self.__idcolumns, id)
-        elif option is 7:
-            position = array[7]
-            var = Console.inputString(msg + " "+ array[7] + " : ") 
+            edit = help.Date()           
+        elif option == 7:
+            position = array[option]
+            var = Console.inputString(msg + array[option] + " : ")
+            print(var)
             if help.inputCity(var) == True:
                 print("No esta el municipio")
             else:
-                edit = help.v(var)
-                update = (self.__table, position, edit, self.__idcolumns, id)
-        else:
-            print("Columna invalida")        
-        return update       
+                edit = help.v(var)               
+        elif option > len(array):
+            return None
+        lista = [self.__table, position, edit, self.__idcolumns, id]        
+        return lista      
     
     def __driverTruckInput(self, column):
         msg = "Ingrese"
@@ -138,14 +139,14 @@ class ControllerDriver:
             if i >= 1 and i <= 3:
                 name = Console.inputString(msg +" " +array[i]+ " : ")
                 lista.append(name)
-            elif i is 4 or i is 5 :
+            elif i == 4 or i == 5 :
                 var = Console.inputNumber(msg + ' ' + array[i]  + " : ")
                 lista.append(var)                      
-            elif i is 6:
+            elif i == 6:
                 print(msg + ' ' + array[i])
                 date = help.Date(msg)
                 lista.append(date)
-            elif i is 7:
+            elif i == 7:
                 var = Console.inputString(msg + " "+ array[7] + " : ")           
                 if help.inputCity(var) == True:
                     print("No esta el municipio")
