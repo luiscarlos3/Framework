@@ -3,7 +3,7 @@ from Controller.router_to_deliver_controller import RouteSetting
 from View.design import Graphics
 from View.list import Tables
 # an object instance is created
-Route = RouteSetting("ruta_entrega_paquete", "id_ruta")
+Route = RouteSetting("ruta_entrega_paquete", "cedula_camionero")
 # class of view sender controller CRUD results
 
 class RouterToDeliver:

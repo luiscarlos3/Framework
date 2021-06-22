@@ -18,8 +18,7 @@ def main():
     """
     esta funcion se ejecuta 
     """
-    Menu.presetation()    
-
+    Menu.presetation()
 main()
 #print(sys.path)
 # this is a program that allows project developers in a fast and agile way using databases

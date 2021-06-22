@@ -193,7 +193,7 @@ def extendRouteUpdate():
     select cedula_camionero, 
     envio_ruta, 
     estado, 
-    municipios.municipio from ruta_entrega_paquete 
+    municipios.municipio as ciudad from ruta_entrega_paquete 
     inner join  municipios on ruta_entrega_paquete.ciudad = municipios.id_municipio    
     """
     return Querys

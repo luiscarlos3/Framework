@@ -40,7 +40,7 @@ class RouteSetting:
     def routeSearch(self,id):
         conn = Database().conexion()
         consulta = conn.cursor()
-        sql = query_extend.queryRouteSearch() + " where " + " cedula_camionero " + " = " + "'" + id + "'"
+        sql = query_extend.queryRouteSearch() + " where " + self.__idcolumns + " = " + "'" + id + "'"
         consulta.execute(sql)    
         data = consulta.fetchall()                     
         if data:
@@ -52,7 +52,7 @@ class RouteSetting:
     # method controller update     
     def routeUpdate(self, id):
         status = False        
-        tupl = self.__inputUpdateTheRoute(id) # method handles updating threads in an organized way returns a tuple
+        tupl = tuple(self.__inputUpdateTheRoute(id))  # method handles updating threads in an organized way returns a tuple
         if not tupl:
             status = False
         else:
@@ -63,27 +63,13 @@ class RouteSetting:
         return status
     
     def optionPDF(self):
-        print("¿ Desea generar reporte general de vehiculos ?")
+        print("¿ Desea generar reporte general de rutas ?")
         print("Si >> y")
         print("No >> n")
         op = Console.inputString("selecione una opcion ")
         if op == "y":
             self.__generaPdfRoute()
         return " "
-    
-    def __testResultList(self,valor, titulos):        
-        if not valor:
-            print("Error de carga datos") 
-        registros = {} # opcional
-        lista = [] # recursividad fila 
-        valores_lista = list(valor)# 
-        #titulos = list(valor)[0]
-        #titulos = ['matricula', 'modelo', 'tipo', 'potencia', 'doc_camionero', 'nombre_camionero', 'apellido_camionero', 'telefono','municipio']
-        registros["titulos"] = titulos
-        for x in range(0, len(valores_lista)): 
-            lista = list(valores_lista[x])
-            registros[x+1] = lista
-        return registros
     
     def __generaPdfRoute(self):                   
         conn = Database().conexion()
@@ -93,7 +79,7 @@ class RouteSetting:
         data = consulta.fetchall()
         titulos = help.getTitles(consulta.description)             
         if data:
-            data = self.__testResultList(data, titulos)
+            data = help.testResultList(data, titulos)
             CreatePdf.excutePdfReport("Reportes.html",data,"Rutas de envio")
         return" "  
 
@@ -108,7 +94,7 @@ class RouteSetting:
 # help methods avoid overload
 #----------------------------------------------------------------------*
     def __inputTheRoute(self,column):
-        msg = "Ingrese"
+        msg = "Ingrese "
         array = help.convertArray(column)
         lista = []        
         for i in range(0, len(array)):             
@@ -117,7 +103,7 @@ class RouteSetting:
                 print(array[i] +" : ", cod)
                 lista.append(cod)
             elif i <= 2:
-                var = Console.inputNumber(msg + ' ' + array[i] + " : ")
+                var = Console.inputNumber(msg + array[i] + " : ")
                 lista.append(var)            
             elif i == 3 :
                 option = help.selection()
@@ -139,48 +125,48 @@ class RouteSetting:
             return help.inputCity(city)  
         
     def __inputUpdateTheRoute(self,id):
+        lista = []
         Conn =  Database.conexion()        
         consulta = Conn.cursor()   
-        sql = query_extend.extendRouteUpdate()+ " where " + "cedula_camionero" + " = " + "'" + id + "'"
+        sql = query_extend.extendRouteUpdate()+ " where " + self.__idcolumns + " = " + "'" + id + "'"
         consulta.execute(sql)
         data = consulta.fetchone()        
         if data:
-            update = self.__upgradeOptions(help.getTitles(consulta.description), data, id)
+            lista = self.__upgradeOptions(help.getTitles(consulta.description), data, id)
         else:
             print("No se encuentra")
-        return update
+        return lista
             
     def __upgradeOptions(self, columns, data, id):
-        update = tuple()
+        lista = []
         print("\n")
         for i in range(0, len(columns)):                               
             print(i, " columna :" ,columns[i], " = ", data[i])
             print("\n")
         option = Console.inputNumber("selecione la columna : ")           
-        update = self.__changeDataRoute(columns, option, id)           
-        return update
+        lista = self.__changeDataRoute(columns, option, id)           
+        return lista
     
     def __changeDataRoute(self,columns, option, id):
-        update = tuple()
-        msg = "Ingrese"
-        idcolumns= "cedula_camionero"
+        lista = []
+        msg = "Ingrese "        
         if option == 0 or option == 1:
             position = columns[option]
-            edit = Console.inputNumber(msg +" "+ columns[option] + " : ")
-            update = (self.__table, position, edit, idcolumns, id)            
+            edit = Console.inputNumber(msg + columns[option] + " : ")                      
         elif option == 2:
             edit = help.selection()
-            position = columns[option]
-            update = (self.__table, position, edit,idcolumns , id)
+            position = columns[option]            
         elif option == 3:
             position = columns[option] 
-            edit = Console.inputString(msg +" "+ columns[option] + " : ")             
-            if help.v(edit) == True:
+            var = Console.inputString(msg + columns[option] + " : ")             
+            if help.v(var) == True:
                 print("No esta el municipio")                
             else:
-                cod = help.v(edit)
-                update = (self.__table, position, cod, idcolumns, id)                        
-        return update
+                edit = help.v(var)
+        elif option > len(columns):
+            return None     
+        lista = [self.__table, position, edit, self.__idcolumns, id]                         
+        return lista
        
             
 
