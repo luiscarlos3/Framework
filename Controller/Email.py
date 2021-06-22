@@ -18,7 +18,7 @@ class SendEmail:
             para que quede como texto plano
             '''
             sender = 'lszondas@gmail.com'
-            password = 'gacelanocturna3'
+            password = 'xxxxxxxxxxxxxxxxxx'
             #receiver = 'Stefany1995.duque22@gmail.com'
 
             #Se compone el correo
