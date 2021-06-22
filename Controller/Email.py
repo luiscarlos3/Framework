@@ -17,7 +17,7 @@ class SendEmail:
             reencodear los stream de datos en Base64
             para que quede como texto plano
             '''
-            sender = 'lszondas@gmail.com'
+            sender = 'xxxxxxxxxxxxxxxxxxxxx'
             password = 'xxxxxxxxxxxxxxxxxx'
             #receiver = 'Stefany1995.duque22@gmail.com'
 
