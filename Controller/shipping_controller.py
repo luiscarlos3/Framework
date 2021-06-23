@@ -122,7 +122,7 @@ class controllerShipping(object):
             print(columns[option] + " : " + edit)                                                    
         else:
             return None            
-        lista = [self.__table, position, edit ,self.__idcolumns, id]  
+        lista = help.checkElements(lista)
         return lista    
         
     def __shippingInput(self, column):
@@ -142,7 +142,8 @@ class controllerShipping(object):
                 lista.append(var)               
             else:
                 val = self.__condition(array, i)
-                lista.append(val)                     
+                lista.append(val)
+            lista = help.checkElements(lista)                 
         return lista
     
     def __condition(self, array, i):                               

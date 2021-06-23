@@ -116,15 +116,12 @@ class ControllerDriver:
             edit = help.Date()           
         elif option == 7:
             position = array[option]
-            var = Console.inputString(msg + array[option] + " : ")
-            print(var)
-            if help.inputCity(var) == True:
-                print("No esta el municipio")
-            else:
-                edit = help.v(var)               
+            edit = Console.inputString(msg + array[option] + " : ")
+            edit = help.inputCity(edit)       
+                      
         elif option > len(array):
             return None
-        lista = [self.__table, position, edit, self.__idcolumns, id]        
+        lista = help.checkElements([self.__table, position, edit, self.__idcolumns, id])      
         return lista      
     
     def __driverTruckInput(self, column):
@@ -151,12 +148,8 @@ class ControllerDriver:
                 date = help.Date(msg)
                 lista.append(date)
             elif i == 7:
-                var = Console.inputString(msg + " "+ array[7] + " : ")           
-                if help.inputCity(var) == True:
-                    print("No esta el municipio")
-                else:
-                    edit = help.v(var)            
-                    lista.append(edit)                            
+                edit = Console.inputString(msg + " "+ array[i] + " : ")
+                edit = help.inputCity(edit)                                     
         return lista
     
            

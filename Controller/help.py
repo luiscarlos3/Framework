@@ -47,13 +47,16 @@ def Check(Data, columns):
     return elements    
 
 def convert_city(village):
-    Conn =  Database.conexion()
-    consulta = Conn.cursor()
-    sql = "select id_municipio from municipios where municipio = " + "'"+ village + "'"
-    consulta.execute(sql)
-    data = consulta.fetchone()    
-    village = data[0]
-    return village
+    try:
+        Conn =  Database.conexion()
+        consulta = Conn.cursor()
+        sql = "select id_municipio from municipios where municipio = " + "'"+ village + "'"
+        consulta.execute(sql)
+        data = consulta.fetchone()    
+        village = data[0]
+        return village
+    except :
+        return False
            
 def util(elements):
     i=0  
@@ -100,20 +103,12 @@ def convertArray(array):
 def inputCity(name):
     village = 0     
     if Validar.controller_city(name) == False:                        
-        print("este municipio no se encuentra")
-        os.system("pause")
+        print("Este municipio no se encuentra")        
+        return None
     else:
         village = convert_city(name)
-    return village
-   
-def v(name):
-    status = False                         
-    if Validar.controller_city(name) == False:
-        status = True                         
-    else:
-        status = False                              
-        return convert_city(name)
-    return status
+    return village   
+
 
 def testResultList(valor, titulos):        
         if not valor:

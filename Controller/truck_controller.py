@@ -134,7 +134,8 @@ class ControllerTruck:
             lista.append(potencia)
             lista.append(id)
             city = Console.inputString(msg +" "+column[5] + " : ")                   
-            lista.append(help.inputCity(city))         
+            lista.append(help.inputCity(city))
+        lista = help.checkElements(lista)       
         return lista
     
     def __conditionOne(self, columns, data, id):
@@ -158,7 +159,7 @@ class ControllerTruck:
             return None            
         else:
             return self.__conditionTwoo(option, columns, id)
-        lista = [self.__table, position, edit, self.__idcolumns, id]                    
+        lista = help.checkElements(lista)                 
         return lista
     
     def __conditionTwoo(self,option, columns, id):
@@ -173,13 +174,10 @@ class ControllerTruck:
         elif option == 5:
             position = columns[option]
             edit = Console.inputString(msg + columns[option] + " : ")           
-            if help.v(edit) == True:
-                print("No esta el municipio")
-            else:
-                edit = help.v(edit)                
+            edit = help.inputCity(edit)            
         elif option > len(columns):
             return None
-        lista = [self.__table, position, edit, self.__idcolumns, id]
+        lista = help.checkElements(lista)
         return lista
     
         

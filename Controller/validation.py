@@ -57,8 +57,7 @@ class Validar:
             if Result:
                 status = True
             else:
-                status = False       
-                                     
+                status = False                                
         except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
             print("Ocurrió un error al validar: ", e)         
         return status
@@ -90,7 +89,8 @@ class Validar:
         else:
             status = False        
         return status
-        
+    
+
          
          
     

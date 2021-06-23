@@ -77,22 +77,23 @@ class SettingSender:
         array = help.convertArray(column)
         lista = []
         for i in range(0, len(array)):
-            if i is 0:
+            if i == 0:
                 id = Console.inputStringNumber(msg +" "+array[0] + " : ")                
                 if val.Register_validation(id, self.__idcolumns) == True:
                     print("ya se encuentra registrado")                    
                     break
                 else:
                     lista.append(id)
-            if i is 3:                        
+            if i == 3:                        
                 tel = Console.inputStringNumber(msg+" "+array[3]+ " : ")                
                 lista.append(tel)                
-            elif i is 5:
+            elif i == 5:
                 city = Console.inputString(msg+" "+array[5]+ " : ")
-                lista.append(help.convert_city(city))
+                lista.append(help.inputCity(city))
             elif i >= 1:
                 name = Console.inputString(msg +" " +array[i]+ " : ")
                 lista.append(name)
+            lista = help.checkElements(lista)
         return lista
         
     def __senderInputUpdate(self,id):
@@ -132,21 +133,15 @@ class SettingSender:
                 break
             elif option == 5 :
                 position = array[option]
-                edit = edit = Console.inputString(msg + array[option]+ " : ")
-                if help.convert_city(edit) == True :
-                    print("No esta el municipio")
-                    break
-                else:
-                    edit = help.v(edit)                    
-                    break
+                edit =  Console.inputString(msg + array[option]+ " : ")
+                edit = help.inputCity(edit)            
             elif option > len(array):
-                return None
-                
+                return None                
             elif option == i:
                 position = array[option]
                 edit = Console.inputString(msg +array[option] + " : ")                
                 break
-        lista = [self.__table, position, edit, self.__idcolumns, id]            
+        lista = help.checkElements([self.__table, position, edit, self.__idcolumns, id])            
         return lista
                 
          

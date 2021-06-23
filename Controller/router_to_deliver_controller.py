@@ -114,6 +114,7 @@ class RouteSetting:
                 lista.append(option)            
             else:
                 lista.append(self.__subConditionInputRoute(array, i))
+        lista = help.checkElements(lista)
         return lista    
                 
     def __subConditionInputRoute(self, column, i):                     

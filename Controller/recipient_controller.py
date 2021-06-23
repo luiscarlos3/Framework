@@ -108,10 +108,11 @@ class SettingRecipes:
                 lista.append(tel)                
             elif i == 5:
                 city = Console.inputString(msg+" "+array[5]+ " : ")
-                lista.append(self.__inputCity(city))                              
+                lista.append(help.inputCity(city))                              
             elif i >= 1:
                 name = Console.inputString(msg +" " +array[i]+ " : ")
-                lista.append(name)                
+                lista.append(name)
+            lista = help.checkElements(lista)               
         return lista
     
     # handler method input update return an ordered
@@ -153,20 +154,13 @@ class SettingRecipes:
             elif option == 5:                    
                 position = arary[option]
                 edit = Console.inputString(msg + arary[5]+ " : ")
-                if help.v(edit) == True:
-                    print("No esta el municipio")
-                    break
-                else:
-                    edit = help.v(edit)
-                break                                                        
+                edit = help.inputCity(edit)                                
             elif option > len(arary):
                 return None
             elif option == i:
                 position = arary[option]
-                edit = Console.inputString(msg + arary[option] + " : ") 
-                
-                                           
-        lista = [self.__table, position, edit, self.__idcolumns, id]
+                edit = Console.inputString(msg + arary[option] + " : ")                                           
+        lista = help.checkElements([self.__table, position, edit, self.__idcolumns, id]) 
         return lista
     
              

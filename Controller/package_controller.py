@@ -150,7 +150,7 @@ class ControllerPackage():
             elif option == 5:
                 position =  columns[option]
                 edit = Console.inputString(msg +  columns[option]+ " : ")
-                help.inputCity(edit)                                         
+                edit=help.inputCity(edit)                                         
             else:                
                 return None
             lista = help.checkElements([self.__table, position, edit, self.__idcolumns, id])                                  
