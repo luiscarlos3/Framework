@@ -20,8 +20,7 @@ def QueryShipments():
 def extend_shipping():    
     Querys = """
     select id_envio as codigo_envio, 
-    estado,     
-    direccion,
+    estado,
     envio_destinatario as cedula_destinatario,    
     envio.envio_remitente as cedula_remitente,    
     id_paquete as codigo_paquete    
