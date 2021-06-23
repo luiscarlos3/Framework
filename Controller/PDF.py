@@ -16,7 +16,7 @@ class CreatePdf:
             #config = pdfkit.configuration(wkhtmltopdf='/opt/bin/wkhtmltopdf')
         exe = "C:\\Program Files\wkhtmltopdf\\binwkhtmltopdf.exe"
         config = pdfkit.configuration(wkhtmltopdf=exe)
-        salida = "D:/base de datos/Framework/Controller/PDF/vehiculos"+elements[column]+".pdf"       
+        salida = "D:/base de datos/Framework/Controller/PDF/vehiculos/"+elements[column]+".pdf"       
         pdfkit.from_string(html, salida, configuration=config)
         print("generado")
         
@@ -32,7 +32,7 @@ class CreatePdf:
         #f.close()       
         exe = "C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe"
         config = pdfkit.configuration(wkhtmltopdf=exe)
-        salida = "D:/base de datos\Framework\Controller\PDF/reportes/"+ str(date) +".pdf"       
+        salida = "D:/base de datos/Framework/Controller/PDF/vehiculos/"+ str(date) +".pdf"       
         pdfkit.from_string(html, salida, configuration=config)
         print("generado")
         
