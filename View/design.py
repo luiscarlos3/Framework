@@ -12,8 +12,7 @@ class Graphics:
     
     def AppearanceTwoo(self, *args):
         for i in range(1, len(args)):
-            print(i, " Consultar " + args[i])
-                   
+            print(i, " Consultar " + args[i])                  
         
     def Appearance(self):          
         options = obj.name_Table()
@@ -23,7 +22,7 @@ class Graphics:
         
     def designToCrud(self,table):
         print('----------------------------------------------------------------')
-        print('\t------ estamos en el menu ' + table + ' ---------\t')
+        print('\t------' + table + ' ---------\t')
         print('----------------------------------------------------------------')
         print('\n')
         options = ["Registrar", "Buscar", "Eliminar", "Actualizar", "Lista"]

@@ -48,8 +48,12 @@ class Sender:
     def searchSender(self):      
         Graphics.header("buscar", self.__TableName)
         Id = input("ingrese el numero del documento : ")
-        sender.senderSearch(Id)
-        os.system ('pause')
+        status, rows, columns = sender.senderSearch(Id)
+        if status == True:
+            Tables.table_vertical(self.__TableName, rows, columns)
+        else:
+            print("No se encuentra camionero")            
+            os.system ('pause')
         
      # methods lists recipient
     def listSender(self):        

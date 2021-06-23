@@ -52,7 +52,7 @@ class truckDriver:
         Id = input("ingrese el numero del documento : ")
         status, rows, columns= driver.truckDriverSearch(Id)
         if status == True:
-            Tables.table_vertical(rows, columns)
+            Tables.table_vertical(self.__TableName,rows, columns)
         else:
             print("No se encontro camionero")
         os.system ('pause')

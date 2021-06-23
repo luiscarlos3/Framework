@@ -24,9 +24,6 @@ def checkElements(array):
         if array[i] == None:
             return None
     return array 
-    
-        
-    
 
 def checkQuery(Data, columns):
     elements = {}   
