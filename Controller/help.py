@@ -19,6 +19,15 @@ def codigoRouter():
     num = random.randint(0, 1000)
     return  num
 
+def checkElements(array):
+    for i in range(0, len(array)):
+        if array[i] == None:
+            return None
+    return array 
+    
+        
+    
+
 def checkQuery(Data, columns):
     elements = {}   
     if not Data:

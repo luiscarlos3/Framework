@@ -32,7 +32,7 @@ class ControllerPackage():
         status = False
         conn = Database().conexion()
         consulta = conn.cursor()
-        sql =  query_extend.extend_package_search()+ " where " + self.__idcolumns + " = '" + id + "'" + " or cod_remitente = " + id 
+        sql =  query_extend.extend_package_search()+ " where " + self.__idcolumns + " = " +"'"+ id +"'"
         consulta.execute(sql)
         data = consulta.fetchone()    
         if data:
@@ -67,15 +67,16 @@ class ControllerPackage():
         return rows, help.getTitles(consulta.description)           
         
     def __executePdfPackage(self, lista):
-        status = False            
+        status = False             
         conn = Database().conexion()
         consulta = conn.cursor()        
-        sql = query_extend.queryExePdfPackage() + " where "+ self.__idcolumns + " = " + str(lista[0])
+        sql = query_extend.queryExePdfPackage() + " where "+ self.__idcolumns + " = " + "'" + str(lista[0])+ "'"
         consulta.execute(sql)        
         data = consulta.fetchone()
         if data:           
-            info = help.Check(data, consulta.description)            
-            CreatePdf.excutePdf("recibo.html", info, 'cod_remitente')
+            info = help.Check(data, consulta.description)
+            print(info)           
+            CreatePdf.excutePdfInvoice("recibo.html", info, self.__idcolumns)
             self.__executeEmail(data[1])                    
         else:
             status = False
@@ -149,13 +150,10 @@ class ControllerPackage():
             elif option == 5:
                 position =  columns[option]
                 edit = Console.inputString(msg +  columns[option]+ " : ")
-                if help.v(edit) == True:
-                    print("No esta el municipio")
-                else:
-                    edit = help.v(edit)                              
+                help.inputCity(edit)                                         
             else:                
                 return None
-            lista = [self.__table, position, edit, self.__idcolumns, id]                       
+            lista = help.checkElements([self.__table, position, edit, self.__idcolumns, id])                                  
             return lista
             
        
