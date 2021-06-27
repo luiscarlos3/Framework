@@ -170,7 +170,7 @@ class RouteSetting:
                 edit = help.v(var)
         elif option > len(columns):
             return None     
-        lista = [self.__table, position, edit, self.__idcolumns, id]                         
+        lista = help.checkElements([self.__table, position, edit, self.__idcolumns, id])                       
         return lista
        
             

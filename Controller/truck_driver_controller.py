@@ -104,7 +104,7 @@ class ControllerDriver:
             return None                       
         else:
             return self.__condtionTherre(option, array, id)
-        lista = [self.__table, position, edit, self.__idcolumns, id]
+        lista = help.checkElements([self.__table, position, edit, self.__idcolumns, id])
         return lista               
         
     

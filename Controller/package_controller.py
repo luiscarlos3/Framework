@@ -74,9 +74,8 @@ class ControllerPackage():
         consulta.execute(sql)        
         data = consulta.fetchone()
         if data:           
-            info = help.Check(data, consulta.description)
-            print(info)           
-            CreatePdf.excutePdfInvoice("recibo.html", info, self.__idcolumns)
+            info = help.Check(data, consulta.description)                     
+            CreatePdf.excutePdfInvoice("recibo.html", info, "cod_remitente")
             self.__executeEmail(data[1])                    
         else:
             status = False

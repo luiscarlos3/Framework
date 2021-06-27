@@ -135,7 +135,8 @@ class ControllerTruck:
             lista.append(id)
             city = Console.inputString(msg +" "+column[5] + " : ")                   
             lista.append(help.inputCity(city))
-        lista = help.checkElements(lista)       
+        lista = help.checkElements(lista)
+        print(lista)      
         return lista
     
     def __conditionOne(self, columns, data, id):
@@ -159,7 +160,7 @@ class ControllerTruck:
             return None            
         else:
             return self.__conditionTwoo(option, columns, id)
-        lista = help.checkElements(lista)                 
+        lista = help.checkElements([self.__table, position, edit, self.__idcolumns, id])               
         return lista
     
     def __conditionTwoo(self,option, columns, id):
@@ -177,7 +178,7 @@ class ControllerTruck:
             edit = help.inputCity(edit)            
         elif option > len(columns):
             return None
-        lista = help.checkElements(lista)
+        lista = help.checkElements([self.__table, position, edit, self.__idcolumns, id])
         return lista
     
         

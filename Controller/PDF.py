@@ -52,7 +52,7 @@ class CreatePdf:
         pdfkit.from_string(html, salida, configuration=config)
         print("generado")
         
-    def excutePdfInvoice(document,elements, column):                 
+    def excutePdfInvoice(document,elements, column):                
         env = Environment(loader=FileSystemLoader("Controller/templates"))
         template = env.get_template(document)           
         html = template.render(dict_item = elements)

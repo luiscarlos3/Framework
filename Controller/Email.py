@@ -17,8 +17,8 @@ class SendEmail:
             reencodear los stream de datos en Base64
             para que quede como texto plano
             '''
-            sender = 'xxxxxxxxxxxxxxxxxxxxx'
-            password = 'xxxxxxxxxxxxxxxxxx'
+            sender = ''
+            password = ''
             #receiver = 'Stefany1995.duque22@gmail.com'
 
             #Se compone el correo
@@ -27,7 +27,7 @@ class SendEmail:
             message['To'] = receiver
             message['Subject'] = 'Se adjunta un archivo PDF'
             pdfname = id+".pdf"                  
-            ruta = 'd:/base de datos/Framework/Controller/PDF/'+pdfname     
+            ruta = 'd:/base de datos/Framework/Controller/PDF/recibos/'+pdfname     
                    
             
             message.attach(MIMEText(body, 'plain'))           

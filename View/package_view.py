@@ -29,7 +29,7 @@ class Package:
         Id = input("ingrese el codigo del paquete : ")
         status, rows, columns = pack.packageSearch(Id)
         if status == True:
-            Tables.table_vertical(self.__TableName, rows, columns)
+            Tables.table_vertical(self.__TableName, rows, columns)            
         else:
             print ("No se encontro el paquete")
         os.system ('pause')
